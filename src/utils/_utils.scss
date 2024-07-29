@@ -3,8 +3,11 @@ $contrast-color: #000000;
 $secondary-color: #dadddc;
 $contrast-fade-color: #1e1e1e;
 $secondary-dark-color: #adadad;
+$primary-color-alternative: #d26100;
 $inconspicuous-color: #757575;
 $text-color: #fff;
+
+$general-side-padding: 50px;
 
 @import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap"); // Goldman font
 
@@ -21,4 +24,24 @@ $text-color: #fff;
   font-optical-sizing: auto;
   font-weight: $weight;
   font-style: normal;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@mixin archivo-font($weight: 400) {
+  font-family: "Archivo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+@mixin inter-font($weight: 400) {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
 }

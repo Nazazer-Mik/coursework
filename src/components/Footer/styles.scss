@@ -1,0 +1,63 @@
+@use "../../utils/utils";
+
+footer {
+  width: 100%;
+  padding: 2 * utils.$general-side-padding;
+  padding-top: utils.$general-side-padding;
+  padding-bottom: 0;
+  box-sizing: border-box;
+
+  color: utils.$secondary-color;
+  background-color: utils.$contrast-fade-color;
+
+  .links-container {
+    @include utils.inter-font;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-around;
+
+    div {
+      text-align: center;
+      padding: 2em;
+      letter-spacing: 1px;
+    }
+
+    a {
+      display: block;
+      color: utils.$secondary-color;
+      text-decoration: none;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .inactive {
+      color: utils.$inconspicuous-color;
+      cursor: default;
+    }
+
+    .inactive:hover {
+      text-decoration: none;
+    }
+  }
+
+  hr {
+    background-color: utils.$secondary-color;
+    border: none;
+    border-radius: 1px;
+    height: 2.5px;
+  }
+
+  .trademark-line {
+    @include utils.archivo-font;
+    font-size: 1.1em;
+    font-weight: 500;
+    text-align: center;
+
+    padding: 2em;
+  }
+}

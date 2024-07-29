@@ -13,9 +13,12 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as TestDriveImport } from './routes/test-drive'
 import { Route as ServicingImport } from './routes/servicing'
+import { Route as RegisterImport } from './routes/register'
 import { Route as NewVehiclesImport } from './routes/new-vehicles'
 import { Route as CustomVehicleImport } from './routes/custom-vehicle'
 import { Route as ChargingImport } from './routes/charging'
+import { Route as AuthImport } from './routes/auth'
+import { Route as AdminAuthImport } from './routes/admin-auth'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -27,6 +30,11 @@ const TestDriveRoute = TestDriveImport.update({
 
 const ServicingRoute = ServicingImport.update({
   path: '/servicing',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RegisterRoute = RegisterImport.update({
+  path: '/register',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -45,6 +53,16 @@ const ChargingRoute = ChargingImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRoute = AuthImport.update({
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminAuthRoute = AdminAuthImport.update({
+  path: '/admin-auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
@@ -59,6 +77,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin-auth': {
+      id: '/admin-auth'
+      path: '/admin-auth'
+      fullPath: '/admin-auth'
+      preLoaderRoute: typeof AdminAuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
     '/charging': {
@@ -82,6 +114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewVehiclesImport
       parentRoute: typeof rootRoute
     }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
     '/servicing': {
       id: '/servicing'
       path: '/servicing'
@@ -103,9 +142,12 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  AdminAuthRoute,
+  AuthRoute,
   ChargingRoute,
   CustomVehicleRoute,
   NewVehiclesRoute,
+  RegisterRoute,
   ServicingRoute,
   TestDriveRoute,
 })
@@ -119,15 +161,24 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/admin-auth",
+        "/auth",
         "/charging",
         "/custom-vehicle",
         "/new-vehicles",
+        "/register",
         "/servicing",
         "/test-drive"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/admin-auth": {
+      "filePath": "admin-auth.tsx"
+    },
+    "/auth": {
+      "filePath": "auth.tsx"
     },
     "/charging": {
       "filePath": "charging.tsx"
@@ -137,6 +188,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/new-vehicles": {
       "filePath": "new-vehicles.tsx"
+    },
+    "/register": {
+      "filePath": "register.tsx"
     },
     "/servicing": {
       "filePath": "servicing.tsx"
