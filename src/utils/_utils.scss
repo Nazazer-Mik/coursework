@@ -1,0 +1,24 @@
+$primary-color: #f06e00;
+$contrast-color: #000000;
+$secondary-color: #dadddc;
+$contrast-fade-color: #1e1e1e;
+$secondary-dark-color: #adadad;
+$inconspicuous-color: #757575;
+$text-color: #fff;
+
+@import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap"); // Goldman font
+
+@mixin goldman-font($weight: 700) {
+  font-family: "Goldman", sans-serif;
+  font-weight: $weight;
+  font-style: normal;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@mixin montserrat-font($weight: 400) {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+}

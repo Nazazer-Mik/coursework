@@ -11,9 +11,39 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TestDriveImport } from './routes/test-drive'
+import { Route as ServicingImport } from './routes/servicing'
+import { Route as NewVehiclesImport } from './routes/new-vehicles'
+import { Route as CustomVehicleImport } from './routes/custom-vehicle'
+import { Route as ChargingImport } from './routes/charging'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const TestDriveRoute = TestDriveImport.update({
+  path: '/test-drive',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ServicingRoute = ServicingImport.update({
+  path: '/servicing',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NewVehiclesRoute = NewVehiclesImport.update({
+  path: '/new-vehicles',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CustomVehicleRoute = CustomVehicleImport.update({
+  path: '/custom-vehicle',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChargingRoute = ChargingImport.update({
+  path: '/charging',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   path: '/',
@@ -31,12 +61,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/charging': {
+      id: '/charging'
+      path: '/charging'
+      fullPath: '/charging'
+      preLoaderRoute: typeof ChargingImport
+      parentRoute: typeof rootRoute
+    }
+    '/custom-vehicle': {
+      id: '/custom-vehicle'
+      path: '/custom-vehicle'
+      fullPath: '/custom-vehicle'
+      preLoaderRoute: typeof CustomVehicleImport
+      parentRoute: typeof rootRoute
+    }
+    '/new-vehicles': {
+      id: '/new-vehicles'
+      path: '/new-vehicles'
+      fullPath: '/new-vehicles'
+      preLoaderRoute: typeof NewVehiclesImport
+      parentRoute: typeof rootRoute
+    }
+    '/servicing': {
+      id: '/servicing'
+      path: '/servicing'
+      fullPath: '/servicing'
+      preLoaderRoute: typeof ServicingImport
+      parentRoute: typeof rootRoute
+    }
+    '/test-drive': {
+      id: '/test-drive'
+      path: '/test-drive'
+      fullPath: '/test-drive'
+      preLoaderRoute: typeof TestDriveImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  ChargingRoute,
+  CustomVehicleRoute,
+  NewVehiclesRoute,
+  ServicingRoute,
+  TestDriveRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -46,11 +118,31 @@ export const routeTree = rootRoute.addChildren({ IndexRoute })
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/charging",
+        "/custom-vehicle",
+        "/new-vehicles",
+        "/servicing",
+        "/test-drive"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/charging": {
+      "filePath": "charging.tsx"
+    },
+    "/custom-vehicle": {
+      "filePath": "custom-vehicle.tsx"
+    },
+    "/new-vehicles": {
+      "filePath": "new-vehicles.tsx"
+    },
+    "/servicing": {
+      "filePath": "servicing.tsx"
+    },
+    "/test-drive": {
+      "filePath": "test-drive.tsx"
     }
   }
 }
