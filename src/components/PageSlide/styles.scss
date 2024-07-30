@@ -1,0 +1,13 @@
+.slide {
+  box-sizing: border-box;
+  width: 100%;
+
+  background-origin: border-box;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  padding: 50px;
+  transition: background-image 1s ease-in-out;
+  overflow: hidden;
+}

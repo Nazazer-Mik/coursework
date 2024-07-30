@@ -1,0 +1,90 @@
+@use "../utils/utils";
+
+.main-text-container {
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  width: 60%;
+  z-index: 2;
+
+  text-align: left;
+  color: utils.$text-color;
+  @include utils.inter-font;
+
+  h2 {
+    font-size: 2.2em;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px utils.$contrast-fade-color;
+    backdrop-filter: blur(1px);
+  }
+
+  p {
+    font-size: 1.5em;
+    margin-top: 0;
+    text-shadow: 0 0 30px utils.$contrast-fade-color;
+    backdrop-filter: blur(1px);
+  }
+}
+
+.arrow-wrapper {
+  width: 4em;
+  height: 4em;
+  border-radius: 50px;
+  background-color: none;
+
+  position: absolute;
+  right: 5%;
+  bottom: 50%;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color 0.5s ease-out;
+  animation: down-disappear ease 5s infinite 5s;
+  backdrop-filter: blur(1px);
+  color: utils.$text-color;
+  background-color: rgba(240, 110, 0, 0.3);
+  opacity: 0;
+
+  svg {
+    width: 2.5em;
+    height: 2.5em;
+    filter: drop-shadow(0px 0px 5px utils.$contrast-color);
+  }
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border: 2500px solid transparent;
+  border-bottom: 300px solid rgba(0, 0, 0, 0.8);
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-50%);
+
+  z-index: 0;
+}
+
+@keyframes down-disappear {
+  0% {
+    transform: translateY(-150%);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+
+  40% {
+    transform: translateY(150%);
+    opacity: 0;
+  }
+}

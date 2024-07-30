@@ -21,14 +21,19 @@ footer {
       text-align: center;
       padding: 2em;
       letter-spacing: 1px;
+
+      h3 {
+        color: utils.$secondary-dark-color;
+        text-decoration: underline utils.$primary-color-alternative;
+      }
     }
 
     a {
       display: block;
       color: utils.$secondary-color;
       text-decoration: none;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     a:hover {
