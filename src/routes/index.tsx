@@ -7,6 +7,7 @@ import "../styles/index.scss";
 
 // Loading pictures
 
+import firstImage from "../assets/homepage-slideshow/slide3.jpg";
 import secondSlideImage from "../assets/home-slide-2.webp";
 import thirdSlideImage from "../assets/home-slide-3.jpg";
 
@@ -31,11 +32,14 @@ export const Route = createFileRoute("/")({
 function Home() {
   const pictures = useLoaderData({ from: "/" });
 
-  const [currentPicture, setPicture] = useState(pictures[3]);
+  const [currentPicture, setPicture] = useState(firstImage);
 
   useEffect(() => {
     setInterval(() => {
       const lastPic = pictures.pop() as string;
+
+      if (lastPic == undefined) return;
+
       pictures.unshift(lastPic);
       setPicture(lastPic);
     }, 5000);

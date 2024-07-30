@@ -62,3 +62,12 @@ $general-side-padding: 50px;
   font-weight: $weight;
   font-style: normal;
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+@mixin roboto-mono-font($weight: 400) {
+  font-family: "Roboto Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: $weight;
+  font-style: normal;
+}
