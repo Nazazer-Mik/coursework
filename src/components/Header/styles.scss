@@ -3,6 +3,7 @@
 header {
   background-color: utils.$contrast-color;
 
+  z-index: 500;
   position: fixed;
   top: 0;
   left: 0;
@@ -17,6 +18,8 @@ header {
   justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
+
+  outline: 3px solid utils.$primary-color-alternative;
 
   a {
     text-decoration: none;
@@ -85,6 +88,20 @@ header {
       margin-left: 20px;
       margin-right: 20px;
     }
+  }
+
+  .header-triangle {
+    width: 0;
+    height: 0;
+    border: 270px solid transparent;
+    border-bottom: 1500px solid utils.$primary-color-alternative;
+
+    position: absolute;
+    bottom: 0;
+    left: 32%;
+    transform: translateX(-50%);
+
+    z-index: 0;
   }
 }
 

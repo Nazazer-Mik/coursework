@@ -49,6 +49,7 @@ export default function Header() {
             </svg>
           </Link>
         </nav>
+        <div className="header-triangle"></div>
       </header>
       <div className="header-rigid-box"></div>
     </>
