@@ -1,4 +1,12 @@
+import axios from "axios";
 import { userRegData } from "../routes/register";
+import { UseNavigateResult } from "@tanstack/react-router";
+
+export interface serverResponse {
+  status: string;
+  message: string;
+  session_id: string;
+}
 
 export const serverAddress = "http://localhost:3000";
 
@@ -38,4 +46,23 @@ export function CheckRegisterCredentials(userData: userRegData): string {
     return "Password is not strong enough";
 
   return "OK";
+}
+
+export async function CompleteRequest(
+  path: string,
+  dataToSend: object,
+  errorField: HTMLSpanElement,
+  navigate: UseNavigateResult<"/register"> | UseNavigateResult<"/auth">
+) {
+  const response = (await axios.post(serverAddress + path, dataToSend))
+    .data as serverResponse;
+
+  if (response.status !== "OK") {
+    errorField.innerHTML = response.message;
+  } else {
+    errorField.innerHTML = "";
+
+    localStorage.setItem("session_id", response.session_id);
+    await navigate({ to: "/" });
+  }
 }

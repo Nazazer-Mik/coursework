@@ -3,12 +3,24 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { dbPoolOptions } from "./db/dbconfig";
 import mysql, { FieldPacket } from "mysql2/promise";
+import { insertNewUser } from "./db/dbqueries";
+import { md5 } from "js-md5";
 
-interface userCredentials {
+export interface userAuthCredentials {
   user_id: number;
   email: string;
   password: string;
   sessions_id: string;
+}
+
+export interface userRegData {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  homeAddress: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
 }
 
 // -------------------- DB Init -----------------
@@ -37,7 +49,7 @@ app.post("/auth", async (c) => {
 
   const [account] = (await dbConnection.query(
     `SELECT * FROM credentials WHERE email = "${body.email}";`
-  )) as [userCredentials[], FieldPacket[]];
+  )) as [userAuthCredentials[], FieldPacket[]];
 
   const user = account[0];
 
@@ -61,9 +73,35 @@ app.post("/auth", async (c) => {
 });
 
 app.post("/register", async (c) => {
-  const body = await c.req.json();
-  console.log(body);
-  return c.text("OK");
+  const body: userRegData = await c.req.json();
+
+  const [account] = (await dbConnection.query(
+    `SELECT * FROM credentials WHERE email = "${body.email}";`
+  )) as [userAuthCredentials[], FieldPacket[]];
+
+  if (account.length > 0)
+    return c.json({
+      status: "Creating error",
+      message: "User with such email address already exists",
+    });
+
+  const session_id = md5(body.email);
+
+  const transactionResult = await insertNewUser(dbConnection, body, session_id);
+
+  if (transactionResult !== "success") {
+    return c.json({
+      status: "DB Error",
+      message: "Internal server error occured",
+    });
+  }
+
+  console.log("New user created: " + body.email);
+
+  return c.json({
+    status: "OK",
+    session_id: session_id,
+  });
 });
 
 // -------------------- SERVER START --------------------

@@ -5,21 +5,14 @@ import {
   useNavigate,
   UseNavigateResult,
 } from "@tanstack/react-router";
-import axios from "axios";
 import { md5 } from "js-md5";
 import "../styles/auth.scss";
-import { CheckLoginCredentials, serverAddress } from "../utils/auth-utils";
+import { CheckLoginCredentials, CompleteRequest } from "../utils/auth-utils";
 
 type userData = {
   email: string;
   password: string;
 };
-
-interface serverResponse {
-  status: string;
-  message: string;
-  session_id: string;
-}
 
 export const Route = createFileRoute("/auth")({
   component: LoginPage,
@@ -47,21 +40,12 @@ async function handleFormSubmit(
 
   const hashed_password = md5(formData.password);
 
-  const response = (
-    await axios.post(serverAddress + "/auth", {
-      email: formData.email,
-      password: hashed_password,
-    })
-  ).data as serverResponse;
+  const dataToSend = {
+    email: formData.email,
+    password: hashed_password,
+  };
 
-  if (response.status !== "OK") {
-    errorField.innerHTML = response.message;
-  } else {
-    errorField.innerHTML = "";
-
-    localStorage.setItem("session_id", response.session_id);
-    await navigate({ to: "/" });
-  }
+  CompleteRequest("/auth", dataToSend, errorField, navigate);
 }
 
 function LoginPage() {

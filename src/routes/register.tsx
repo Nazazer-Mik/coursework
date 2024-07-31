@@ -1,8 +1,12 @@
 import React, { ChangeEvent, RefObject, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import axios from "axios";
+import {
+  createFileRoute,
+  Link,
+  useNavigate,
+  UseNavigateResult,
+} from "@tanstack/react-router";
 import "../styles/auth.scss";
-import { CheckRegisterCredentials, serverAddress } from "../utils/auth-utils";
+import { CheckRegisterCredentials, CompleteRequest } from "../utils/auth-utils";
 import { md5 } from "js-md5";
 
 export type userRegData = {
@@ -15,10 +19,11 @@ export type userRegData = {
   password: string;
 };
 
-function handleFormSubmit(
+async function handleFormSubmit(
   event: React.FormEvent<HTMLFormElement>,
   errorElem: RefObject<HTMLSpanElement>,
-  formData: userRegData
+  formData: userRegData,
+  navigate: UseNavigateResult<"/register">
 ) {
   event.preventDefault();
 
@@ -38,14 +43,7 @@ function handleFormSubmit(
     password: hashedPassword,
   };
 
-  axios
-    .post(serverAddress + "/register", newFormData)
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  CompleteRequest("/register", newFormData, errorField, navigate);
 }
 
 export const Route = createFileRoute("/register")({
@@ -54,6 +52,7 @@ export const Route = createFileRoute("/register")({
 
 function RegisterPage() {
   const errorElem = useRef(null);
+  const navigate = useNavigate({ from: "/register" });
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -83,7 +82,9 @@ function RegisterPage() {
         <h1>Register new Polestar ID</h1>
         <form
           id="register"
-          onSubmit={(event) => handleFormSubmit(event, errorElem, formData)}
+          onSubmit={(event) =>
+            handleFormSubmit(event, errorElem, formData, navigate)
+          }
         >
           <div className="register-names">
             <div>
