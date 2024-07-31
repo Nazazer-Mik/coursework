@@ -1,5 +1,10 @@
 import React, { ChangeEvent, RefObject, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  useNavigate,
+  UseNavigateResult,
+} from "@tanstack/react-router";
 import axios from "axios";
 import { md5 } from "js-md5";
 import "../styles/auth.scss";
@@ -10,14 +15,21 @@ type userData = {
   password: string;
 };
 
+interface serverResponse {
+  status: string;
+  message: string;
+  session_id: string;
+}
+
 export const Route = createFileRoute("/auth")({
   component: LoginPage,
 });
 
-function handleFormSubmit(
+async function handleFormSubmit(
   event: React.FormEvent<HTMLFormElement>,
   errorElem: RefObject<HTMLSpanElement>,
-  formData: userData
+  formData: userData,
+  navigate: UseNavigateResult<"/auth">
 ) {
   event.preventDefault();
 
@@ -35,21 +47,26 @@ function handleFormSubmit(
 
   const hashed_password = md5(formData.password);
 
-  axios
-    .post(serverAddress + "/auth", {
+  const response = (
+    await axios.post(serverAddress + "/auth", {
       email: formData.email,
       password: hashed_password,
     })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  ).data as serverResponse;
+
+  if (response.status !== "OK") {
+    errorField.innerHTML = response.message;
+  } else {
+    errorField.innerHTML = "";
+
+    localStorage.setItem("session_id", response.session_id);
+    await navigate({ to: "/" });
+  }
 }
 
 function LoginPage() {
   const errorElem = useRef(null);
+  const navigate = useNavigate({ from: "/auth" });
 
   const [formData, setFormData] = useState({
     email: "",
@@ -75,7 +92,9 @@ function LoginPage() {
           <h1>Sign in with Polestar ID</h1>
           <form
             id="auth"
-            onSubmit={(event) => handleFormSubmit(event, errorElem, formData)}
+            onSubmit={(event) =>
+              handleFormSubmit(event, errorElem, formData, navigate)
+            }
           >
             <label htmlFor="auth-email">Email address</label>
             <input

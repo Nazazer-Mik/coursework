@@ -93,6 +93,7 @@ function RegisterPage() {
                 id="register-first-name"
                 name="firstName"
                 onChange={handleChange}
+                value={formData.firstName}
                 maxLength={20}
                 required
               />
@@ -104,6 +105,7 @@ function RegisterPage() {
                 id="register-last-name"
                 name="lastName"
                 onChange={handleChange}
+                value={formData.lastName}
                 maxLength={20}
                 required
               />
@@ -116,6 +118,7 @@ function RegisterPage() {
             id="register-dob"
             name="dob"
             onChange={handleChange}
+            value={formData.dob}
             required
           />
 
@@ -125,6 +128,7 @@ function RegisterPage() {
             id="register-address"
             name="homeAddress"
             onChange={handleChange}
+            value={formData.homeAddress}
             maxLength={100}
             required
           />
@@ -135,6 +139,7 @@ function RegisterPage() {
             id="register-number"
             name="phoneNumber"
             onChange={handleChange}
+            value={formData.phoneNumber}
             maxLength={12}
             required
           />
@@ -145,6 +150,7 @@ function RegisterPage() {
             id="register-email"
             name="email"
             onChange={handleChange}
+            value={formData.email}
             maxLength={50}
             required
           />
@@ -155,6 +161,7 @@ function RegisterPage() {
             id="register-password"
             name="password"
             onChange={handleChange}
+            value={formData.password}
             maxLength={30}
             required
           />
