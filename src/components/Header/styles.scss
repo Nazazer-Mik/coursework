@@ -3,7 +3,7 @@
 header {
   background-color: utils.$contrast-color;
 
-  z-index: 500;
+  z-index: 1200;
   position: fixed;
   top: 0;
   left: 0;
@@ -31,6 +31,14 @@ header {
     margin-right: 25px;
 
     border-radius: 5px;
+  }
+
+  .icon-svg {
+    transition: background-image 1s ease-in-out;
+
+    .svg-sky {
+      fill: transparent;
+    }
   }
 
   h1 {
@@ -94,7 +102,8 @@ header {
     width: 0;
     height: 0;
     border: 270px solid transparent;
-    border-bottom: 1500px solid utils.$primary-color-alternative;
+    border-bottom: 1500px solid #000; //utils.$primary-color-alternative;
+    display: none;
 
     position: absolute;
     bottom: 0;

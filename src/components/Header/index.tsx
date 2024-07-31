@@ -2,18 +2,28 @@ import React from "react";
 import "./styles.scss";
 import { Link } from "@tanstack/react-router";
 
-export default function Header() {
+type HeaderProps = {
+  bgUrl?: string | null;
+};
+
+export default function Header({ bgUrl = null }: HeaderProps) {
   return (
     <>
-      <header>
+      <header className="header-container">
         <Link to={"/"} className="title">
           <svg
             height="2500"
             viewBox="0 0 800 800"
             width="2500"
             xmlns="http://www.w3.org/2000/svg"
+            className="icon-svg"
+            style={bgUrl === null ? {} : { backgroundImage: `url(${bgUrl})` }}
           >
-            <path d="m0 0h800v800h-800z" fill="#fff" />
+            <path
+              d="m0 0h800v800h-800z"
+              className="svg-sky"
+              style={bgUrl === null ? { fill: "#fff" } : {}}
+            />{" "}
             <path
               d="m397.33 407.7v335.51l-13.7 16.66-56.61-281.95zm5.58-15.51v-335.56l13.7-16.67 56.6 281.91z"
               fill="#000000"

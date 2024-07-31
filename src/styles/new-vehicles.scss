@@ -1,0 +1,12 @@
+@use "../utils/utils";
+
+.new-vehicles-container {
+  width: 100%;
+  height: 90vh;
+  overflow-y: scroll;
+
+  .main-pane {
+    min-height: 90vh;
+    width: inherit;
+  }
+}

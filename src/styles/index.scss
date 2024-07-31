@@ -34,6 +34,16 @@ body {
     letter-spacing: 3px;
     text-shadow: 0 0 15px utils.$contrast-fade-color;
     backdrop-filter: blur(1px);
+
+    // color: transparent;
+    // //background-image: url("../assets/homepage-slideshow/slide3.jpg");
+    // background: linear-gradient(
+    //   to right,
+    //   utils.$secondary-color,
+    //   utils.$text-color
+    // );
+    // background-size: cover;
+    // background-clip: text;
   }
 
   p {

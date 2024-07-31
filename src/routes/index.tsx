@@ -35,19 +35,32 @@ function Home() {
   const [currentPicture, setPicture] = useState(firstImage);
 
   useEffect(() => {
-    setInterval(() => {
+    const slideShowInterval = setInterval(() => {
       const lastPic = pictures.pop() as string;
 
       if (lastPic == undefined) return;
 
       pictures.unshift(lastPic);
-      setPicture(lastPic);
+
+      const header = document.getElementsByClassName("header-container")[0];
+      const secondSlide = document.getElementsByClassName("slide")[1];
+
+      const headerHeight = Math.ceil(header.getBoundingClientRect().height);
+      const secondSlideRelPos = secondSlide.getBoundingClientRect().y;
+
+      if (secondSlideRelPos > headerHeight) {
+        setPicture(lastPic);
+      }
     }, 5000);
+
+    return () => {
+      clearInterval(slideShowInterval);
+    };
   }, []);
 
   return (
     <>
-      <Header />
+      <Header bgUrl={currentPicture} />
       <div className="scroll-container">
         <PageSlide imagePath={currentPicture}>
           <div className="main-text-container">
