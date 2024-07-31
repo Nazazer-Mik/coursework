@@ -52,7 +52,12 @@ export async function CompleteRequest(
   path: string,
   dataToSend: object,
   errorField: HTMLSpanElement,
-  navigate: UseNavigateResult<"/register"> | UseNavigateResult<"/auth">
+  navigate:
+    | UseNavigateResult<"/register">
+    | UseNavigateResult<"/auth">
+    | UseNavigateResult<"/admin-auth">,
+  navigateTo: string,
+  localStorageAttr: string
 ) {
   const response = (await axios.post(serverAddress + path, dataToSend))
     .data as serverResponse;
@@ -62,7 +67,7 @@ export async function CompleteRequest(
   } else {
     errorField.innerHTML = "";
 
-    localStorage.setItem("session_id", response.session_id);
-    await navigate({ to: "/" });
+    localStorage.setItem(localStorageAttr, response.session_id);
+    await navigate({ to: navigateTo });
   }
 }

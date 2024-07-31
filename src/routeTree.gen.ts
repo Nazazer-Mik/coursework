@@ -19,6 +19,7 @@ import { Route as CustomVehicleImport } from './routes/custom-vehicle'
 import { Route as ChargingImport } from './routes/charging'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AdminAuthImport } from './routes/admin-auth'
+import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -63,6 +64,11 @@ const AdminAuthRoute = AdminAuthImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdminRoute = AdminImport.update({
+  path: '/admin',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
@@ -77,6 +83,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
     '/admin-auth': {
@@ -142,6 +155,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  AdminRoute,
   AdminAuthRoute,
   AuthRoute,
   ChargingRoute,
@@ -161,6 +175,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/admin",
         "/admin-auth",
         "/auth",
         "/charging",
@@ -173,6 +188,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/admin": {
+      "filePath": "admin.tsx"
     },
     "/admin-auth": {
       "filePath": "admin-auth.tsx"

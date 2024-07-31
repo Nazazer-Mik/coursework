@@ -43,7 +43,14 @@ async function handleFormSubmit(
     password: hashedPassword,
   };
 
-  CompleteRequest("/register", newFormData, errorField, navigate);
+  CompleteRequest(
+    "/register",
+    newFormData,
+    errorField,
+    navigate,
+    "/",
+    "session_id"
+  );
 }
 
 export const Route = createFileRoute("/register")({

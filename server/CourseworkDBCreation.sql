@@ -94,8 +94,15 @@ CREATE TABLE `customer` (
 CREATE TABLE `credentials` (
   `user_id` BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(255) NOT NULL,
-  `password` VARCHAR(255) NOT NULL
+  `password` VARCHAR(255) NOT NULL,
   `sessions_id` VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE `admin_credentials` (
+  `admin_id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `admin_sessions_id` VARCHAR(255) NOT NULL
 );
 
 ALTER TABLE `car` ADD CONSTRAINT `car_model_code_fk_foreign` FOREIGN KEY (`model_code_fk`) REFERENCES `car_model` (`model_code`);

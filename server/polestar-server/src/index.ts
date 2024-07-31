@@ -6,6 +6,13 @@ import mysql, { FieldPacket } from "mysql2/promise";
 import { insertNewUser } from "./db/dbqueries";
 import { md5 } from "js-md5";
 
+export interface adminAuthCredentials {
+  admin_id: number;
+  username: string;
+  password: string;
+  admin_sessions_id: string;
+}
+
 export interface userAuthCredentials {
   user_id: number;
   email: string;
@@ -71,6 +78,38 @@ app.post("/auth", async (c) => {
     session_id: user.sessions_id,
   });
 });
+
+// --------------------
+
+app.post("/admin-auth", async (c) => {
+  const body = await c.req.json();
+
+  const [account] = (await dbConnection.query(
+    `SELECT * FROM admin_credentials WHERE username = "${body.username}";`
+  )) as [adminAuthCredentials[], FieldPacket[]];
+
+  const user = account[0];
+
+  if (user === undefined)
+    return c.json({
+      status: "Wrong details",
+      message: "Wrong username. Please check and try again",
+    });
+
+  if (user.password !== body.password)
+    return c.json({
+      status: "Wrong details",
+      message: "Password is incorrect",
+    });
+
+  console.log(`Admin logged in with username: ${user.username}`);
+  return c.json({
+    status: "OK",
+    session_id: user.admin_sessions_id,
+  });
+});
+
+// --------------------
 
 app.post("/register", async (c) => {
   const body: userRegData = await c.req.json();

@@ -2,6 +2,11 @@ import React from "react";
 import "./styles.scss";
 import { Link } from "@tanstack/react-router";
 
+function checkLoggedIn(sessionAttributeName: string) {
+  const id = localStorage.getItem(sessionAttributeName);
+  return id != undefined;
+}
+
 export default function Footer() {
   return (
     <footer>
@@ -24,8 +29,14 @@ export default function Footer() {
         <div>
           <h3>Authorization</h3>
           <Link to={"/register"}>Registration</Link>
-          <Link to={"/auth"}>Login page</Link>
-          <Link to={"/admin-auth"}>Admin</Link>
+          <Link to={checkLoggedIn("session_id") ? "/" : "/auth"}>
+            Login page
+          </Link>
+          <Link
+            to={checkLoggedIn("admin_session_id") ? "/admin" : "/admin-auth"}
+          >
+            Admin
+          </Link>
         </div>
       </div>
       <hr />

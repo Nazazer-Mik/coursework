@@ -45,7 +45,7 @@ async function handleFormSubmit(
     password: hashed_password,
   };
 
-  CompleteRequest("/auth", dataToSend, errorField, navigate);
+  CompleteRequest("/auth", dataToSend, errorField, navigate, "/", "session_id");
 }
 
 function LoginPage() {
