@@ -114,6 +114,14 @@ header {
 
     z-index: 0;
   }
+
+  .highlight {
+    transition: none;
+    color: utils.$primary-color-alternative !important;
+  }
+  .highlight:hover {
+    color: utils.$primary-color-alternative !important;
+  }
 }
 
 .header-rigid-box {

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/new-vehicles")({
 function NewVehicles() {
   return (
     <>
-      <Header />
+      <Header elementToHiglight={"header-new-vehicle"} />
       <div className="vehicles-container">
         <div className="main-pane">
           <div className="filter-box">

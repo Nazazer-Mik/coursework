@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./styles.scss";
 import { Link } from "@tanstack/react-router";
 
 type HeaderProps = {
+  elementToHiglight?: string | null;
   bgUrl?: string | null;
 };
 
@@ -11,7 +12,17 @@ function checkLogined() {
   return id != null;
 }
 
-export default function Header({ bgUrl = null }: HeaderProps) {
+export default function Header({
+  elementToHiglight = null,
+  bgUrl = null,
+}: HeaderProps) {
+  useEffect(() => {
+    if (elementToHiglight !== null) {
+      const elem = document.getElementById(elementToHiglight);
+      elem?.classList.add("highlight");
+    }
+  }, []);
+
   return (
     <>
       <header className="header-container">
@@ -41,11 +52,21 @@ export default function Header({ bgUrl = null }: HeaderProps) {
           <h1>Polestar</h1>
         </Link>
         <nav>
-          <Link to={"/new-vehicles"}>New Vehicles</Link>
-          <Link to={"/custom-vehicle"}>Build Vehicle</Link>
-          <Link to={"/test-drive"}>Test Drive</Link>
-          <Link to={"/charging"}>Charging</Link>
-          <Link to={"/servicing"}>Warranty & Repair</Link>
+          <Link to={"/new-vehicles"} id="header-new-vehicle">
+            New Vehicles
+          </Link>
+          <Link to={"/custom-vehicle"} id="header-build-vehicle">
+            Build Vehicle
+          </Link>
+          <Link to={"/test-drive"} id="header-test-drive">
+            Test Drive
+          </Link>
+          <Link to={"/charging"} id="header-charging">
+            Charging
+          </Link>
+          <Link to={"/servicing"} id="header-warranty-repair">
+            Warranty & Repair
+          </Link>
           <Link to={"/auth"}>
             <svg
               width="40"

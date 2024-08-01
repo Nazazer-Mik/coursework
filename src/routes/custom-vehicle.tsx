@@ -85,7 +85,7 @@ function CustomVehicles() {
 
   return (
     <>
-      <Header />
+      <Header elementToHiglight={"header-build-vehicle"} />
       <div className="vehicles-container">
         <div className="main-pane">
           <div className="model-filter-box">

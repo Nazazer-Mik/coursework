@@ -1,0 +1,66 @@
+@use "../../utils/utils";
+
+.side-nav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 80%;
+
+  background-color: utils.$contrast-fade-color;
+
+  h1 {
+    @include utils.goldman-font;
+    font-size: 2.2em;
+    color: utils.$primary-color-alternative;
+    text-align: center;
+  }
+
+  hr {
+    background-color: utils.$secondary-color;
+    border: none;
+    border-radius: 1px;
+    height: 1.5px;
+
+    width: 90%;
+  }
+
+  .links-container {
+    * {
+      display: block;
+      width: 100%;
+    }
+
+    a:hover,
+    button:hover {
+      background-color: utils.$secondary-dark-color;
+    }
+
+    button {
+      @include utils.montserrat-font;
+      font-size: 1.3em;
+      color: utils.$text-color;
+      transition: 0.3s all ease;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      text-wrap: nowrap;
+
+      svg {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.content-body {
+  position: absolute;
+  top: 0;
+  left: 20%;
+  bottom: 0;
+  right: 0;
+
+  background-color: utils.$secondary-dark-color;
+  overflow-y: scroll;
+}
