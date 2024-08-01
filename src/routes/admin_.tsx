@@ -6,5 +6,9 @@ export const Route = createFileRoute("/admin")({
 });
 
 function AdminHome() {
-  return <AdminNavWrapper>WTF</AdminNavWrapper>;
+  return (
+    <AdminNavWrapper elementToHighlight={"admin-nav-dashboard"}>
+      dashboard
+    </AdminNavWrapper>
+  );
 }

@@ -23,6 +23,7 @@
     height: 1.5px;
 
     width: 90%;
+    margin-bottom: 10%;
   }
 
   .links-container {
@@ -31,26 +32,72 @@
       width: 100%;
     }
 
+    a {
+      @include utils.montserrat-font;
+      font-size: 1.3em;
+      color: utils.$text-color;
+      text-decoration: none;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+
+      svg,
+      div {
+        width: auto;
+      }
+
+      svg {
+        margin-right: 15px;
+        width: 1.3em;
+        height: 1.3em;
+      }
+    }
+
     a:hover,
     button:hover {
-      background-color: utils.$secondary-dark-color;
+      background-color: #161616;
     }
 
     button {
       @include utils.montserrat-font;
       font-size: 1.3em;
       color: utils.$text-color;
+
       transition: 0.3s all ease;
       background-color: transparent;
       border: none;
       outline: none;
       cursor: pointer;
-      text-wrap: nowrap;
+
+      position: absolute;
+      bottom: 0;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      div {
+        width: auto;
+      }
 
       svg {
-        display: inline-block;
+        width: 30px;
+        height: 30px;
       }
     }
+
+    .admin-highlight {
+      color: utils.$primary-color-alternative !important;
+    }
+  }
+
+  .links-container > * {
+    padding: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
   }
 }
 

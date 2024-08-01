@@ -18,9 +18,15 @@ import { Route as NewVehiclesImport } from './routes/new-vehicles'
 import { Route as CustomVehicleImport } from './routes/custom-vehicle'
 import { Route as ChargingImport } from './routes/charging'
 import { Route as AuthImport } from './routes/auth'
+import { Route as AdminImport } from './routes/admin_'
 import { Route as AdminAuthImport } from './routes/admin-auth'
-import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
+import { Route as AdminTestDrivesImport } from './routes/admin/test-drives'
+import { Route as AdminServiceRequestsImport } from './routes/admin/service-requests'
+import { Route as AdminNewVehiclesImport } from './routes/admin/new-vehicles'
+import { Route as AdminCustomVehiclesImport } from './routes/admin/custom-vehicles'
+import { Route as AdminChargersImport } from './routes/admin/chargers'
+import { Route as AdminBackupRestoreImport } from './routes/admin/backup-restore'
 
 // Create/Update Routes
 
@@ -59,18 +65,48 @@ const AuthRoute = AuthImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdminAuthRoute = AdminAuthImport.update({
-  path: '/admin-auth',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AdminRoute = AdminImport.update({
   path: '/admin',
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdminAuthRoute = AdminAuthImport.update({
+  path: '/admin-auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminTestDrivesRoute = AdminTestDrivesImport.update({
+  path: '/admin/test-drives',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminServiceRequestsRoute = AdminServiceRequestsImport.update({
+  path: '/admin/service-requests',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminNewVehiclesRoute = AdminNewVehiclesImport.update({
+  path: '/admin/new-vehicles',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminCustomVehiclesRoute = AdminCustomVehiclesImport.update({
+  path: '/admin/custom-vehicles',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminChargersRoute = AdminChargersImport.update({
+  path: '/admin/chargers',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminBackupRestoreRoute = AdminBackupRestoreImport.update({
+  path: '/admin/backup-restore',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -85,18 +121,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminImport
-      parentRoute: typeof rootRoute
-    }
     '/admin-auth': {
       id: '/admin-auth'
       path: '/admin-auth'
       fullPath: '/admin-auth'
       preLoaderRoute: typeof AdminAuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
     '/auth': {
@@ -148,6 +184,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestDriveImport
       parentRoute: typeof rootRoute
     }
+    '/admin/backup-restore': {
+      id: '/admin/backup-restore'
+      path: '/admin/backup-restore'
+      fullPath: '/admin/backup-restore'
+      preLoaderRoute: typeof AdminBackupRestoreImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/chargers': {
+      id: '/admin/chargers'
+      path: '/admin/chargers'
+      fullPath: '/admin/chargers'
+      preLoaderRoute: typeof AdminChargersImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/custom-vehicles': {
+      id: '/admin/custom-vehicles'
+      path: '/admin/custom-vehicles'
+      fullPath: '/admin/custom-vehicles'
+      preLoaderRoute: typeof AdminCustomVehiclesImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/new-vehicles': {
+      id: '/admin/new-vehicles'
+      path: '/admin/new-vehicles'
+      fullPath: '/admin/new-vehicles'
+      preLoaderRoute: typeof AdminNewVehiclesImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/service-requests': {
+      id: '/admin/service-requests'
+      path: '/admin/service-requests'
+      fullPath: '/admin/service-requests'
+      preLoaderRoute: typeof AdminServiceRequestsImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/test-drives': {
+      id: '/admin/test-drives'
+      path: '/admin/test-drives'
+      fullPath: '/admin/test-drives'
+      preLoaderRoute: typeof AdminTestDrivesImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -155,8 +233,8 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AdminRoute,
   AdminAuthRoute,
+  AdminRoute,
   AuthRoute,
   ChargingRoute,
   CustomVehicleRoute,
@@ -164,6 +242,12 @@ export const routeTree = rootRoute.addChildren({
   RegisterRoute,
   ServicingRoute,
   TestDriveRoute,
+  AdminBackupRestoreRoute,
+  AdminChargersRoute,
+  AdminCustomVehiclesRoute,
+  AdminNewVehiclesRoute,
+  AdminServiceRequestsRoute,
+  AdminTestDrivesRoute,
 })
 
 /* prettier-ignore-end */
@@ -175,25 +259,31 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/admin",
         "/admin-auth",
+        "/admin",
         "/auth",
         "/charging",
         "/custom-vehicle",
         "/new-vehicles",
         "/register",
         "/servicing",
-        "/test-drive"
+        "/test-drive",
+        "/admin/backup-restore",
+        "/admin/chargers",
+        "/admin/custom-vehicles",
+        "/admin/new-vehicles",
+        "/admin/service-requests",
+        "/admin/test-drives"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/admin": {
-      "filePath": "admin.tsx"
-    },
     "/admin-auth": {
       "filePath": "admin-auth.tsx"
+    },
+    "/admin": {
+      "filePath": "admin_.tsx"
     },
     "/auth": {
       "filePath": "auth.tsx"
@@ -215,6 +305,24 @@ export const routeTree = rootRoute.addChildren({
     },
     "/test-drive": {
       "filePath": "test-drive.tsx"
+    },
+    "/admin/backup-restore": {
+      "filePath": "admin/backup-restore.tsx"
+    },
+    "/admin/chargers": {
+      "filePath": "admin/chargers.tsx"
+    },
+    "/admin/custom-vehicles": {
+      "filePath": "admin/custom-vehicles.tsx"
+    },
+    "/admin/new-vehicles": {
+      "filePath": "admin/new-vehicles.tsx"
+    },
+    "/admin/service-requests": {
+      "filePath": "admin/service-requests.tsx"
+    },
+    "/admin/test-drives": {
+      "filePath": "admin/test-drives.tsx"
     }
   }
 }
