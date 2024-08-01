@@ -143,6 +143,14 @@ app.post("/register", async (c) => {
   });
 });
 
+// --------------------
+
+app.get("/custom-vehicle", async (c) => {
+  const [models] = await dbConnection.query(`SELECT * FROM car_model;`);
+
+  return c.json(models);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

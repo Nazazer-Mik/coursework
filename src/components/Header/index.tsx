@@ -6,6 +6,11 @@ type HeaderProps = {
   bgUrl?: string | null;
 };
 
+function checkLogined() {
+  const id = localStorage.getItem("session_id");
+  return id != null;
+}
+
 export default function Header({ bgUrl = null }: HeaderProps) {
   return (
     <>
@@ -51,7 +56,7 @@ export default function Header({ bgUrl = null }: HeaderProps) {
               stroke="none"
             >
               <path
-                fillRule="evenodd"
+                fillRule={checkLogined() ? undefined : "evenodd"}
                 clipRule="evenodd"
                 d="M26.0002 16C26.0002 19.3137 23.314 22 20.0002 22C16.6865 22 14.0002 19.3137 14.0002 16C14.0002 12.6863 16.6865 10 20.0002 10C23.314 10 26.0002 12.6863 26.0002 16ZM24.0002 16C24.0002 18.2091 22.2094 20 20.0002 20C17.7911 20 16.0002 18.2091 16.0002 16C16.0002 13.7909 17.7911 12 20.0002 12C22.2094 12 24.0002 13.7909 24.0002 16Z"
               />

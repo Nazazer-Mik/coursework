@@ -45,13 +45,15 @@ header {
     @include utils.goldman-font;
     font-size: 2.2em;
     color: utils.$primary-color;
-    text-shadow: rgba(240, 110, 0, 0.5) 0 0 1px;
+    //text-shadow: rgba(240, 110, 0, 0.5) 0 0 1px;
+    text-shadow: utils.$h1-shadow 0 0 1px;
 
     transition: all 0.3s ease-in-out;
   }
 
   h1:hover {
-    text-shadow: 0 0 15px rgba(240, 110, 0, 0.5);
+    //text-shadow: 0 0 15px rgba(240, 110, 0, 0.5);
+    text-shadow: 0 0 15px utils.$h1-shadow;
   }
 
   .title {

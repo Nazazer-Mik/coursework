@@ -4,8 +4,8 @@ CREATE TABLE `service_request` (
   `customer_id_fk` BIGINT NOT NULL,
   `problem_reported` TEXT NOT NULL,
   `milage` INT NOT NULL,
-  `pickup` TINYINT(1) NOT NULL,
-  `warranty` TINYINT(1) NOT NULL,
+  `pickup` BOOL NOT NULL,
+  `warranty` BOOL NOT NULL,
   `status` VARCHAR(255) NOT NULL
 );
 
@@ -13,13 +13,14 @@ CREATE TABLE `car_model` (
   `model_code` VARCHAR(255) PRIMARY KEY NOT NULL,
   `model` VARCHAR(255) NOT NULL,
   `year` YEAR NOT NULL,
-  `engine_power_kw` MEDIUMINT NOT NULL,
+  `motor` VARCHAR(255) NOT NULL,
+  `engine_power_kw` VARCHAR(255) NOT NULL,
+  `torque` MEDIUMINT NOT NULL,
   `battery_kwh` SMALLINT NOT NULL,
   `range_mi` INT NOT NULL,
   `top_speed_mi` SMALLINT NOT NULL,
   `driveline` VARCHAR(255) NOT NULL,
   `zero_sixty` DOUBLE(8,2) NOT NULL,
-  `charging_speed` VARCHAR(255) NOT NULL,
   `towing_capacity` INT NOT NULL,
   `features` TEXT NOT NULL,
   `price` INT NOT NULL,
@@ -30,8 +31,8 @@ CREATE TABLE `charger_order` (
   `charger_order_id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `customer_id_fk` BIGINT NOT NULL,
   `charger_model_code_fk` BIGINT NOT NULL,
-  `delivery` TINYINT(1) NOT NULL,
-  `installation` TINYINT(1) NOT NULL,
+  `delivery` BOOL NOT NULL,
+  `installation` BOOL NOT NULL,
   `final_price` INT NOT NULL,
   `status` VARCHAR(255) NOT NULL
 );
@@ -42,11 +43,12 @@ CREATE TABLE `car` (
   `color` VARCHAR(255) NOT NULL,
   `interior_color` VARCHAR(255) NOT NULL,
   `wheels` VARCHAR(255) NOT NULL,
-  `towing_hitch` TINYINT(1) NOT NULL,
+  `towing_hitch` BOOL NOT NULL,
   `vin_code` VARCHAR(255) NOT NULL,
   `reg_number` VARCHAR(255),
   `warranty_years` TINYINT NOT NULL,
-  `modifications_price` INT NOT NULL
+  `modifications_price` INT NOT NULL,
+  `preassembled` BOOL NOT NULL
 );
 
 CREATE TABLE `car_order` (
@@ -54,7 +56,7 @@ CREATE TABLE `car_order` (
   `car_id_fk` INT NOT NULL,
   `customer_id_fk` BIGINT NOT NULL,
   `time_of_purchase` DATETIME NOT NULL,
-  `delivery` TINYINT(1) NOT NULL,
+  `delivery` BOOL NOT NULL,
   `final_price` INT NOT NULL,
   `payment_method` VARCHAR(255) NOT NULL,
   `status` VARCHAR(255) NOT NULL
@@ -124,3 +126,5 @@ ALTER TABLE `test_drive_booking` ADD CONSTRAINT `test_drive_booking_model_code_f
 ALTER TABLE `customer` ADD CONSTRAINT `customer_user_id_fk_foreign` FOREIGN KEY (`user_id_fk`) REFERENCES `credentials` (`user_id`);
 
 ALTER TABLE `charger_order` ADD CONSTRAINT `charger_order_charger_model_code_fk_foreign` FOREIGN KEY (`charger_model_code_fk`) REFERENCES `charger_model` (`model_code`);
+
+INSERT INTO admin_credentials(username, password, admin_sessions_id) VALUES("polestar", "9cee5f0d6d3be35fe9adefa1376d388c", "4111b6fe73161df0109bccd4484c6e6e");

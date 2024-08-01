@@ -1,0 +1,23 @@
+@use "../../utils/utils.scss";
+
+.preassembled-car-card {
+  background-color: utils.$contrast-color;
+  color: utils.$text-color;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .car-picture {
+    width: 20vw;
+    height: 25vh;
+    background-color: yellow;
+  }
+
+  .text-section {
+    padding: 20px;
+    padding-top: 0;
+
+    h3 {
+      @include utils.inter-font;
+    }
+  }
+}
