@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/new-vehicles.scss";
+import "../styles/custom-vehicle.scss";
 import ModelCard from "../components/ModelCard";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../utils/auth-utils";
 
@@ -25,6 +26,12 @@ export interface Model {
   torque: string;
 }
 
+export interface Filters {
+  model: string;
+  driveline: string;
+  motor: string;
+}
+
 function showModels(models: Model[] | null) {
   if (models === null) {
     return <div className="loading-text">Loading...</div>;
@@ -34,7 +41,8 @@ function showModels(models: Model[] | null) {
         modelName={m.model}
         price={"£" + m.price}
         motor={m.motor}
-        imagePath={`src/assets/models/${m.model_code}.jpg`}
+        imagePath={`src/assets/models/${m.model_code}.avif`}
+        key={m.model_code}
       />
     ));
   }
@@ -46,32 +54,77 @@ export const Route = createFileRoute("/custom-vehicle")({
 
 function CustomVehicles() {
   const [models, setModels] = useState<Model[] | null>(null);
+  const [filters, setFilters] = useState<Filters>({
+    model: "any",
+    driveline: "any",
+    motor: "any",
+  });
+
+  const onFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
+  };
 
   useEffect(() => {
     async function fetchModels() {
-      const m = (await axios.get(serverAddress + "/custom-vehicle")).data;
+      const m = (
+        await axios.get(serverAddress + "/custom-vehicle", {
+          params: {
+            ...filters,
+          },
+        })
+      ).data;
       setModels(m);
     }
 
     fetchModels();
-  }, []);
+  }, [filters]);
 
   return (
     <>
       <Header />
       <div className="vehicles-container">
         <div className="main-pane">
-          <div className="filter-box">
+          <div className="model-filter-box">
             <h2>Filters</h2>
+            <hr />
+            <h3>Model:</h3>
+            <select
+              name="model"
+              value={filters.model}
+              onChange={onFilterChange}
+            >
+              <option>any</option>
+              <option>Polestar 2</option>
+              <option>Polestar 3</option>
+              <option>Polestar 4</option>
+            </select>
+            <h3>Driveline:</h3>
+            <select
+              name="driveline"
+              value={filters.driveline}
+              onChange={onFilterChange}
+            >
+              <option>any</option>
+              <option>Rear-wheel drive</option>
+              <option>All-wheel drive</option>
+            </select>
+            <h3>Engine:</h3>
+            <select
+              name="motor"
+              value={filters.motor}
+              onChange={onFilterChange}
+            >
+              <option>any</option>
+              <option>Single motor</option>
+              <option>Dual motor</option>
+              <option>Dual motor Perfomance</option>
+            </select>
           </div>
-          <div className="content-box">
-            {showModels(models)}
-            <ModelCard
-              modelName={"Polestar 3"}
-              price={"$44500"}
-              imagePath="src/assets/home-background.jpg"
-            />
-          </div>
+          <div className="content-box">{showModels(models)}</div>
         </div>
         <Footer />
       </div>

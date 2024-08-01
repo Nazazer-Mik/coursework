@@ -145,8 +145,29 @@ app.post("/register", async (c) => {
 
 // --------------------
 
+type ModelFilters = {
+  model: string;
+  driveline: string;
+  motor: string;
+};
+
 app.get("/custom-vehicle", async (c) => {
-  const [models] = await dbConnection.query(`SELECT * FROM car_model;`);
+  const filters = (await c.req.query()) as ModelFilters;
+  let dbQuery = `SELECT * FROM car_model`;
+  const sqlFilters: string[] = [];
+  const keywords = [" WHERE ", " AND ", " AND "];
+
+  for (const [k, v] of Object.entries(filters)) {
+    if (v !== "any") {
+      sqlFilters.push(`${k} = "${v}"`);
+    }
+  }
+
+  for (let i = 0; i < sqlFilters.length; i++) {
+    dbQuery += keywords[i] + sqlFilters[i];
+  }
+
+  const [models] = await dbConnection.query(dbQuery + ";");
 
   return c.json(models);
 });
