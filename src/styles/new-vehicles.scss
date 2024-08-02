@@ -37,4 +37,70 @@
     text-align: center;
     width: 100%;
   }
+
+  .new-cars-filters {
+    .color-section {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+
+      .color {
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        border: 1px solid utils.$contrast-fade-color;
+        outline: 2px solid utils.$inconspicuous-color;
+        transition: 0.3s all ease;
+
+        cursor: pointer;
+        margin: 7px;
+      }
+
+      .color:hover {
+        outline: 2px solid utils.$secondary-color;
+      }
+
+      .color-highlight {
+        outline: 2px solid utils.$secondary-color !important;
+      }
+    }
+
+    .color-name {
+      text-decoration: underline;
+      text-decoration-color: utils.$primary-color-alternative;
+
+      margin-left: 5px;
+    }
+
+    .price-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      input {
+        @include utils.archivo-font;
+        color: utils.$contrast-color;
+        font-size: 1.15em;
+        padding: 5px;
+
+        border: none;
+        outline: none;
+        width: 40%;
+      }
+
+      input:placeholder-shown {
+        color: utils.$contrast-fade-color;
+      }
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  }
 }

@@ -172,6 +172,63 @@ app.get("/custom-vehicle", async (c) => {
   return c.json(models);
 });
 
+// --------------------
+
+type NewCarFilters = {
+  model: string;
+  color: string;
+  wheels: string;
+  minRange: string;
+  minPrice: string;
+  maxPrice: string;
+};
+
+app.get("/new-vehicle", async (c) => {
+  const filters = (await c.req.query()) as NewCarFilters;
+  let dbQuery = `
+  SELECT 
+    car_id,
+    cm.model,
+    color,
+    interior_color,
+    cm.motor,
+    cm.engine_power_kw,
+    cm.zero_sixty,
+    cm.range_mi,
+    wheels,
+    (cm.price + modifications_price) AS price
+FROM
+    car c
+        INNER JOIN
+    car_model cm ON c.model_code_fk = cm.model_code
+        LEFT JOIN
+    car_order co ON co.car_id_fk = c.car_id
+WHERE
+    co.car_id_fk IS NULL`;
+
+  for (const [k, v] of Object.entries(filters)) {
+    if (v === "any" || v == "" || v == "0") continue;
+
+    if (k === "minRange") {
+      dbQuery += ` AND cm.range_mi >= ${v}`;
+    } else if (k === "minPrice") {
+      dbQuery += ` AND (cm.price + c.modifications_price) >= ${v}`;
+    } else if (k === "maxPrice") {
+      dbQuery += ` AND (cm.price + c.modifications_price) <= ${v}`;
+    } else {
+      dbQuery += ` AND ${k} = "${v}"`;
+    }
+
+    console.log(k, v);
+  }
+
+  console.log(dbQuery);
+
+  const [cars] = await dbConnection.query(dbQuery + ";");
+
+  return c.json(cars);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

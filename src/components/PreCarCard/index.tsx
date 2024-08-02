@@ -23,7 +23,7 @@ export default function PreCarCard({
 }: PreCardData) {
   return (
     <CarCard
-      imagePath={`src/assets/preassembled/${model.toLocaleLowerCase().replace(" ", "")}-${color.toLowerCase()}.avif`}
+      imagePath={`src/assets/preassembled/${model.toLocaleLowerCase().replace(" ", "")}/${color.toLowerCase()}-${wheels.toLocaleLowerCase().replace(" ", "-")}.avif`}
     >
       <div className="pre-car-text">
         <h3>{model}</h3>
@@ -42,7 +42,7 @@ export default function PreCarCard({
           </p>
         </div>
         <div className="price">
-          Final price: <span>{price}</span>
+          Final price: <span>{"£" + price}</span>
         </div>
       </div>
     </CarCard>

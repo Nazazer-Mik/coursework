@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/new-vehicles.scss";
 import ModelCard from "../components/ModelCard";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../utils/auth-utils";
 import FilterPane from "../components/FilterPane";
@@ -32,7 +32,7 @@ export interface Filters {
   motor: string;
 }
 
-function showModels(models: Model[] | null) {
+function showModels(models: Model[] | null): ReactNode {
   if (models === null) {
     return <div className="loading-text">Loading...</div>;
   } else {
