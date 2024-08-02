@@ -1,6 +1,5 @@
 import React from "react";
 import "./styles.scss";
-import CarCard from "../CarCard";
 
 interface PreCardData {
   model: string;
@@ -10,6 +9,7 @@ interface PreCardData {
   engine_power_kw: string;
   wheels: string;
   price: string;
+  motor: string;
 }
 
 export default function PreCarCard({
@@ -20,31 +20,43 @@ export default function PreCarCard({
   engine_power_kw,
   wheels,
   price,
+  motor,
 }: PreCardData) {
   return (
-    <CarCard
-      imagePath={`src/assets/preassembled/${model.toLocaleLowerCase().replace(" ", "")}/${color.toLowerCase()}-${wheels.toLocaleLowerCase().replace(" ", "-")}.avif`}
-    >
-      <div className="pre-car-text">
-        <h3>{model}</h3>
-        <div className="spec-lines">
-          <p>
-            Range: <span>{range + " mi"}</span>
-          </p>
-          <p>
-            0 - 60: <span>{zero_sixty + "s"}</span>
-          </p>
-          <p>
-            Power: <span>{engine_power_kw + " kW"}</span>
-          </p>
-          <p>
-            Wheels: <span>{wheels}</span>
-          </p>
-        </div>
-        <div className="price">
-          Final price: <span>{"£" + price}</span>
+    <div className="pre-car-card">
+      <div
+        className="car-picture"
+        style={{
+          backgroundImage: `url("${`src/assets/preassembled/${model.toLocaleLowerCase().replace(" ", "")}/${color.toLowerCase()}-${wheels.toLocaleLowerCase().replace(" ", "-")}.avif`}")`,
+        }}
+      ></div>
+      <div className="text-section">
+        <div className="pre-car-text">
+          <h3>
+            {model}
+            <span>{motor}</span>
+          </h3>
+          <hr />
+          <div className="spec-lines">
+            <p>
+              Range: <span>{range + " mi"}</span>
+            </p>
+            <p>
+              0 - 60: <span>{zero_sixty + "s"}</span>
+            </p>
+            <p>
+              Power: <span>{engine_power_kw + " kW"}</span>
+            </p>
+            <p>
+              Wheels: <span>{wheels}</span>
+            </p>
+          </div>
+
+          <div className="price">
+            Final price: <span>{"£" + price}</span>
+          </div>
         </div>
       </div>
-    </CarCard>
+    </div>
   );
 }

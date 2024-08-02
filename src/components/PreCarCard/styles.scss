@@ -1,10 +1,62 @@
 @use "../../utils/utils.scss";
 
+.pre-car-card {
+  background-color: utils.$text-color;
+  color: utils.$contrast-color;
+  box-shadow: 0 0 25px utils.$secondary-dark-color;
+  border-radius: 5px;
+  overflow: hidden;
+  transition:
+    all 0.4s ease,
+    transform 0.3s ease-in-out;
+  cursor: pointer;
+
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 5vw;
+  max-width: 30vw;
+
+  .car-picture {
+    width: 30vw;
+    height: 25vh;
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .text-section {
+    padding: 20px;
+    padding-top: 0;
+    height: 180px;
+  }
+}
+
+.pre-car-card:hover {
+  transform: scaleX(105%) scaleY(105%);
+  box-shadow: 0 0 25px utils.$inconspicuous-color;
+}
+
 .pre-car-text {
   h3 {
     @include utils.inter-font(600);
-    font-size: 1.5em;
+    font-size: 1.6em;
     margin-bottom: 5px;
+
+    span {
+      @include utils.poppins-font(600);
+      display: block;
+      font-size: 0.8em;
+      margin: 0;
+      float: right;
+
+      color: utils.$contrast-fade-color;
+    }
+  }
+
+  hr {
+    background-color: utils.$inconspicuous-color;
+    border: 1px solid utils.$inconspicuous-color;
   }
 
   .spec-lines {

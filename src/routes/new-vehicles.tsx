@@ -57,6 +57,7 @@ function ShowCars(cars: Car[] | null): ReactNode {
         engine_power_kw={c.engine_power_kw}
         wheels={c.wheels}
         price={c.price}
+        motor={c.motor}
         key={generateKeyFromObj(c)}
       />
     ));

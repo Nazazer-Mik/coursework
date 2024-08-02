@@ -1,6 +1,12 @@
 @use "../../utils/utils.scss";
 
 .model-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100%;
+
   h3 {
     @include utils.inter-font(600);
     font-size: 1.5em;
