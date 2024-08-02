@@ -1,6 +1,6 @@
-@use "../utils/utils";
+@use "../../utils/utils";
 
-.model-filter-box {
+.filter-box {
   background-color: utils.$contrast-fade-color;
   width: 16vw;
   min-height: 20vh;
@@ -25,6 +25,7 @@
     border: none;
     border-radius: 1px;
     height: 2.5px;
+    margin-bottom: 25px;
   }
 
   h3 {

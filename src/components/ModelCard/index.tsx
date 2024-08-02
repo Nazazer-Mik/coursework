@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.scss";
+import CarCard from "../CarCard";
 
 interface minimalCarData {
   modelName: string;
@@ -15,12 +16,8 @@ export default function ModelCard({
   imagePath,
 }: minimalCarData) {
   return (
-    <div className="model-car-card">
-      <div
-        className="car-picture"
-        style={{ backgroundImage: `url("${imagePath}")` }}
-      ></div>
-      <div className="text-section">
+    <CarCard imagePath={imagePath}>
+      <div className="model-text">
         <h3>{modelName}</h3>
         <h4>
           <span>Modification:</span> {motor}
@@ -29,6 +26,6 @@ export default function ModelCard({
           Starting from: <span className="price">{price}</span>
         </div>
       </div>
-    </div>
+    </CarCard>
   );
 }

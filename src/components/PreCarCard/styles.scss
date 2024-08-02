@@ -1,23 +1,45 @@
 @use "../../utils/utils.scss";
 
-.preassembled-car-card {
-  background-color: utils.$contrast-color;
-  color: utils.$text-color;
-  border-radius: 10px;
-  overflow: hidden;
-
-  .car-picture {
-    width: 20vw;
-    height: 25vh;
-    background-color: yellow;
+.pre-car-text {
+  h3 {
+    @include utils.inter-font(600);
+    font-size: 1.5em;
+    margin-bottom: 5px;
   }
 
-  .text-section {
-    padding: 20px;
-    padding-top: 0;
+  .spec-lines {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+  }
 
-    h3 {
-      @include utils.inter-font;
+  p {
+    @include utils.archivo-font(500);
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 0;
+    color: utils.$contrast-fade-color;
+    font-size: 1.2em;
+
+    span {
+      color: utils.$contrast-color;
+      margin-left: 5px;
+    }
+  }
+
+  .price {
+    display: block;
+    width: 100%;
+    color: utils.$contrast-fade-color;
+    @include utils.poppins-font(500);
+    font-size: 1.3em;
+    margin-top: 25px;
+
+    span {
+      @include utils.poppins-font(600);
+      font-size: 1.3rem;
+      float: right;
+      color: utils.$contrast-color;
     }
   }
 }

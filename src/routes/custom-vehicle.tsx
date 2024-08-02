@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/new-vehicles.scss";
-import "../styles/custom-vehicle.scss";
 import ModelCard from "../components/ModelCard";
 import { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../utils/auth-utils";
+import FilterPane from "../components/FilterPane";
 
 export interface Model {
   model_code: string;
@@ -88,9 +88,7 @@ function CustomVehicles() {
       <Header elementToHiglight={"header-build-vehicle"} />
       <div className="vehicles-container">
         <div className="main-pane">
-          <div className="model-filter-box">
-            <h2>Filters</h2>
-            <hr />
+          <FilterPane>
             <h3>Model:</h3>
             <select
               name="model"
@@ -123,7 +121,7 @@ function CustomVehicles() {
               <option>Dual motor</option>
               <option>Dual motor Perfomance</option>
             </select>
-          </div>
+          </FilterPane>
           <div className="content-box">{showModels(models)}</div>
         </div>
         <Footer />

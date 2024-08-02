@@ -36,6 +36,7 @@
       @include utils.montserrat-font;
       font-size: 1.3em;
       color: utils.$text-color;
+      transition: 0.3s all ease;
       text-decoration: none;
 
       display: flex;

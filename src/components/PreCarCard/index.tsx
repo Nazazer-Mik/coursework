@@ -1,16 +1,50 @@
 import React from "react";
 import "./styles.scss";
+import CarCard from "../CarCard";
 
-export default function PreCarCard() {
+interface PreCardData {
+  model: string;
+  color: string;
+  range: string;
+  zero_sixty: string;
+  engine_power_kw: string;
+  wheels: string;
+  price: string;
+}
+
+export default function PreCarCard({
+  model,
+  color,
+  range,
+  zero_sixty,
+  engine_power_kw,
+  wheels,
+  price,
+}: PreCardData) {
   return (
-    <div className="preassembled-car-card">
-      <div className="car-picture"></div>
-      <div className="text-section">
-        <h3>Polestar 3</h3>
-        <p>Range: 500 miles</p>
-        <p>Motor: Single</p>
-        <div className="price">$44500</div>
+    <CarCard
+      imagePath={`src/assets/preassembled/${model.toLocaleLowerCase().replace(" ", "")}-${color.toLowerCase()}.avif`}
+    >
+      <div className="pre-car-text">
+        <h3>{model}</h3>
+        <div className="spec-lines">
+          <p>
+            Range: <span>{range + " mi"}</span>
+          </p>
+          <p>
+            0 - 60: <span>{zero_sixty + "s"}</span>
+          </p>
+          <p>
+            Power: <span>{engine_power_kw + " kW"}</span>
+          </p>
+          <p>
+            Wheels: <span>{wheels}</span>
+          </p>
+        </div>
+        <div className="price">
+          Final price: <span>{price}</span>
+        </div>
       </div>
-    </div>
+    </CarCard>
   );
 }
