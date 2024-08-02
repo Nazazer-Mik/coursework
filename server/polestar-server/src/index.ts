@@ -186,8 +186,7 @@ type NewCarFilters = {
 app.get("/new-vehicle", async (c) => {
   const filters = (await c.req.query()) as NewCarFilters;
   let dbQuery = `
-  SELECT 
-    car_id,
+  SELECT DISTINCT
     cm.model,
     color,
     interior_color,
@@ -218,11 +217,7 @@ WHERE
     } else {
       dbQuery += ` AND ${k} = "${v}"`;
     }
-
-    console.log(k, v);
   }
-
-  console.log(dbQuery);
 
   const [cars] = await dbConnection.query(dbQuery + ";");
 

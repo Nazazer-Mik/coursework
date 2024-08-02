@@ -94,3 +94,153 @@ VALUES ("polestar2-dual-long", "Magnesium", "Charcoal WeaveTech", "R20 Pro", TRU
 
 INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
 VALUES ("polestar2-dual-long", "Magnesium", "Slate WeaveTech", "R20 Pro", TRUE, "1HGCM82633A404352", "HJ24KOB", 2, 1300, TRUE);
+
+-- Polestar 3 Snow
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Snow", "Charcoal Nappa", "R22 Perfomance", FALSE, "1HGCM82633A224511", "HJ24QOO", 3, 300, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Snow", "Jupiter Nappa", "R22 Perfomance", FALSE, "1HGCM82633A224512", "HJ24WOW", 3, 300, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Snow", "Zinc Nappa", "R22 Perfomance", TRUE, "1HGCM82633A224513", "HJ24EOS", 3, 400, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Snow", "Zinc Nappa", "R22 Perfomance", TRUE, "1HGCM82633A224514", "HJ24ROQ", 2, 2500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long-perfomance", "Snow", "Wool", "R22 Perfomance", FALSE, "1HGCM82633A224515", "HJ24TOT", 1, 3000, TRUE);
+
+-- Polestar 3 Space
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "1HGCM82633A224516", "HJ24YOY", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "1HGCM82633A224517", "HJ24UOU", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Space", "MicroTech", "R22 Sport", TRUE, "1HGCM82633A224518", "HJ24IOI", 2, 800, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long-perfomance", "Space", "Zinc Nappa", "R22 Perfomance", FALSE, "1HGCM82633A224519", "HJ24OOP", 1, 1400, TRUE);
+
+-- Polestar 3 Midnight
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Midnight", "Charcoal Nappa", "R21 Plus", FALSE, "1HGCM82633A224520", "HJ24AOA", 3, 300, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Midnight", "MicroTech", "R21 Plus", TRUE, "1HGCM82633A224521", "HJ24SOS", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Midnight", "Zinc Nappa", "R22 Sport", TRUE, "1HGCM82633A224522", "HJ24DOD", 2, 1600, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Midnight", "Jupiter Nappa", "R22 Perfomance", FALSE, "1HGCM82633A224523", "HJ24FOF", 2, 2000, TRUE);
+
+-- Polestar 3 Thunder
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Thunder", "Jupiter Nappa", "R21 Plus", FALSE, "1HGCM82633A224524", "HJ24GOG", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Thunder", "Wool", "R22 Sport", TRUE, "1HGCM82633A224525", "HJ24HOH", 2, 750, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Thunder", "Zinc Nappa", "R22 Perfomance", TRUE, "1HGCM82633A224526", "HJ24JOJ", 2, 1900, TRUE);
+
+-- Polestar 3 Magnesium
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Magnesium", "Charcoal Nappa", "R21 Plus", FALSE, "1HGCM82633A224527", "HJ24LOM", 2, 550, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Magnesium", "Jupiter Nappa", "R21 Plus", TRUE, "1HGCM82633A224528", "HJ24ZOB", 2, 650, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Magnesium", "Jupiter Nappa", "R22 Perfomance", TRUE, "1HGCM82633A224529", "HJ24XOB", 2, 2100, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-dual-long", "Magnesium", "Wool", "R22 Perfomance", TRUE, "1HGCM82633A224530", "HJ24COB", 2, 2200, TRUE);
+
+-- Polestar 4 Snow
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Snow", "Charcoal Nappa", "R20 Aero", FALSE, "2HGCM82633A004351", "KJ24KOQ", 3, 0, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Snow", "Zinc Nappa Leather", "R20 Aero", FALSE, "2HGCM82633A004352", "KJ24KOW", 3, 1000, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Snow", "MicroTech", "R21 Pro", TRUE, "2HGCM82633A004353", "KJ24KOE", 3, 1500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Snow", "MicroTech", "R21 Pro", TRUE, "2HGCM82633A004354", "KJ24KOR", 2, 2200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Snow", "Tailored Knit", "R21 Pro", TRUE, "2HGCM82633A004355", "KJ24KOT", 2, 3900, TRUE);
+
+-- Polestar 4 Space
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "2HGCM82633A004356", "KJ24KOY", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "2HGCM82633A004357", "KJ24KOU", 3, 1900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Space", "Zinc Nappa Leather", "R21 Pro", TRUE, "2HGCM82633A004358", "KJ24KOI", 2, 2900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Space", "Tailored Knit", "R22 Perfomance", FALSE, "2HGCM82633A004359", "KJ24KOO", 2, 4100, TRUE);
+
+-- Polestar 4 Magnesium
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Magnesium", "MicroTech", "R21 Pro", FALSE, "2HGCM82633A004361", "KJ24KOP", 3, 1100, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Magnesium", "Tailored Knit", "R21 Sport", TRUE, "2HGCM82633A004362", "KJ24KOA", 3, 1700, TRUE);
+
+-- Polestar 4 Storm
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Storm", "Charcoal Nappa", "R20 Aero", FALSE, "2HGCM82633A004363", "KJ24KOS", 3, 1200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Storm", "Charcoal Nappa", "R21 Pro", TRUE, "2HGCM82633A004364", "KJ24KOD", 3, 1600, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Storm", "Tailored Knit", "R21 Sport", FALSE, "2HGCM82633A004365", "KJ24KOF", 2, 2800, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Storm", "MicroTech", "R22 Perfomance", TRUE, "2HGCM82633A004366", "KJ24KOG", 2, 2900, TRUE);
+
+-- Polestar 4 Electron
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Electron", "Charcoal Nappa", "R20 Aero", FALSE, "2HGCM82633A004367", "KJ24KOH", 3, 900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Electron", "MicroTech", "R21 Pro", TRUE, "2HGCM82633A004368", "KJ24KOJ", 3, 1650, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Electron", "Tailored Knit", "R21 Sport", TRUE, "2HGCM82633A004369", "KJ24KOK", 2, 2300, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Electron", "Zinc Nappa Leather", "R22 Perfomance", TRUE, "2HGCM82633A004370", "KJ24KOL", 2, 4500, TRUE);
+
+-- Polestar 4 Gold
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Gold", "Charcoal Nappa", "R21 Pro", TRUE, "2HGCM82633A004371", "KJ24KOZ", 3, 1500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Gold", "MicroTech", "R21 Pro", TRUE, "2HGCM82633A004372", "KJ24KOX", 3, 1600, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Gold", "Tailored Knit", "R22 Perfomance", TRUE, "2HGCM82633A004373", "KJ24KOC", 2, 3500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-dual-long", "Gold", "Zinc Nappa Leather", "R22 Perfomance", TRUE, "2HGCM82633A004374", "KJ24KOV", 2, 4800, TRUE);

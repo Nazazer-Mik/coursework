@@ -9,7 +9,6 @@ import axios from "axios";
 import { serverAddress } from "../utils/auth-utils";
 
 export interface Car {
-  car_id: string;
   color: string;
   interior_color: string;
   wheels: string;
@@ -31,6 +30,14 @@ type Filters = {
   maxPrice: number;
 };
 
+function generateKeyFromObj(c: Car) {
+  let res = "";
+  for (const [, v] of Object.entries(c)) {
+    res += v;
+  }
+  return res;
+}
+
 function ShowCars(cars: Car[] | null): ReactNode {
   if (cars === null) {
     return <div className="loading-text">Loading...</div>;
@@ -44,7 +51,7 @@ function ShowCars(cars: Car[] | null): ReactNode {
         engine_power_kw={c.engine_power_kw}
         wheels={c.wheels}
         price={c.price}
-        key={c.car_id}
+        key={generateKeyFromObj(c)}
       />
     ));
   }
@@ -158,8 +165,14 @@ function NewVehicles() {
               >
                 <option>any</option>
                 <option>R19 Aero</option>
+                <option>R20 Aero</option>
                 <option>R20 Pro</option>
                 <option>R20 Perfomance</option>
+                <option>R21 Plus</option>
+                <option>R21 Pro</option>
+                <option>R21 Sport</option>
+                <option>R22 Sport</option>
+                <option>R22 Perfomance</option>
               </select>
 
               <h3>Minimum range: </h3>
