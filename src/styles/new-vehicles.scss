@@ -11,6 +11,7 @@
     background-color: utils.$h1-shadow;
 
     padding: 3vw;
+    padding-bottom: 0;
     box-sizing: border-box;
 
     display: flex;
@@ -26,6 +27,49 @@
       flex-wrap: wrap;
       flex-direction: row;
       justify-content: space-evenly;
+    }
+  }
+
+  .page-line {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10vh;
+
+    .page-number {
+      @include utils.roboto-mono-font(600);
+      font-size: 1.4em;
+      color: utils.$contrast-color;
+      text-shadow: 0 0 5px utils.$secondary-color;
+      text-decoration: none;
+
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .page-number-highlighted {
+      color: utils.$primary-color-alternative !important;
+      text-decoration: underline;
+    }
+
+    svg {
+      padding-left: 20px;
+      padding-right: 20px;
+
+      text-shadow: 0 0 5px utils.$secondary-color;
+
+      width: 30px;
+      height: 30px;
+
+      cursor: pointer;
+    }
+
+    .left-arrow {
+      transform: rotateZ(180deg);
     }
   }
 

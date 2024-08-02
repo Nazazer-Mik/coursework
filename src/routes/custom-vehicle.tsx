@@ -87,7 +87,7 @@ function CustomVehicles() {
     <>
       <Header elementToHiglight={"header-build-vehicle"} />
       <div className="vehicles-container">
-        <div className="main-pane">
+        <div className="main-pane" style={{ paddingBottom: "3vw" }}>
           <FilterPane>
             <h3>Model:</h3>
             <select

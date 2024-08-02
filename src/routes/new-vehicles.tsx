@@ -1,4 +1,10 @@
-import React, { ChangeEvent, ReactNode, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -63,6 +69,9 @@ export const Route = createFileRoute("/new-vehicles")({
 
 function NewVehicles() {
   const [cars, setCars] = useState<Car[] | null>(null);
+  const [pages, setTotalPages] = useState(1);
+  const [currentPage, setPage] = useState(1);
+  const scrollContainer = useRef<HTMLDivElement | null>(null);
   const [filters, setFilters] = useState<Filters>({
     model: "any",
     color: "",
@@ -92,8 +101,7 @@ function NewVehicles() {
       ...filters,
       [name]: typeof filters[name] === "number" ? Number(value) : value,
     });
-
-    console.log(filters);
+    setPage(1);
   };
 
   const getColorsForFiltering = () => {
@@ -104,12 +112,13 @@ function NewVehicles() {
         <div
           className={`color ${name === filters.color && "color-highlight"}`}
           style={{ backgroundColor: hex }}
-          onClick={() =>
+          onClick={() => {
             setFilters({
               ...filters,
               color: name === filters.color ? "" : name,
-            })
-          }
+            });
+            setPage(1);
+          }}
           key={name}
         />
       );
@@ -118,25 +127,54 @@ function NewVehicles() {
     return result;
   };
 
+  const CreatePages = () => {
+    const numbersGenerated = [];
+    for (let num = 1; num <= pages; num++) {
+      let additionalClass = "";
+      if (num === currentPage) additionalClass = "page-number-highlighted";
+
+      numbersGenerated.push(
+        <span
+          className={`page-number ${additionalClass}`}
+          onClick={() => setPage(num)}
+          key={num}
+        >
+          {num}
+        </span>
+      );
+    }
+    return numbersGenerated;
+  };
+
+  const ChangePage = (newPage: number): void => {
+    if (newPage > 0 && newPage <= pages) {
+      setPage(newPage);
+    }
+  };
+
   useEffect(() => {
-    async function fetchCars() {
-      const m = (
+    async function fetchData() {
+      const data = (
         await axios.get(serverAddress + "/new-vehicle", {
           params: {
             ...filters,
+            page: currentPage,
           },
         })
       ).data;
-      setCars(m);
+
+      setTotalPages(Math.ceil(data.pages / 15));
+      setCars(data.cars);
     }
 
-    fetchCars();
-  }, [filters]);
+    (scrollContainer.current as HTMLDivElement)?.scrollTo(0, 0);
+    fetchData();
+  }, [filters, currentPage]);
 
   return (
     <>
       <Header elementToHiglight={"header-new-vehicle"} />
-      <div className="vehicles-container">
+      <div className="vehicles-container" ref={scrollContainer}>
         <div className="main-pane">
           <FilterPane>
             <div className="new-cars-filters">
@@ -204,6 +242,30 @@ function NewVehicles() {
             </div>
           </FilterPane>
           <div className="content-box">{ShowCars(cars)}</div>
+        </div>
+        <div className="page-line">
+          <svg
+            className="left-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#1e1e1e"
+            onClick={() => ChangePage(currentPage - 1)}
+          >
+            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+          </svg>
+          {CreatePages()}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#1e1e1e"
+            onClick={() => ChangePage(currentPage + 1)}
+          >
+            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+          </svg>
         </div>
         <Footer />
       </div>

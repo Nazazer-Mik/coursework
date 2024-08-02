@@ -181,10 +181,17 @@ type NewCarFilters = {
   minRange: string;
   minPrice: string;
   maxPrice: string;
+  page?: string;
 };
 
+type RowsCount = Array<{ rowsCount: string }>;
+
 app.get("/new-vehicle", async (c) => {
+  const resultsPerPage = 12;
   const filters = (await c.req.query()) as NewCarFilters;
+  const page = Number(filters.page);
+  delete filters["page"];
+
   let dbQuery = `
   SELECT DISTINCT
     cm.model,
@@ -219,9 +226,19 @@ WHERE
     }
   }
 
-  const [cars] = await dbConnection.query(dbQuery + ";");
+  let dbSubQuery = dbQuery; // For counting rows in total
+  dbQuery += ` LIMIT ${resultsPerPage} OFFSET ${(page - 1) * resultsPerPage};`;
+  dbSubQuery = `SELECT COUNT(*) AS rowsCount FROM (${dbSubQuery}) AS subquery;`;
 
-  return c.json(cars);
+  const [cars] = await dbConnection.query(dbQuery);
+  const [rowsNumberRaw] = await dbConnection.query(dbSubQuery);
+  const pages = (rowsNumberRaw as RowsCount)[0].rowsCount;
+  const returnPacket = {
+    pages: pages,
+    cars: cars,
+  };
+
+  return c.json(returnPacket);
 });
 
 // -------------------- SERVER START --------------------
