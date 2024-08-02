@@ -10,6 +10,7 @@ interface PreCardData {
   wheels: string;
   price: string;
   motor: string;
+  top: boolean;
 }
 
 export default function PreCarCard({
@@ -21,9 +22,11 @@ export default function PreCarCard({
   wheels,
   price,
   motor,
+  top,
 }: PreCardData) {
   return (
-    <div className="pre-car-card">
+    <div className={`pre-car-card`}>
+      {top ? <div className="top-pick">Top choice</div> : ""}
       <div
         className="car-picture"
         style={{

@@ -194,6 +194,7 @@ app.get("/new-vehicle", async (c) => {
 
   let dbQuery = `
   SELECT DISTINCT
+    c.model_code_fk,
     cm.model,
     color,
     interior_color,
@@ -239,6 +240,23 @@ WHERE
   };
 
   return c.json(returnPacket);
+});
+
+// --------------------
+
+app.get("/new-vehicle/popular-cars", async (c) => {
+  const dbQuery = `
+  SELECT COUNT(*) AS total_orders, c.model_code_fk, c.color, c.wheels, cm.motor, c.interior_color, c.towing_hitch FROM car_order co
+  INNER JOIN car c ON co.car_id_fk = c.car_id
+  INNER JOIN car_model cm ON c.model_code_fk = cm.model_code
+  WHERE c.preassembled = 1
+  GROUP BY c.model_code_fk, c.color, c.wheels, c.interior_color, c.towing_hitch
+  LIMIT 3;
+  `;
+
+  const [popularCars] = await dbConnection.query(dbQuery);
+
+  return c.json(popularCars);
 });
 
 // -------------------- SERVER START --------------------

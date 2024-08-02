@@ -19,12 +19,22 @@ export interface Car {
   interior_color: string;
   wheels: string;
 
+  model_code_fk: string;
   model: string;
   engine_power_kw: string;
   range_mi: string;
   zero_sixty: string;
   motor: string;
   price: string;
+}
+
+interface PopularCar {
+  total_orders: string;
+  color: string;
+  interior_color: string;
+  wheels: string;
+  model_code_fk: string;
+  motor: string;
 }
 
 type Filters = {
@@ -44,23 +54,42 @@ function generateKeyFromObj(c: Car) {
   return res;
 }
 
-function ShowCars(cars: Car[] | null): ReactNode {
+function ShowCars(
+  cars: Car[] | null,
+  popularCars: PopularCar[] | null
+): ReactNode {
   if (cars === null) {
     return <div className="loading-text">Loading...</div>;
   } else {
-    return cars.map((c) => (
-      <PreCarCard
-        model={c.model}
-        color={c.color}
-        range={c.range_mi}
-        zero_sixty={c.zero_sixty}
-        engine_power_kw={c.engine_power_kw}
-        wheels={c.wheels}
-        price={c.price}
-        motor={c.motor}
-        key={generateKeyFromObj(c)}
-      />
-    ));
+    return cars.map((c) => {
+      let topPick = false;
+      popularCars?.forEach((p) => {
+        if (
+          p.color === c.color &&
+          p.interior_color === c.interior_color &&
+          p.model_code_fk === c.model_code_fk &&
+          p.motor === c.motor &&
+          p.wheels === c.wheels
+        ) {
+          topPick = true;
+        }
+      });
+
+      return (
+        <PreCarCard
+          model={c.model}
+          color={c.color}
+          range={c.range_mi}
+          zero_sixty={c.zero_sixty}
+          engine_power_kw={c.engine_power_kw}
+          wheels={c.wheels}
+          price={c.price}
+          motor={c.motor}
+          key={generateKeyFromObj(c)}
+          top={topPick}
+        />
+      );
+    });
   }
 }
 
@@ -69,6 +98,7 @@ export const Route = createFileRoute("/new-vehicles")({
 });
 
 function NewVehicles() {
+  const [popularCars, setPopularCars] = useState<PopularCar[] | null>(null);
   const [cars, setCars] = useState<Car[] | null>(null);
   const [pages, setTotalPages] = useState(1);
   const [currentPage, setPage] = useState(1);
@@ -164,6 +194,9 @@ function NewVehicles() {
         })
       ).data;
 
+      setPopularCars(
+        (await axios.get(serverAddress + "/new-vehicle/popular-cars")).data
+      );
       setTotalPages(Math.ceil(data.pages / 15));
       setCars(data.cars);
     }
@@ -242,7 +275,7 @@ function NewVehicles() {
               </div>
             </div>
           </FilterPane>
-          <div className="content-box">{ShowCars(cars)}</div>
+          <div className="content-box">{ShowCars(cars, popularCars)}</div>
         </div>
         <div className="page-line">
           <svg
