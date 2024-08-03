@@ -2,17 +2,30 @@ import { createFileRoute } from "@tanstack/react-router";
 import NavWrapper from "../../components/AdminComponents/NavWrapper";
 import TableWithContents from "../../components/AdminComponents/TableWithContents";
 import CreateButton from "../../components/AdminComponents/buttons/CreateButton";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
 import { Model } from "../custom-vehicle";
-import EditButton from "../../components/AdminComponents/buttons/EditButton";
 import DeleteButton from "../../components/AdminComponents/buttons/DeleteButton";
 import "../../styles/admin/table-view.scss";
 import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";
 import "../../styles/admin/custom-vehicles.scss";
 
-function LoadModels(models: Model[] | null) {
+interface serverResponse {
+  status: string;
+  message: string;
+}
+
+function LoadModels(
+  models: Model[] | null,
+  deleteButtonAction: (modelCode: string) => Promise<void>,
+  changeProperty: (
+    prop: string,
+    e: ChangeEvent<HTMLInputElement>,
+    oldVal: string,
+    modelCode: string
+  ) => void
+) {
   if (models == null) {
     return <div className="loading">Loading...</div>;
   }
@@ -32,13 +45,28 @@ function LoadModels(models: Model[] | null) {
       <td>{m.zero_sixty}</td>
       <td>{m.towing_capacity}</td>
       <td>{m.features.length > 0 ? "..." : ""}</td>
-      <td>{m.availability}</td>
-      <td>{m.price}</td>
       <td>
-        <EditButton />
+        <input
+          type="number"
+          defaultValue={m.availability}
+          min={0}
+          style={{ width: "50px" }}
+          onBlur={(e) =>
+            changeProperty("availability", e, m.availability, m.model_code)
+          }
+        />
       </td>
       <td>
-        <DeleteButton />
+        <input
+          type="number"
+          defaultValue={m.price}
+          min={0}
+          style={{ width: "70px" }}
+          onBlur={(e) => changeProperty("price", e, m.price, m.model_code)}
+        />
+      </td>
+      <td>
+        <DeleteButton actionOnPress={() => deleteButtonAction(m.model_code)} />
       </td>
     </tr>
   ));
@@ -50,35 +78,35 @@ export const Route = createFileRoute("/admin/custom-vehicles")({
 
 function AdminCustomVehicles() {
   const [models, setModels] = useState<Model[] | null>(null);
-  const [windowHidden, setWindowHidden] = useState<boolean>(true);
+  const [createWindowHidden, setCreateWindowHidden] = useState<boolean>(true);
   const errorElem = useRef<HTMLDivElement>(null);
 
-  const template: Model = {
-    model_code: "",
-    model: "",
-    year: "",
-    engine_power_kw: "",
-    battery_kwh: "",
-    range_mi: "",
-    top_speed_mi: "",
-    driveline: "",
-    zero_sixty: "",
-    towing_capacity: "",
-    features: "",
-    price: "",
-    availability: "",
-    motor: "",
-    torque: "",
-  };
+  const modelKeys: (keyof Model)[] = [
+    "model_code",
+    "model",
+    "year",
+    "engine_power_kw",
+    "battery_kwh",
+    "range_mi",
+    "top_speed_mi",
+    "driveline",
+    "zero_sixty",
+    "towing_capacity",
+    "features",
+    "price",
+    "availability",
+    "motor",
+    "torque",
+  ];
 
   const getMostFields = () => {
     const res = [];
 
-    for (const [k] of Object.entries(template)) {
+    for (const k of modelKeys) {
       if (k === "features") continue;
 
       res.push(
-        <div>
+        <div key={k}>
           <label htmlFor={"custom-vehicles-" + k}>{k}</label>
           <input type="text" id={"custom-vehicles-" + k} required></input>
         </div>
@@ -88,24 +116,105 @@ function AdminCustomVehicles() {
     return res;
   };
 
-  const createNewModel = () => {
-    // let dataToSend: Model;
-    // for (const [k] of Object.entries(template)) {
-    //   const elem = document.getElementById(
-    //     "custom-vehicle-" + k
-    //   ) as HTMLInputElement;
-    //   const value = elem.value;
+  const cleanFields = () => {
+    for (const k of modelKeys) {
+      const elem = document.getElementById(
+        "custom-vehicles-" + k
+      ) as HTMLInputElement;
+      elem.value = "";
+    }
+  };
 
-    //   if (value == "") {
-    //     errorElem.current?.innerHTML = "Please fill all the fields";
-    //     return;
-    //   }
+  const createNewModel = async () => {
+    const dataToSend = {} as Model;
+    const errorElemDefined = errorElem.current as HTMLParagraphElement;
 
-    //   dataToSend[k] = value;
-    // }
+    for (const k of modelKeys) {
+      const elem = document.getElementById(
+        "custom-vehicles-" + k
+      ) as HTMLInputElement;
+      const value = elem.value;
 
-    // errorElem.current?.innerHTML = "";
-    setWindowHidden(true);
+      if (value == "") {
+        errorElemDefined.innerHTML = "Please fill all the fields";
+        return;
+      }
+
+      dataToSend[k] = String(value);
+    }
+
+    const res = (
+      await axios.post(serverAddress + "/admin/custom-vehicles", {
+        method: "CREATE",
+        data: dataToSend,
+      })
+    ).data as serverResponse;
+
+    if (res.status !== "OK") {
+      errorElemDefined.innerHTML = res.message;
+      return;
+    }
+
+    errorElemDefined.innerHTML = "";
+    cleanFields();
+    setCreateWindowHidden(true);
+  };
+
+  const ChangeModelProperty = async (
+    prop: string,
+    e: ChangeEvent<HTMLInputElement>,
+    oldVal: string,
+    modelCode: string
+  ) => {
+    const val = e.target.value;
+
+    const confirmation = confirm(
+      `Are you sure you want to change value from ${oldVal} to ${val}?`
+    );
+
+    if (confirmation === false) {
+      e.target.value = oldVal;
+      return;
+    }
+
+    const res = (
+      await axios.post(serverAddress + "/admin/custom-vehicles", {
+        method: "UPDATE",
+        data: { model_code: modelCode, property: prop, value: val },
+      })
+    ).data as serverResponse;
+
+    if (res.status !== "OK") {
+      const mess = "Internal Server Error! " + res.message;
+      alert(mess);
+      console.log(mess);
+    }
+  };
+
+  const DeleteModel = async (modelCode: string) => {
+    const confirmation = confirm("Are you sure you want to delete this row?");
+
+    if (confirmation === false) return;
+
+    const res = (
+      await axios.post(serverAddress + "/admin/custom-vehicles", {
+        method: "DELETE",
+        data: { model_code: modelCode },
+      })
+    ).data as serverResponse;
+
+    if (res.status !== "OK") {
+      const mess = "Internal Server Error! " + res.message;
+      alert(mess);
+      console.log(mess);
+    } else {
+      setModels(
+        (models as Model[]).splice(
+          (models as Model[]).findIndex((m) => m.model_code === modelCode),
+          1
+        )
+      );
+    }
   };
 
   useEffect(() => {
@@ -115,15 +224,15 @@ function AdminCustomVehicles() {
     }
 
     fetchData();
-  }, []);
+  }, [createWindowHidden, models]);
 
   return (
     <NavWrapper elementToHighlight={"admin-nav-custom-vehicles"}>
       <div className="table-wrapper">
         <TableWithContents
-          title="Assembled Vehicles List"
+          title="Custom Vehicles List"
           createButton={
-            <CreateButton actionOnPress={() => setWindowHidden(false)} />
+            <CreateButton actionOnPress={() => setCreateWindowHidden(false)} />
           }
         >
           <table>
@@ -144,13 +253,12 @@ function AdminCustomVehicles() {
               <th>Stock</th>
               <th>Price</th>
               <th></th>
-              <th></th>
             </tr>
-            {LoadModels(models)}
+            {LoadModels(models, DeleteModel, ChangeModelProperty)}
           </table>
           <FloatingWindow
-            hide={windowHidden}
-            cancelAction={() => setWindowHidden(true)}
+            hide={createWindowHidden}
+            cancelAction={() => setCreateWindowHidden(true)}
             saveAction={createNewModel}
           >
             <div className="custom-vehicles-most-properties">
@@ -158,7 +266,7 @@ function AdminCustomVehicles() {
             </div>
             <div className="custom-vehicles-features-property">
               <div>
-                <label htmlFor="custom-vehicles-features">features</label>
+                <label htmlFor="custom-vehicles-features">Features</label>
                 <textarea id="custom-vehicles-features" required></textarea>
               </div>
             </div>

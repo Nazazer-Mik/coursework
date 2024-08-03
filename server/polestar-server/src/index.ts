@@ -287,6 +287,40 @@ app.get("/admin/new-vehicles", async (c) => {
   return c.json(cars);
 });
 
+// --------------------
+
+app.post("/admin/custom-vehicles", async (c) => {
+  const body = await c.req.json();
+  const obj = body.data;
+  let dbQuery = "";
+
+  try {
+    if (body.method === "CREATE") {
+      dbQuery = `INSERT INTO car_model 
+    VALUES("${obj.model_code}", "${obj.model}", "${obj.year}", ${obj.engine_power_kw}, ${obj.battery_kwh}, ${obj.range_mi},
+    ${obj.top_speed_mi}, "${obj.driveline}", "${obj.zero_sixty}", ${obj.towing_capacity}, "${obj.features}", ${obj.price},
+    ${obj.availability}, "${obj.motor}", ${obj.torque});`;
+    } else if (body.method === "DELETE") {
+      dbQuery = `DELETE FROM car_model WHERE model_code = "${obj.model_code}";`;
+    } else if (body.method === "UPDATE") {
+      dbQuery = `UPDATE car_model SET ${obj.property} = ${obj.value} WHERE model_code = "${obj.model_code}";`;
+    }
+
+    await dbConnection.query(dbQuery);
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

@@ -24,6 +24,7 @@
       @include utils.inter-font;
       font-size: 1.1em;
       padding: 5px;
+      border-radius: 3px;
     }
   }
 }
@@ -47,6 +48,7 @@
     height: 150px;
     box-sizing: border-box;
     resize: none;
+    border-radius: 3px;
   }
 }
 
