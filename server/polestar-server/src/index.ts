@@ -321,6 +321,55 @@ app.post("/admin/custom-vehicles", async (c) => {
   });
 });
 
+// --------------------
+
+app.get("/admin/new-vehicles/models", async (c) => {
+  let models;
+  try {
+    models = await dbConnection.query("SELECT model_code FROM car_model;");
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    models: models,
+  });
+});
+
+app.post("/admin/new-vehicles", async (c) => {
+  const body = await c.req.json();
+  const obj = body.data;
+  let dbQuery = "";
+
+  try {
+    if (body.method === "CREATE") {
+      dbQuery = `INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled) 
+      VALUES("${obj.model_code_fk}", "${obj.color}", "${obj.interior_color}", "${obj.wheels}", ${(obj.towing_hitch as string).toLowerCase() == "yes" ? 1 : 0}, "${obj.vin_code}", 
+      "${obj.reg_number}", ${obj.warranty_years}, ${obj.modifications_price}, 1);`;
+    } else if (body.method === "DELETE") {
+      dbQuery = `DELETE FROM car WHERE car_id = "${obj.car_id}";`;
+    }
+
+    await dbConnection.query(dbQuery);
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

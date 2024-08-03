@@ -1,6 +1,6 @@
 @use "../../utils/utils";
 
-.custom-vehicles-most-properties {
+.vehicles-properties {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -14,24 +14,36 @@
     align-items: center;
     margin-bottom: 10px;
 
+    border: 2px solid utils.$inconspicuous-color;
+    background-color: utils.$secondary-color;
+    padding: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+
     label {
       @include utils.inter-font;
       font-size: 1.1em;
-      color: utils.$text-color;
+      color: utils.$contrast-color;
     }
 
-    input {
+    input,
+    select {
       @include utils.inter-font;
       font-size: 1.1em;
       padding: 5px;
       border-radius: 3px;
+    }
+
+    select {
+      margin-left: 30px;
+      width: 100%;
     }
   }
 }
 
 .custom-vehicles-features-property {
   width: 100%;
-  padding-top: 20px;
+  padding-top: 10px;
 
   label {
     @include utils.inter-font;
@@ -45,15 +57,23 @@
     font-size: 1.1em;
     padding: 5px;
     width: 100%;
-    height: 150px;
+    height: 130px;
     box-sizing: border-box;
     resize: none;
     border-radius: 3px;
   }
 }
 
-.custom-vehicles-error-line {
+.vehicles-error-line {
   @include utils.archivo-font(600);
   color: utils.$error-color;
   text-align: center;
+}
+
+.vehicles-properties.new-vehicles {
+  div {
+    margin: 0;
+    margin-bottom: 2px;
+    height: 90px;
+  }
 }

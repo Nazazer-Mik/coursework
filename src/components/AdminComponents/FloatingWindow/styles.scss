@@ -33,14 +33,24 @@
   .buttons-pane {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
 
     border-top: 2px solid utils.$secondary-color;
     padding-top: 10px;
 
+    .right-side {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      width: auto;
+    }
+
     .cancel-button,
-    .save-button {
+    .save-button,
+    .clear-button {
       @include utils.inter-font;
       color: utils.$text-color;
       background-color: utils.$error-color;
@@ -49,10 +59,16 @@
       font-size: 1.15em;
       margin: 5px;
       cursor: pointer;
+      text-align: center;
+      box-shadow: 0 0 13px #292929;
     }
 
     .save-button {
       background-color: utils.$apply-color;
+    }
+
+    .clear-button {
+      background-color: utils.$admin-spare-color;
     }
   }
 }

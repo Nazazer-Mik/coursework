@@ -9,9 +9,10 @@ import { Model } from "../custom-vehicle";
 import DeleteButton from "../../components/AdminComponents/buttons/DeleteButton";
 import "../../styles/admin/table-view.scss";
 import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";
-import "../../styles/admin/custom-vehicles.scss";
+import "../../styles/admin/vehicles.scss";
+import { cleanFields, createVehicle } from "../../utils/admin/vehicles-utils";
 
-interface serverResponse {
+export interface serverResponse {
   status: string;
   message: string;
 }
@@ -48,6 +49,7 @@ function LoadModels(
       <td>
         <input
           type="number"
+          name={m.availability}
           defaultValue={m.availability}
           min={0}
           style={{ width: "50px" }}
@@ -59,6 +61,7 @@ function LoadModels(
       <td>
         <input
           type="number"
+          name={m.price}
           defaultValue={m.price}
           min={0}
           style={{ width: "70px" }}
@@ -114,50 +117,6 @@ function AdminCustomVehicles() {
     }
 
     return res;
-  };
-
-  const cleanFields = () => {
-    for (const k of modelKeys) {
-      const elem = document.getElementById(
-        "custom-vehicles-" + k
-      ) as HTMLInputElement;
-      elem.value = "";
-    }
-  };
-
-  const createNewModel = async () => {
-    const dataToSend = {} as Model;
-    const errorElemDefined = errorElem.current as HTMLParagraphElement;
-
-    for (const k of modelKeys) {
-      const elem = document.getElementById(
-        "custom-vehicles-" + k
-      ) as HTMLInputElement;
-      const value = elem.value;
-
-      if (value == "") {
-        errorElemDefined.innerHTML = "Please fill all the fields";
-        return;
-      }
-
-      dataToSend[k] = String(value);
-    }
-
-    const res = (
-      await axios.post(serverAddress + "/admin/custom-vehicles", {
-        method: "CREATE",
-        data: dataToSend,
-      })
-    ).data as serverResponse;
-
-    if (res.status !== "OK") {
-      errorElemDefined.innerHTML = res.message;
-      return;
-    }
-
-    errorElemDefined.innerHTML = "";
-    cleanFields();
-    setCreateWindowHidden(true);
   };
 
   const ChangeModelProperty = async (
@@ -259,18 +218,24 @@ function AdminCustomVehicles() {
           <FloatingWindow
             hide={createWindowHidden}
             cancelAction={() => setCreateWindowHidden(true)}
-            saveAction={createNewModel}
+            saveAction={() =>
+              createVehicle(
+                errorElem.current as HTMLParagraphElement,
+                modelKeys,
+                "custom",
+                setCreateWindowHidden
+              )
+            }
+            clearAction={() => cleanFields(modelKeys, "custom")}
           >
-            <div className="custom-vehicles-most-properties">
-              {getMostFields()}
-            </div>
+            <div className="vehicles-properties">{getMostFields()}</div>
             <div className="custom-vehicles-features-property">
               <div>
                 <label htmlFor="custom-vehicles-features">Features</label>
                 <textarea id="custom-vehicles-features" required></textarea>
               </div>
             </div>
-            <p className="custom-vehicles-error-line" ref={errorElem}></p>
+            <p className="vehicles-error-line" ref={errorElem}></p>
           </FloatingWindow>
         </TableWithContents>
       </div>

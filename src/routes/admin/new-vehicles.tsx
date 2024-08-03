@@ -2,12 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import NavWrapper from "../../components/AdminComponents/NavWrapper";
 import TableWithContents from "../../components/AdminComponents/TableWithContents";
 import "../../styles/admin/table-view.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
 import CreateButton from "../../components/AdminComponents/buttons/CreateButton";
 import EditButton from "../../components/AdminComponents/buttons/EditButton";
 import DeleteButton from "../../components/AdminComponents/buttons/DeleteButton";
+import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";
+import "../../styles/admin/vehicles.scss";
+import { serverResponse } from "./custom-vehicles";
+import { cleanFields, createVehicle } from "../../utils/admin/vehicles-utils";
 
 interface Car {
   car_id: string;
@@ -59,23 +63,67 @@ export const Route = createFileRoute("/admin/new-vehicles")({
 
 function AdminNewVehicles() {
   const [cars, setCars] = useState<Car[] | null>(null);
+  const [models, setModels] = useState<{ model_code: string }[]>([]);
+  const [createWindowHidden, setCreateWindowHidden] = useState<boolean>(true);
+  const errorElem = useRef<HTMLDivElement>(null);
+
+  const carKeys: (keyof Car)[] = [
+    "model_code_fk",
+    "color",
+    "interior_color",
+    "wheels",
+    "towing_hitch",
+    "vin_code",
+    "reg_number",
+    "warranty_years",
+    "modifications_price",
+  ];
+
+  const getFields = () => {
+    const res = [];
+
+    for (const k of carKeys) {
+      res.push(
+        <div key={k}>
+          <label htmlFor={"new-vehicles-" + k}>{k}</label>
+          {k === "model_code_fk" ? (
+            <select id={"new-vehicles-" + k} required>
+              {models.map((m) => (
+                <option key={m.model_code}>{m.model_code}</option>
+              ))}
+            </select>
+          ) : (
+            <input type="text" id={"new-vehicles-" + k} required></input>
+          )}
+        </div>
+      );
+    }
+
+    return res;
+  };
 
   useEffect(() => {
     async function fetchData() {
       const data = (await axios.get(serverAddress + "/admin/new-vehicles"))
         .data;
       setCars(data);
+      const modelsData = (
+        await axios.get(serverAddress + "/admin/new-vehicles/models")
+      ).data;
+      setModels(modelsData.models[0]);
     }
 
     fetchData();
-  }, []);
+  }, [createWindowHidden]);
 
   return (
     <NavWrapper elementToHighlight={"admin-nav-new-vehicles"}>
       <div className="table-wrapper">
         <TableWithContents
           title="Assembled Vehicles List"
-          createButton={<CreateButton />}
+          createButton={
+            <CreateButton actionOnPress={() => setCreateWindowHidden(false)} />
+          }
         >
           <table>
             <tr>
@@ -96,6 +144,24 @@ function AdminNewVehicles() {
             </tr>
             {LoadCars(cars)}
           </table>
+          <FloatingWindow
+            hide={createWindowHidden}
+            cancelAction={() => setCreateWindowHidden(true)}
+            saveAction={() =>
+              createVehicle(
+                errorElem.current as HTMLParagraphElement,
+                carKeys,
+                "new",
+                setCreateWindowHidden
+              )
+            }
+            clearAction={() => cleanFields(carKeys, "new")}
+          >
+            <div className="vehicles-properties new-vehicles">
+              {getFields()}
+            </div>
+            <p className="vehicles-error-line" ref={errorElem}></p>
+          </FloatingWindow>
         </TableWithContents>
       </div>
     </NavWrapper>

@@ -4,6 +4,7 @@ import "./styles.scss";
 type FloatingWindowArgs = {
   cancelAction: () => void;
   saveAction: () => void;
+  clearAction: () => void;
   hide: boolean;
   children: ReactNode;
 };
@@ -11,6 +12,7 @@ type FloatingWindowArgs = {
 export default function FloatingWindow({
   cancelAction,
   saveAction,
+  clearAction,
   hide,
   children,
 }: FloatingWindowArgs) {
@@ -19,11 +21,16 @@ export default function FloatingWindow({
       <div className="floating-window">
         <div>{children}</div>
         <div className="buttons-pane">
-          <div className="cancel-button" onClick={cancelAction}>
-            Cancel
+          <div className="clear-button" onClick={clearAction}>
+            Clear Fields
           </div>
-          <div className="save-button" onClick={saveAction}>
-            Save
+          <div className="right-side">
+            <div className="cancel-button" onClick={cancelAction}>
+              Cancel
+            </div>
+            <div className="save-button" onClick={saveAction}>
+              Save
+            </div>
           </div>
         </div>
       </div>
