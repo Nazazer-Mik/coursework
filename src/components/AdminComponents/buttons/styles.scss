@@ -2,9 +2,10 @@
 
 .create-button {
   padding: 8px;
+  padding-right: 13px;
   color: utils.$text-color;
   @include utils.inter-font;
-  background-color: rgb(16, 172, 16);
+  background-color: utils.$apply-color;
   border-radius: 5px;
   font-size: 0.9em;
   cursor: pointer;

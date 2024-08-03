@@ -2,13 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import NavWrapper from "../../components/AdminComponents/NavWrapper";
 import TableWithContents from "../../components/AdminComponents/TableWithContents";
 import CreateButton from "../../components/AdminComponents/buttons/CreateButton";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
 import { Model } from "../custom-vehicle";
 import EditButton from "../../components/AdminComponents/buttons/EditButton";
 import DeleteButton from "../../components/AdminComponents/buttons/DeleteButton";
 import "../../styles/admin/table-view.scss";
+import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";
+import "../../styles/admin/custom-vehicles.scss";
 
 function LoadModels(models: Model[] | null) {
   if (models == null) {
@@ -16,7 +18,7 @@ function LoadModels(models: Model[] | null) {
   }
 
   return models.map((m) => (
-    <tr>
+    <tr key={m.model_code}>
       <td>{m.model_code}</td>
       <td>{m.model}</td>
       <td>{m.year}</td>
@@ -48,6 +50,63 @@ export const Route = createFileRoute("/admin/custom-vehicles")({
 
 function AdminCustomVehicles() {
   const [models, setModels] = useState<Model[] | null>(null);
+  const [windowHidden, setWindowHidden] = useState<boolean>(true);
+  const errorElem = useRef<HTMLDivElement>(null);
+
+  const template: Model = {
+    model_code: "",
+    model: "",
+    year: "",
+    engine_power_kw: "",
+    battery_kwh: "",
+    range_mi: "",
+    top_speed_mi: "",
+    driveline: "",
+    zero_sixty: "",
+    towing_capacity: "",
+    features: "",
+    price: "",
+    availability: "",
+    motor: "",
+    torque: "",
+  };
+
+  const getMostFields = () => {
+    const res = [];
+
+    for (const [k] of Object.entries(template)) {
+      if (k === "features") continue;
+
+      res.push(
+        <div>
+          <label htmlFor={"custom-vehicles-" + k}>{k}</label>
+          <input type="text" id={"custom-vehicles-" + k} required></input>
+        </div>
+      );
+    }
+
+    return res;
+  };
+
+  const createNewModel = () => {
+    // let dataToSend: Model;
+    // for (const [k] of Object.entries(template)) {
+    //   const elem = document.getElementById(
+    //     "custom-vehicle-" + k
+    //   ) as HTMLInputElement;
+    //   const value = elem.value;
+
+    //   if (value == "") {
+    //     errorElem.current?.innerHTML = "Please fill all the fields";
+    //     return;
+    //   }
+
+    //   dataToSend[k] = value;
+    // }
+
+    // errorElem.current?.innerHTML = "";
+    setWindowHidden(true);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -63,7 +122,9 @@ function AdminCustomVehicles() {
       <div className="table-wrapper">
         <TableWithContents
           title="Assembled Vehicles List"
-          createButton={<CreateButton />}
+          createButton={
+            <CreateButton actionOnPress={() => setWindowHidden(false)} />
+          }
         >
           <table>
             <tr>
@@ -87,6 +148,22 @@ function AdminCustomVehicles() {
             </tr>
             {LoadModels(models)}
           </table>
+          <FloatingWindow
+            hide={windowHidden}
+            cancelAction={() => setWindowHidden(true)}
+            saveAction={createNewModel}
+          >
+            <div className="custom-vehicles-most-properties">
+              {getMostFields()}
+            </div>
+            <div className="custom-vehicles-features-property">
+              <div>
+                <label htmlFor="custom-vehicles-features">features</label>
+                <textarea id="custom-vehicles-features" required></textarea>
+              </div>
+            </div>
+            <p className="custom-vehicles-error-line" ref={errorElem}></p>
+          </FloatingWindow>
         </TableWithContents>
       </div>
     </NavWrapper>

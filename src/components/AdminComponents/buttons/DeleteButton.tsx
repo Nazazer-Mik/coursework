@@ -1,5 +1,13 @@
 import "./styles.scss";
 
-export default function EditButton() {
-  return <div className="delete-button">Delete</div>;
+type DeleteButtonArgs = {
+  actionOnPress: () => void;
+};
+
+export default function DeleteButton({ actionOnPress }: DeleteButtonArgs) {
+  return (
+    <div className="delete-button" onClick={actionOnPress}>
+      Delete
+    </div>
+  );
 }

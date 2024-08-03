@@ -1,8 +1,12 @@
 import "./styles.scss";
 
-export default function CreateButton() {
+type CreateButtonArgs = {
+  actionOnPress: () => void;
+};
+
+export default function CreateButton({ actionOnPress }: CreateButtonArgs) {
   return (
-    <div className="create-button">
+    <div className="create-button" onClick={actionOnPress}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="24px"

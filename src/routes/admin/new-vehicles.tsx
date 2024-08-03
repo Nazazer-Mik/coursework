@@ -29,7 +29,7 @@ function LoadCars(cars: Car[] | null) {
     return <div className="loading">Loading...</div>;
   } else {
     return cars.map((c) => (
-      <tr>
+      <tr key={c.car_id}>
         <td>{c.car_id}</td>
         <td>{c.model_code_fk}</td>
         <td>{c.color}</td>

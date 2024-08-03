@@ -1,1 +1,57 @@
 @use "../../utils/utils";
+
+.custom-vehicles-most-properties {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  div {
+    width: 48%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    label {
+      @include utils.inter-font;
+      font-size: 1.1em;
+      color: utils.$text-color;
+    }
+
+    input {
+      @include utils.inter-font;
+      font-size: 1.1em;
+      padding: 5px;
+    }
+  }
+}
+
+.custom-vehicles-features-property {
+  width: 100%;
+  padding-top: 20px;
+
+  label {
+    @include utils.inter-font;
+    font-size: 1.1em;
+    color: utils.$text-color;
+    margin-right: 20px;
+  }
+
+  textarea {
+    @include utils.inter-font;
+    font-size: 1.1em;
+    padding: 5px;
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+    resize: none;
+  }
+}
+
+.custom-vehicles-error-line {
+  @include utils.archivo-font(600);
+  color: utils.$error-color;
+  text-align: center;
+}
