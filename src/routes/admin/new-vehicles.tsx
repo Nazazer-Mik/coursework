@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import NavWrapper from "../../components/AdminComponents/NavWrapper";
 import TableWithContents from "../../components/AdminComponents/TableWithContents";
-import "../../styles/admin/new-vehicles.scss";
+import "../../styles/admin/table-view.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
@@ -72,7 +72,7 @@ function AdminNewVehicles() {
 
   return (
     <NavWrapper elementToHighlight={"admin-nav-new-vehicles"}>
-      <div className="new-vehicles-body">
+      <div className="table-wrapper">
         <TableWithContents
           title="Assembled Vehicles List"
           createButton={<CreateButton />}
