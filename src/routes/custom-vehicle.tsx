@@ -32,7 +32,15 @@ export interface Filters {
   motor: string;
 }
 
-function showModels(models: Model[] | null): ReactNode {
+type TrendingModel = {
+  orders_quantity: string;
+  model_code_fk: string;
+};
+
+function showModels(
+  models: Model[] | null,
+  trendingModel: TrendingModel
+): ReactNode {
   if (models === null) {
     return <div className="loading-text">Loading...</div>;
   } else {
@@ -43,6 +51,7 @@ function showModels(models: Model[] | null): ReactNode {
         motor={m.motor}
         imagePath={`src/assets/models/${m.model_code}.avif`}
         key={m.model_code}
+        trending={trendingModel.model_code_fk === m.model_code}
       />
     ));
   }
@@ -54,6 +63,10 @@ export const Route = createFileRoute("/custom-vehicle")({
 
 function CustomVehicles() {
   const [models, setModels] = useState<Model[] | null>(null);
+  const [trendingModel, setTrendingModel] = useState<TrendingModel>({
+    orders_quantity: "",
+    model_code_fk: "",
+  });
   const [filters, setFilters] = useState<Filters>({
     model: "any",
     driveline: "any",
@@ -77,7 +90,13 @@ function CustomVehicles() {
           },
         })
       ).data;
+
+      const tm = (
+        await axios.get(serverAddress + "/custom-vehicle/trending-now")
+      ).data;
+
       setModels(m);
+      setTrendingModel(tm);
     }
 
     fetchModels();
@@ -122,7 +141,7 @@ function CustomVehicles() {
               <option>Dual motor Perfomance</option>
             </select>
           </FilterPane>
-          <div className="content-box">{showModels(models)}</div>
+          <div className="content-box">{showModels(models, trendingModel)}</div>
         </div>
         <Footer />
       </div>

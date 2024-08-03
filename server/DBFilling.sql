@@ -1,3 +1,5 @@
+-- CREATE USER IN UI FIRST!!!!!!!!!!!!!!!!!!!!!!!
+
 -- Car models table:
 
 INSERT INTO car_model(model_code, model, year, engine_power_kw, battery_kwh, range_mi, top_speed_mi, driveline, zero_sixty, towing_capacity, features, price, availability, motor, torque) 
@@ -244,3 +246,146 @@ VALUES ("polestar4-dual-long", "Gold", "Tailored Knit", "R22 Perfomance", TRUE, 
 
 INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
 VALUES ("polestar4-dual-long", "Gold", "Zinc Nappa Leather", "R22 Perfomance", TRUE, "2HGCM82633A004374", "KJ24KOV", 2, 4800, TRUE);
+
+
+
+
+
+
+-- CARS FOR ORDERS
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "3FAHP0HAXAR150104", "KJ25KOA", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "5FNYF3H92FB046915", "KJ25KOS", 3, 1900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "5YFBU4EE7CP001231", "KJ25KOD", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "WVGBV7AX8CW558030", "KJ25KOF", 3, 1900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "5NPDH4AE4DH374972", "KJ25KOG", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "JN1HU01S1ET284464", "KJ25KOH", 3, 1900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "JM1GJ1V50F1274145", "KJ25KOJ", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "1GNES16S946179308", "KJ25KOK", 3, 1900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "2B3LJ74W28H396359", "KJ25KOL", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "4A4JN2AS2BE070664", "KJ25KOZ", 3, 1900, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R20 Aero", FALSE, "2C3CDXHG0FH736361", "KJ25KOX", 3, 500, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar4-single-long", "Space", "Charcoal Nappa", "R21 Sport", TRUE, "1ZVHT80N085100602", "KJ25KOC", 3, 1900, TRUE);
+
+--
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "1GTHK23G33F295095", "HJ25YQQ", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "1GNSKKKC6FR128857", "HJ25YQW", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "3GNCA13B29S697942", "HJ25YQE", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "WVGCB77L98D051139", "HJ25YQR", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "1B3HB48B17D537295", "HJ25YQT", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "1G2ZG58N874179752", "HJ25YQY", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "1FTZX1768WNA30734", "HJ25YQU", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "WBAVB13556KX59878", "HJ25YQI", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "4T1BF1FK5DU229743", "HJ25YQO", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "2FMDK4JC1EBA49639", "HJ25YQP", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "1HGEM227X1L050874", "HJ25YQA", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "2CNBJ634826937160", "HJ25YQS", 3, 700, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Jupiter Nappa", "R21 Plus", FALSE, "5UXFA93586LE97620", "HJ25YQD", 3, 200, TRUE);
+
+INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+VALUES ("polestar3-single-long", "Space", "Wool", "R22 Sport", TRUE, "2G1WG5E33D1127107", "HJ25YQF", 3, 700, TRUE);
+
+
+-- CAR ORDERS
+
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(114, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(115, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(116, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(117, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(118, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(119, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(120, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(121, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(122, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(123, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(124, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(125, 1, "2024-01-01", TRUE, 57150, "Visa Credit", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(126, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(127, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(128, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(129, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(130, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(131, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(132, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(133, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(134, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(135, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(136, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(137, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(138, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
+VALUES(139, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");

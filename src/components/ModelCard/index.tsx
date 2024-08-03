@@ -7,6 +7,7 @@ interface minimalCarData {
   price: string;
   motor: string;
   imagePath: string;
+  trending: boolean;
 }
 
 export default function ModelCard({
@@ -14,9 +15,11 @@ export default function ModelCard({
   price,
   motor,
   imagePath,
+  trending,
 }: minimalCarData) {
   return (
     <ProductCard imagePath={imagePath}>
+      {trending && <div className="trending-now">Trending Now</div>}
       <div className="model-text">
         <div>
           <h3>{modelName}</h3>

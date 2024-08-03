@@ -1,6 +1,8 @@
 @use "../../utils/utils";
 
 .car-card {
+  position: relative;
+
   background-color: utils.$text-color;
   color: utils.$contrast-color;
   box-shadow: 0 0 25px utils.$secondary-dark-color;

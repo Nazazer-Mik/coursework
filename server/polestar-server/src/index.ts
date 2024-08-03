@@ -145,6 +145,26 @@ app.post("/register", async (c) => {
 
 // --------------------
 
+type TrendingModel = {
+  orders_quantity: string;
+  model_code_fk: string;
+};
+
+app.get("/custom-vehicle/trending-now", async (c) => {
+  const dbQuery = `
+  SELECT COUNT(*) AS orders_quantity, c.model_code_fk FROM car c
+  INNER JOIN car_order co ON c.car_id = co.car_id_fk
+  GROUP BY c.model_code_fk
+  HAVING orders_quantity > 10 LIMIT 1;
+  `;
+
+  const [model] = await dbConnection.query(dbQuery);
+
+  return c.json((model as TrendingModel[])[0]);
+});
+
+// --------------------
+
 type ModelFilters = {
   model: string;
   driveline: string;
