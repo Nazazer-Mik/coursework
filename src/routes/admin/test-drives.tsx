@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import AdminNavWrapper from "../../components/AdminNavWrapper";
+import NavWrapper from "../../components/AdminComponents/NavWrapper";
 
 export const Route = createFileRoute("/admin/test-drives")({
   component: AdminTestDrives,
@@ -7,8 +7,8 @@ export const Route = createFileRoute("/admin/test-drives")({
 
 function AdminTestDrives() {
   return (
-    <AdminNavWrapper elementToHighlight={"admin-nav-test-drives"}>
+    <NavWrapper elementToHighlight={"admin-nav-test-drives"}>
       AdminTestDrives
-    </AdminNavWrapper>
+    </NavWrapper>
   );
 }

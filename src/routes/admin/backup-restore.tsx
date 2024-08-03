@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import AdminNavWrapper from "../../components/AdminNavWrapper";
+import NavWrapper from "../../components/AdminComponents/NavWrapper";
 
 export const Route = createFileRoute("/admin/backup-restore")({
   component: AdminBackupRestore,
@@ -7,8 +7,8 @@ export const Route = createFileRoute("/admin/backup-restore")({
 
 function AdminBackupRestore() {
   return (
-    <AdminNavWrapper elementToHighlight={"admin-nav-backup-restore"}>
+    <NavWrapper elementToHighlight={"admin-nav-backup-restore"}>
       AdminBackupRestore
-    </AdminNavWrapper>
+    </NavWrapper>
   );
 }

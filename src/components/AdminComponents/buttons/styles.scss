@@ -1,0 +1,35 @@
+@use "../../../utils/utils";
+
+.create-button {
+  padding: 8px;
+  color: utils.$text-color;
+  @include utils.inter-font;
+  background-color: rgb(16, 172, 16);
+  border-radius: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+
+  svg {
+    width: 27x;
+    height: 27px;
+    vertical-align: top;
+
+    padding-right: 5px;
+    padding-left: 0;
+  }
+}
+
+.edit-button,
+.delete-button {
+  cursor: pointer;
+  padding: 7px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 3px;
+  background-color: utils.$admin-spare-color;
+  color: utils.$text-color;
+}
+
+.delete-button {
+  background-color: utils.$error-color;
+}

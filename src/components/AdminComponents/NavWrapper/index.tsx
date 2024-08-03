@@ -7,7 +7,7 @@ type WrapperArgs = {
   children: ReactNode;
 };
 
-export default function AdminNavWrapper({
+export default function NavWrapper({
   elementToHighlight = null,
   children,
 }: WrapperArgs) {

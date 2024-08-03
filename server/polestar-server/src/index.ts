@@ -259,6 +259,34 @@ app.get("/new-vehicle/popular-cars", async (c) => {
   return c.json(popularCars);
 });
 
+// --------------------
+
+app.get("/admin/new-vehicles", async (c) => {
+  const dbQuery = `
+  SELECT 
+    car_id,
+    model_code_fk,
+    color,
+    interior_color,
+    wheels,
+    towing_hitch,
+    vin_code,
+    reg_number,
+    warranty_years,
+    modifications_price,
+    (co.car_id_fk IS NOT NULL) AS sold,
+    preassembled
+  FROM
+    car c
+        LEFT JOIN
+    car_order co ON co.car_id_fk = c.car_id;
+  `;
+
+  const [cars] = await dbConnection.query(dbQuery);
+
+  return c.json(cars);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;
