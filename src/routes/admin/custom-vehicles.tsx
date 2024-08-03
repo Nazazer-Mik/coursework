@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import NavWrapper from "../../components/AdminComponents/NavWrapper";
 import TableWithContents from "../../components/AdminComponents/TableWithContents";
 import CreateButton from "../../components/AdminComponents/buttons/CreateButton";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
 import { Model } from "../custom-vehicle";
@@ -10,7 +10,11 @@ import DeleteButton from "../../components/AdminComponents/buttons/DeleteButton"
 import "../../styles/admin/table-view.scss";
 import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";
 import "../../styles/admin/vehicles.scss";
-import { cleanFields, createVehicle } from "../../utils/admin/vehicles-utils";
+import {
+  cleanFields,
+  createVehicle,
+  deleteVehicle,
+} from "../../utils/admin/vehicles-utils";
 
 export interface serverResponse {
   status: string;
@@ -19,13 +23,13 @@ export interface serverResponse {
 
 function LoadModels(
   models: Model[] | null,
-  deleteButtonAction: (modelCode: string) => Promise<void>,
   changeProperty: (
     prop: string,
     e: ChangeEvent<HTMLInputElement>,
     oldVal: string,
     modelCode: string
-  ) => void
+  ) => void,
+  setModels: Dispatch<React.SetStateAction<Model[]>>
 ) {
   if (models == null) {
     return <div className="loading">Loading...</div>;
@@ -69,7 +73,17 @@ function LoadModels(
         />
       </td>
       <td>
-        <DeleteButton actionOnPress={() => deleteButtonAction(m.model_code)} />
+        <DeleteButton
+          actionOnPress={() =>
+            deleteVehicle(
+              "model_code",
+              m.model_code,
+              "custom",
+              models as Model[],
+              setModels
+            )
+          }
+        />
       </td>
     </tr>
   ));
@@ -150,32 +164,6 @@ function AdminCustomVehicles() {
     }
   };
 
-  const DeleteModel = async (modelCode: string) => {
-    const confirmation = confirm("Are you sure you want to delete this row?");
-
-    if (confirmation === false) return;
-
-    const res = (
-      await axios.post(serverAddress + "/admin/custom-vehicles", {
-        method: "DELETE",
-        data: { model_code: modelCode },
-      })
-    ).data as serverResponse;
-
-    if (res.status !== "OK") {
-      const mess = "Internal Server Error! " + res.message;
-      alert(mess);
-      console.log(mess);
-    } else {
-      setModels(
-        (models as Model[]).splice(
-          (models as Model[]).findIndex((m) => m.model_code === modelCode),
-          1
-        )
-      );
-    }
-  };
-
   useEffect(() => {
     async function fetchData() {
       const data = (await axios.get(serverAddress + "/custom-vehicle")).data;
@@ -213,7 +201,11 @@ function AdminCustomVehicles() {
               <th>Price</th>
               <th></th>
             </tr>
-            {LoadModels(models, DeleteModel, ChangeModelProperty)}
+            {LoadModels(
+              models,
+              ChangeModelProperty,
+              setModels as Dispatch<React.SetStateAction<Model[]>>
+            )}
           </table>
           <FloatingWindow
             hide={createWindowHidden}

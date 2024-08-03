@@ -353,6 +353,10 @@ app.post("/admin/new-vehicles", async (c) => {
       "${obj.reg_number}", ${obj.warranty_years}, ${obj.modifications_price}, 1);`;
     } else if (body.method === "DELETE") {
       dbQuery = `DELETE FROM car WHERE car_id = "${obj.car_id}";`;
+    } else if (body.method === "UPDATE") {
+      dbQuery = `UPDATE car SET model_code_fk = "${obj.model_code_fk}", color = "${obj.color}", interior_color = "${obj.interior_color}",
+      wheels = "${obj.wheels}", towing_hitch = ${(obj.towing_hitch as string).toLowerCase() == "yes" ? 1 : 0}, vin_code = "${obj.vin_code}", reg_number = "${obj.reg_number}",
+      warranty_years = ${obj.warranty_years}, modifications_price = ${obj.modifications_price} WHERE car_id = "${obj.car_id}";`;
     }
 
     await dbConnection.query(dbQuery);
