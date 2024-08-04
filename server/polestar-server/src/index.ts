@@ -282,6 +282,54 @@ app.get("/new-vehicle/popular-cars", async (c) => {
 
 // --------------------
 
+app.post("/new-vehicle/buy", async (c) => {
+  try {
+    const body = await c.req.json();
+    const userSessionId = body.user_session_id;
+    const carData = body.car;
+
+    const insertCarOrderQuery = `
+    INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status)
+    VALUES (
+      (
+        SELECT car_id FROM car c
+        WHERE c.model_code_fk = "${carData.model_code_fk}"
+          AND c.color = "${carData.color}"
+          AND c.interior_color = "${carData.interior_color}"
+          AND c.wheels = "${carData.wheels}"
+          AND c.towing_hitch = ${carData.towing_hitch}
+        LIMIT 1
+      ),
+      (
+        SELECT ct.customer_id FROM customer ct
+        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
+        WHERE cr.sessions_id = "${userSessionId}"
+        LIMIT 1
+      ),
+      NOW(),
+      TRUE,
+      ${carData.price},
+      "Visa Debit",
+      "Awaiting confirmation"
+    );`;
+
+    await dbConnection.query(insertCarOrderQuery);
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
+// --------------------
+
 app.post("/new-vehicles/full-spec", async (c) => {
   const obj = await c.req.json();
 

@@ -1,0 +1,59 @@
+@use "../../utils/utils";
+
+.modal-window-blur-block {
+  z-index: 3000;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal-window {
+    background-color: utils.$primary-color;
+    box-shadow: 0 0 15px utils.$secondary-dark-color;
+    padding: 30px;
+    max-width: 20vw;
+
+    h3 {
+      @include utils.inter-font(600);
+      font-size: 1.7em;
+      margin-bottom: 30px;
+    }
+
+    p {
+      @include utils.archivo-font;
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+
+    button {
+      @include utils.inter-font(500);
+      font-size: 1.2em;
+      background-color: transparent;
+      border: 3px solid utils.$contrast-color;
+      color: utils.$contrast-color;
+      padding: 10px;
+      padding-left: 30px;
+      padding-right: 30px;
+      cursor: pointer;
+      transition: 0.3s all ease;
+    }
+
+    button:hover {
+      background-color: utils.$secondary-color;
+      border: 3px solid utils.$contrast-fade-color;
+      color: utils.$contrast-fade-color;
+    }
+  }
+}
+
+.hide-modal-window {
+  display: none !important;
+  opacity: 0;
+}
