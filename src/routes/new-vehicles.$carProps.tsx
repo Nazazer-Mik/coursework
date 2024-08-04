@@ -7,6 +7,8 @@ import { serverAddress } from "../utils/auth-utils";
 import "../styles/new-vehicle-page.scss";
 import { useState } from "react";
 import ModalWindow from "../components/ModalWindow";
+import ProductFeatures from "../components/ProductFeatures";
+import SpecsTable from "../components/SpecsTable";
 
 interface Car {
   model_code_fk: string;
@@ -181,111 +183,102 @@ function NewVehicleAd() {
             </div>
           </div>
         </div>
-        <div className="features">
-          <h2>Vehicle Features and Details</h2>
-          <ul>
-            {car.features.split(";").map((f) => (
-              <li key={f}>{f}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="spec-section">
-          <div className="table-container">
-            <h2>Specifications and Technical Infromation</h2>
-            <table>
-              <tr>
-                <td>
-                  <span>Modification</span>
-                  {car.model_code
-                    .replaceAll("-", " ")
-                    .replace("polestar", "polestar ")
-                    .split(" ")
-                    .map(
-                      (word: string) =>
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                    )
-                    .join(" ")}
-                </td>
-                <td>
-                  <span>Model Year</span>
-                  {car.year}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Engine</span>
-                  Electric {car.motor}
-                </td>
-                <td>
-                  <span>Engine Power</span>
-                  {car.engine_power_kw} kW (
-                  {Math.round(Number(car.engine_power_kw) * 1.36)} bhp)
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Zero To Sixty</span>
-                  {car.zero_sixty}s
-                </td>
-                <td>
-                  <span>Torque</span>
-                  {car.torque} Nm
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Top Speed</span>
-                  {car.top_speed_mi} mph (
-                  {Math.round(Number(car.top_speed_mi) * 1.61)} kmh)
-                </td>
-                <td>
-                  <span>Battery Capacity</span>
-                  {car.battery_kwh} kWh
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Range</span>
-                  {car.range_mi} miles
-                </td>
-                <td>
-                  <span>Driveline</span>
-                  {car.driveline}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Towing Capacity</span>
-                  Up to {car.towing_capacity} kg
-                </td>
-                <td>
-                  <span>Color</span>
-                  {car.color}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Interior Type</span>
-                  {car.interior_color}
-                </td>
-                <td>
-                  <span>Wheels</span>
-                  {car.wheels}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span>Towing Hitch</span>
-                  {car.towing_hitch === "1" ? "Yes" : "No"}
-                </td>
-                <td>
-                  <span>Warranty</span>
-                  {car.warranty_years} Years
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
+        <ProductFeatures title="Vehicle Features and Details">
+          {car.features.split(";").map((f) => (
+            <li key={f}>{f}</li>
+          ))}
+        </ProductFeatures>
+        <SpecsTable>
+          <tr>
+            <td>
+              <span>Modification</span>
+              {car.model_code
+                .replaceAll("-", " ")
+                .replace("polestar", "polestar ")
+                .split(" ")
+                .map(
+                  (word: string) => word.charAt(0).toUpperCase() + word.slice(1)
+                )
+                .join(" ")}
+            </td>
+            <td>
+              <span>Model Year</span>
+              {car.year}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Engine</span>
+              Electric {car.motor}
+            </td>
+            <td>
+              <span>Engine Power</span>
+              {car.engine_power_kw} kW (
+              {Math.round(Number(car.engine_power_kw) * 1.36)} bhp)
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Zero To Sixty</span>
+              {car.zero_sixty}s
+            </td>
+            <td>
+              <span>Torque</span>
+              {car.torque} Nm
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Top Speed</span>
+              {car.top_speed_mi} mph (
+              {Math.round(Number(car.top_speed_mi) * 1.61)} kmh)
+            </td>
+            <td>
+              <span>Battery Capacity</span>
+              {car.battery_kwh} kWh
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Range</span>
+              {car.range_mi} miles
+            </td>
+            <td>
+              <span>Driveline</span>
+              {car.driveline}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Towing Capacity</span>
+              Up to {car.towing_capacity} kg
+            </td>
+            <td>
+              <span>Color</span>
+              {car.color}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Interior Type</span>
+              {car.interior_color}
+            </td>
+            <td>
+              <span>Wheels</span>
+              {car.wheels}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Towing Hitch</span>
+              {car.towing_hitch === "1" ? "Yes" : "No"}
+            </td>
+            <td>
+              <span>Warranty</span>
+              {car.warranty_years} Years
+            </td>
+          </tr>
+        </SpecsTable>
         <Footer />
       </div>
     </>

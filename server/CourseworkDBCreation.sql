@@ -107,6 +107,14 @@ CREATE TABLE `admin_credentials` (
   `admin_sessions_id` VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE `customize_options` (
+  `option_id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `model` VARCHAR(255) NOT NULL,
+  `option_type` VARCHAR(255) NOT NULL,
+  `option_name` VARCHAR(255) NOT NULL,
+  `price` BIGINT NOT NULL
+);
+
 ALTER TABLE `car` ADD CONSTRAINT `car_model_code_fk_foreign` FOREIGN KEY (`model_code_fk`) REFERENCES `car_model` (`model_code`);
 
 ALTER TABLE `car_order` ADD CONSTRAINT `car_order_customer_id_fk_foreign` FOREIGN KEY (`customer_id_fk`) REFERENCES `customer` (`customer_id`);

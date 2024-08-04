@@ -293,11 +293,13 @@ app.post("/new-vehicle/buy", async (c) => {
     VALUES (
       (
         SELECT car_id FROM car c
+        LEFT JOIN car_order co ON co.car_id_fk = c.car_id
         WHERE c.model_code_fk = "${carData.model_code_fk}"
           AND c.color = "${carData.color}"
           AND c.interior_color = "${carData.interior_color}"
           AND c.wheels = "${carData.wheels}"
           AND c.towing_hitch = ${carData.towing_hitch}
+          AND co.car_id_fk IS NULL
         LIMIT 1
       ),
       (

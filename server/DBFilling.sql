@@ -389,3 +389,109 @@ INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, fin
 VALUES(138, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
 INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status) 
 VALUES(139, 2, "2024-03-08", FALSE, 57150, "Cash", "Completed");
+
+
+
+-- CUSTOMIZE_OPTIONS TABLE FILLING WITH OPTIONS (INDEPENDENT)
+
+-- Color
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "color", "Snow", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "color", "Space", 500);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "color", "Midnight", 300);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "color", "Thunder", 200);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "color", "Magnesium", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "color", "Jupiter", 300);
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "color", "Snow", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "color", "Space", 700);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "color", "Midnight", 300);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "color", "Thunder", 400);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "color", "Magnesium", 100);
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "color", "Snow", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "color", "Space", 1000);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "color", "Magnesium", 300);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "color", "Gold", 2000);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "color", "Electron", 800);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "color", "Storm", 600);
+
+-- Interior
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "interior_color", "Embossed textile", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "interior_color", "Charcoal WeaveTech", 500);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "interior_color", "Slate WeaveTech", 600);
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "interior_color", "MicroTech", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "interior_color", "Charcoal Nappa", 300);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "interior_color", "Jupiter Nappa", 700);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "interior_color", "Zinc Nappa", 1000);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "interior_color", "Wool", 500);
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "interior_color", "MicroTech", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "interior_color", "Charcoal Nappa", 500);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "interior_color", "Zinc Nappa Leather", 1500);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "interior_color", "Tailored Knit", 2000);
+
+-- Wheels
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "wheels", "R19 Aero", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "wheels", "R20 Pro", 850);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "wheels", "R20 Perfomance", 1600);
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "wheels", "R21 Plus", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "wheels", "R22 Sport", 900);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "wheels", "R22 Perfomance", 2100);
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "wheels", "R20 Aero", 0);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "wheels", "R21 Sport", 500);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "wheels", "R21 Pro", 750);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "wheels", "R22 Perfomance", 2200);
+
+-- Towing hitch
+
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 2", "towing_hitch", "Yes", 200);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 3", "towing_hitch", "Yes", 300);
+INSERT INTO customize_options(model, option_type, option_name, price)
+VALUES("Polestar 4", "towing_hitch", "Yes", 400);

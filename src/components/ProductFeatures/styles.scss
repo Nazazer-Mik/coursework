@@ -1,0 +1,31 @@
+@use "../../utils/utils";
+
+.product-features {
+  background-color: utils.$secondary-color;
+  width: 100%;
+  padding: 10%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  box-sizing: border-box;
+
+  h2 {
+    @include utils.inter-font(500);
+    font-size: 2em;
+  }
+
+  ul {
+    @include utils.poppins-font;
+    font-size: 1.15em;
+    list-style-type: ">   ";
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    li::marker {
+      @include utils.archivo-font(700);
+      font-size: 1.5em;
+      color: utils.$primary-color-alternative;
+    }
+  }
+}
