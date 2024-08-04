@@ -14,13 +14,15 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TestDriveImport } from './routes/test-drive'
 import { Route as ServicingImport } from './routes/servicing'
 import { Route as RegisterImport } from './routes/register'
-import { Route as NewVehiclesImport } from './routes/new-vehicles'
-import { Route as CustomVehicleImport } from './routes/custom-vehicle'
+import { Route as NewVehiclesImport } from './routes/new-vehicles_'
+import { Route as CustomVehicleImport } from './routes/custom-vehicle_'
 import { Route as ChargingImport } from './routes/charging'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AdminImport } from './routes/admin_'
 import { Route as AdminAuthImport } from './routes/admin-auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as NewVehiclesCarPropsImport } from './routes/new-vehicles.$carProps'
+import { Route as CustomVehicleModelCodeImport } from './routes/custom-vehicle.$modelCode'
 import { Route as AdminTestDrivesImport } from './routes/admin/test-drives'
 import { Route as AdminServiceRequestsImport } from './routes/admin/service-requests'
 import { Route as AdminNewVehiclesImport } from './routes/admin/new-vehicles'
@@ -77,6 +79,16 @@ const AdminAuthRoute = AdminAuthImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const NewVehiclesCarPropsRoute = NewVehiclesCarPropsImport.update({
+  path: '/new-vehicles/$carProps',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CustomVehicleModelCodeRoute = CustomVehicleModelCodeImport.update({
+  path: '/custom-vehicle/$modelCode',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -226,6 +238,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestDrivesImport
       parentRoute: typeof rootRoute
     }
+    '/custom-vehicle/$modelCode': {
+      id: '/custom-vehicle/$modelCode'
+      path: '/custom-vehicle/$modelCode'
+      fullPath: '/custom-vehicle/$modelCode'
+      preLoaderRoute: typeof CustomVehicleModelCodeImport
+      parentRoute: typeof rootRoute
+    }
+    '/new-vehicles/$carProps': {
+      id: '/new-vehicles/$carProps'
+      path: '/new-vehicles/$carProps'
+      fullPath: '/new-vehicles/$carProps'
+      preLoaderRoute: typeof NewVehiclesCarPropsImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -248,6 +274,8 @@ export const routeTree = rootRoute.addChildren({
   AdminNewVehiclesRoute,
   AdminServiceRequestsRoute,
   AdminTestDrivesRoute,
+  CustomVehicleModelCodeRoute,
+  NewVehiclesCarPropsRoute,
 })
 
 /* prettier-ignore-end */
@@ -273,7 +301,9 @@ export const routeTree = rootRoute.addChildren({
         "/admin/custom-vehicles",
         "/admin/new-vehicles",
         "/admin/service-requests",
-        "/admin/test-drives"
+        "/admin/test-drives",
+        "/custom-vehicle/$modelCode",
+        "/new-vehicles/$carProps"
       ]
     },
     "/": {
@@ -292,10 +322,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "charging.tsx"
     },
     "/custom-vehicle": {
-      "filePath": "custom-vehicle.tsx"
+      "filePath": "custom-vehicle_.tsx"
     },
     "/new-vehicles": {
-      "filePath": "new-vehicles.tsx"
+      "filePath": "new-vehicles_.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
@@ -323,6 +353,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/admin/test-drives": {
       "filePath": "admin/test-drives.tsx"
+    },
+    "/custom-vehicle/$modelCode": {
+      "filePath": "custom-vehicle.$modelCode.tsx"
+    },
+    "/new-vehicles/$carProps": {
+      "filePath": "new-vehicles.$carProps.tsx"
     }
   }
 }

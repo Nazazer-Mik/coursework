@@ -223,6 +223,7 @@ app.get("/new-vehicle", async (c) => {
     cm.zero_sixty,
     cm.range_mi,
     wheels,
+    towing_hitch,
     (cm.price + modifications_price) AS price
 FROM
     car c
@@ -272,6 +273,47 @@ app.get("/new-vehicle/popular-cars", async (c) => {
   WHERE c.preassembled = 1
   GROUP BY c.model_code_fk, c.color, c.wheels, c.interior_color, c.towing_hitch
   LIMIT 3;
+  `;
+
+  const [popularCars] = await dbConnection.query(dbQuery);
+
+  return c.json(popularCars);
+});
+
+// --------------------
+
+app.post("/new-vehicles/full-spec", async (c) => {
+  const obj = await c.req.json();
+
+  const dbQuery = `
+  SELECT 
+    c.model_code_fk,
+    c.color,
+    c.interior_color,
+    c.wheels,
+    c.towing_hitch,
+    c.warranty_years,
+    cm.model_code,
+    cm.model,
+    cm.year,
+    cm.engine_power_kw,
+    cm.battery_kwh,
+    cm.range_mi,
+    cm.top_speed_mi,
+    cm.driveline,
+    cm.zero_sixty,
+    cm.towing_capacity,
+    cm.features,
+    cm.availability,
+    cm.motor,
+    cm.torque,
+    (cm.price + modifications_price) AS price
+  FROM
+    car c
+        INNER JOIN
+    car_model cm ON c.model_code_fk = cm.model_code
+  WHERE c.model_code_fk = "${obj.model_code_fk}" AND c.color = "${obj.color}" AND c.interior_color = "${obj.interior_color}" AND
+  c.wheels = "${obj.wheels}" AND c.towing_hitch = ${obj.towing_hitch} LIMIT 1;
   `;
 
   const [popularCars] = await dbConnection.query(dbQuery);

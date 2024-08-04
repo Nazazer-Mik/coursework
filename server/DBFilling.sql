@@ -1,4 +1,4 @@
--- CREATE USER IN UI FIRST!!!!!!!!!!!!!!!!!!!!!!!
+-- CREATE 3 USERS IN UI FIRST!!!!!!!!!!!!!!!!!!!!!!!
 
 -- Car models table:
 

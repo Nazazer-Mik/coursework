@@ -5,7 +5,7 @@ import CreateButton from "../../components/AdminComponents/buttons/CreateButton"
 import { ChangeEvent, Dispatch, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
-import { Model } from "../custom-vehicle";
+import { Model } from "../custom-vehicle_";
 import DeleteButton from "../../components/AdminComponents/buttons/DeleteButton";
 import "../../styles/admin/table-view.scss";
 import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";

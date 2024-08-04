@@ -127,7 +127,12 @@ function Home() {
         <PageSlide imagePath={secondSlideImage}>
           <div className="upper-text-block">
             <h2> Explore the Ultimate Driving Experience with Polestar 2 </h2>
-            <Link to={""}>Learn more</Link>
+            <Link
+              to={"/custom-vehicle/$modelCode"}
+              params={{ modelCode: "polestar2-dual-long" }}
+            >
+              Learn more
+            </Link>
           </div>
         </PageSlide>
         <Footer />

@@ -1,11 +1,5 @@
-import React, {
-  ChangeEvent,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { ChangeEvent, ReactNode, useEffect, useRef, useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/new-vehicles.scss";
@@ -20,6 +14,7 @@ export interface Car {
   wheels: string;
 
   model_code_fk: string;
+  towing_hitch: string;
   model: string;
   engine_power_kw: string;
   range_mi: string;
@@ -75,19 +70,23 @@ function ShowCars(
         }
       });
 
+      const carProps = `${c.model_code_fk}_${c.color}_${c.wheels}_${c.interior_color}_${c.towing_hitch}`;
+
       return (
-        <PreCarCard
-          model={c.model}
-          color={c.color}
-          range={c.range_mi}
-          zero_sixty={c.zero_sixty}
-          engine_power_kw={c.engine_power_kw}
-          wheels={c.wheels}
-          price={c.price}
-          motor={c.motor}
-          key={generateKeyFromObj(c)}
-          top={topPick}
-        />
+        <Link to="/new-vehicles/$carProps" params={{ carProps: carProps }}>
+          <PreCarCard
+            model={c.model}
+            color={c.color}
+            range={c.range_mi}
+            zero_sixty={c.zero_sixty}
+            engine_power_kw={c.engine_power_kw}
+            wheels={c.wheels}
+            price={c.price}
+            motor={c.motor}
+            key={generateKeyFromObj(c)}
+            top={topPick}
+          />
+        </Link>
       );
     });
   }

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { serverResponse } from "../../routes/admin/custom-vehicles";
-import { Model } from "../../routes/custom-vehicle";
-import { Car } from "../../routes/new-vehicles";
+import { Model } from "../../routes/custom-vehicle_";
+import { Car } from "../../routes/new-vehicles_";
 import { serverAddress } from "../auth-utils";
 import { Dispatch } from "react";
 

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/new-vehicles.scss";
@@ -45,14 +45,19 @@ function showModels(
     return <div className="loading-text">Loading...</div>;
   } else {
     return models.map((m) => (
-      <ModelCard
-        modelName={m.model}
-        price={"£" + m.price}
-        motor={m.motor}
-        imagePath={`src/assets/models/${m.model_code}.avif`}
-        key={m.model_code}
-        trending={trendingModel.model_code_fk === m.model_code}
-      />
+      <Link
+        to="/custom-vehicle/$modelCode"
+        params={{ modelCode: m.model_code }}
+      >
+        <ModelCard
+          modelName={m.model}
+          price={"£" + m.price}
+          motor={m.motor}
+          imagePath={`src/assets/models/${m.model_code}.avif`}
+          key={m.model_code}
+          trending={trendingModel.model_code_fk === m.model_code}
+        />
+      </Link>
     ));
   }
 }
