@@ -48,6 +48,17 @@ export interface Model {
   torque: string;
 }
 
+export interface CarOrder {
+  car_order_id: string;
+  car_id_fk: string;
+  customer_id_fk: string;
+  time_of_purchase: string;
+  delivery: string;
+  final_price: string;
+  payment_method: string;
+  status: string;
+}
+
 // -------------------- DB Init -----------------
 
 const dbConnection = mysql.createPool(dbPoolOptions);
@@ -582,6 +593,48 @@ app.post("/admin/new-vehicles", async (c) => {
     }
 
     await dbConnection.query(dbQuery);
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
+// --------------------
+
+app.get("/admin/car-orders", async (c) => {
+  const status = c.req.query().status;
+
+  const dbQuery = `SELECT * FROM car_order ${status == undefined ? "" : `WHERE status = "${status}"`};`;
+
+  const [orders] = await dbConnection.query(dbQuery);
+
+  return c.json(orders);
+});
+
+// --------------------
+
+app.post("/admin/car-orders", async (c) => {
+  try {
+    const body = await c.req.json();
+    const action = body.action;
+
+    if (action === "UPDATE STATUS") {
+      const { carOrderId, status } = body.data as {
+        carOrderId: number;
+        status: string;
+      };
+
+      const dbQuery = `UPDATE car_order SET status = "${status}" WHERE car_order_id = ${carOrderId};`;
+      await dbConnection.query(dbQuery);
+    }
   } catch (e) {
     console.log(e);
     return c.json({

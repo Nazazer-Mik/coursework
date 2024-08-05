@@ -1,0 +1,17 @@
+@use "../../utils/utils";
+
+.car-order-tables-container {
+  overflow-y: scroll;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100%;
+  padding: 5vw;
+
+  h2 {
+    @include utils.montserrat-font(700);
+    font-size: 2.2em;
+    color: utils.$contrast-fade-color;
+
+    text-align: center;
+  }
+}

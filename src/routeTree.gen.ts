@@ -28,6 +28,8 @@ import { Route as AdminServiceRequestsImport } from './routes/admin/service-requ
 import { Route as AdminNewVehiclesImport } from './routes/admin/new-vehicles'
 import { Route as AdminCustomVehiclesImport } from './routes/admin/custom-vehicles'
 import { Route as AdminChargersImport } from './routes/admin/chargers'
+import { Route as AdminChargerOrdersImport } from './routes/admin/charger-orders'
+import { Route as AdminCarOrdersImport } from './routes/admin/car-orders'
 import { Route as AdminBackupRestoreImport } from './routes/admin/backup-restore'
 
 // Create/Update Routes
@@ -117,6 +119,16 @@ const AdminChargersRoute = AdminChargersImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdminChargerOrdersRoute = AdminChargerOrdersImport.update({
+  path: '/admin/charger-orders',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminCarOrdersRoute = AdminCarOrdersImport.update({
+  path: '/admin/car-orders',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AdminBackupRestoreRoute = AdminBackupRestoreImport.update({
   path: '/admin/backup-restore',
   getParentRoute: () => rootRoute,
@@ -203,6 +215,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBackupRestoreImport
       parentRoute: typeof rootRoute
     }
+    '/admin/car-orders': {
+      id: '/admin/car-orders'
+      path: '/admin/car-orders'
+      fullPath: '/admin/car-orders'
+      preLoaderRoute: typeof AdminCarOrdersImport
+      parentRoute: typeof rootRoute
+    }
+    '/admin/charger-orders': {
+      id: '/admin/charger-orders'
+      path: '/admin/charger-orders'
+      fullPath: '/admin/charger-orders'
+      preLoaderRoute: typeof AdminChargerOrdersImport
+      parentRoute: typeof rootRoute
+    }
     '/admin/chargers': {
       id: '/admin/chargers'
       path: '/admin/chargers'
@@ -269,6 +295,8 @@ export const routeTree = rootRoute.addChildren({
   ServicingRoute,
   TestDriveRoute,
   AdminBackupRestoreRoute,
+  AdminCarOrdersRoute,
+  AdminChargerOrdersRoute,
   AdminChargersRoute,
   AdminCustomVehiclesRoute,
   AdminNewVehiclesRoute,
@@ -297,6 +325,8 @@ export const routeTree = rootRoute.addChildren({
         "/servicing",
         "/test-drive",
         "/admin/backup-restore",
+        "/admin/car-orders",
+        "/admin/charger-orders",
         "/admin/chargers",
         "/admin/custom-vehicles",
         "/admin/new-vehicles",
@@ -338,6 +368,12 @@ export const routeTree = rootRoute.addChildren({
     },
     "/admin/backup-restore": {
       "filePath": "admin/backup-restore.tsx"
+    },
+    "/admin/car-orders": {
+      "filePath": "admin/car-orders.tsx"
+    },
+    "/admin/charger-orders": {
+      "filePath": "admin/charger-orders.tsx"
     },
     "/admin/chargers": {
       "filePath": "admin/chargers.tsx"
