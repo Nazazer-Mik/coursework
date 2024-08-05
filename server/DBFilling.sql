@@ -495,3 +495,16 @@ INSERT INTO customize_options(model, option_type, option_name, price)
 VALUES("Polestar 3", "towing_hitch", "Yes", 300);
 INSERT INTO customize_options(model, option_type, option_name, price)
 VALUES("Polestar 4", "towing_hitch", "Yes", 400);
+
+-- CHARGER_MODELS
+
+INSERT INTO charger_model VALUES (1, "7.4kW Regular Charger", "CCS Connector", 7400, 7, 400);
+INSERT INTO charger_model VALUES (2, "7.4kW Long Charger", "CCS Connector", 7400, 15, 550);
+INSERT INTO charger_model VALUES (3, "11kW Regular Charger", "CCS Connector", 11000, 7, 600);
+INSERT INTO charger_model VALUES (4, "11kW Long Charger", "CCS Connector", 11000, 15, 800);
+
+-- CHARGER_ORDERS
+
+INSERT INTO charger_order VALUES(1, 1, 2, 1, 1, 550, "Completed", "0000127669");
+INSERT INTO charger_order VALUES(2, 2, 4, 0, 0, 800, "Awaiting confirmation", "0000127670");
+INSERT INTO charger_order VALUES(3, 1, 3, 1, 0, 600, "Completed", "0000127671");

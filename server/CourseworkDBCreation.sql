@@ -33,6 +33,7 @@ CREATE TABLE `charger_order` (
   `charger_model_code_fk` BIGINT NOT NULL,
   `delivery` BOOL NOT NULL,
   `installation` BOOL NOT NULL,
+  `serial_number` VARCHAR(255) NOT NULL,
   `final_price` INT NOT NULL,
   `status` VARCHAR(255) NOT NULL
 );
@@ -63,13 +64,12 @@ CREATE TABLE `car_order` (
 );
 
 CREATE TABLE `charger_model` (
-  `model_code` BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `charger_id` VARCHAR(255) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `model` VARCHAR(255) NOT NULL,
   `connector_type` VARCHAR(255) NOT NULL,
   `charging_speed_w` BIGINT NOT NULL,
   `color` VARCHAR(255) NOT NULL,
   `length` MEDIUMINT NOT NULL,
-  `serial_number` VARCHAR(255) NOT NULL,
   `price` INT NOT NULL
 );
 
@@ -133,6 +133,6 @@ ALTER TABLE `test_drive_booking` ADD CONSTRAINT `test_drive_booking_model_code_f
 
 ALTER TABLE `customer` ADD CONSTRAINT `customer_user_id_fk_foreign` FOREIGN KEY (`user_id_fk`) REFERENCES `credentials` (`user_id`);
 
-ALTER TABLE `charger_order` ADD CONSTRAINT `charger_order_charger_model_code_fk_foreign` FOREIGN KEY (`charger_model_code_fk`) REFERENCES `charger_model` (`model_code`);
+ALTER TABLE `charger_order` ADD CONSTRAINT `charger_order_charger_id_fk_foreign` FOREIGN KEY (`charger_id_fk`) REFERENCES `charger_model` (`charger_id`);
 
 INSERT INTO admin_credentials(username, password, admin_sessions_id) VALUES("polestar", "9cee5f0d6d3be35fe9adefa1376d388c", "4111b6fe73161df0109bccd4484c6e6e");

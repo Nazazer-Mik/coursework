@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import NavWrapper from "../../components/AdminComponents/NavWrapper";
-import "../../styles/admin/car-orders.scss";
+import "../../styles/admin/orders.scss";
 import SimpleTable from "../../components/AdminComponents/SimpleTable";
 import axios from "axios";
 import { serverAddress } from "../../utils/auth-utils";
@@ -22,7 +22,7 @@ type CarOrdersTables = {
   all: CarOrder[];
 };
 
-function getStatusColor(status: string) {
+export function getStatusColor(status: string) {
   const statColors = {
     "Awaiting confirmation": "#eaff7b",
     Completed: "#00ffab",
@@ -49,16 +49,17 @@ function CarOrdersHeader() {
   );
 }
 
-async function updateProperty(
+export async function updateProperty(
   orderId: string,
   propertyValue: string,
   updateActionName: string,
-  setUpdate: Dispatch<React.SetStateAction<number>>
+  setUpdate: Dispatch<React.SetStateAction<number>>,
+  productType: string
 ) {
-  await axios.post(serverAddress + "/admin/car-orders", {
+  await axios.post(`${serverAddress}/admin/${productType}-orders`, {
     action: updateActionName,
     data: {
-      carOrderId: orderId,
+      orderId: orderId,
       property: propertyValue,
     },
   });
@@ -86,7 +87,8 @@ function CarOrdersFilling(
               o.car_order_id,
               e.target.value,
               "UPDATE payment_method",
-              setUpdate
+              setUpdate,
+              "car"
             )
           }
         >
@@ -106,7 +108,8 @@ function CarOrdersFilling(
               o.car_order_id,
               e.target.value,
               "UPDATE status",
-              setUpdate
+              setUpdate,
+              "car"
             )
           }
         >
@@ -152,7 +155,7 @@ function AdminCarOrders() {
     <NavWrapper elementToHighlight={"admin-nav-car-orders"}>
       <div className="car-order-tables-container">
         <div className="awaiting-confirmation-orders">
-          <h2>Orders waiting for confirmation</h2>
+          <h2>Car orders waiting for confirmation</h2>
           <SimpleTable>
             {CarOrdersHeader()}
             {CarOrdersFilling(orders.unconfirmed, setUpdate)}

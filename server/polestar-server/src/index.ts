@@ -628,9 +628,52 @@ app.post("/admin/car-orders", async (c) => {
 
     if (action.split(" ")[0] === "UPDATE") {
       const propertyToUpdate = action.split(" ")[1];
-      const { carOrderId, property } = body.data;
+      const { orderId, property } = body.data;
 
-      const dbQuery = `UPDATE car_order SET ${propertyToUpdate} = "${property}" WHERE car_order_id = ${carOrderId};`;
+      const dbQuery = `UPDATE car_order SET ${propertyToUpdate} = "${property}" WHERE car_order_id = ${orderId};`;
+
+      await dbConnection.query(dbQuery);
+    }
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
+// --------------------
+
+app.get("/admin/charger-orders", async (c) => {
+  const status = c.req.query().status;
+
+  const dbQuery = `SELECT charger_order_id, customer_id_fk, charger_id_fk, cm.model AS model, delivery, installation, final_price, status, serial_number FROM charger_order co
+  INNER JOIN charger_model cm ON co.charger_id_fk = cm.charger_id
+  ${status == undefined ? "" : `WHERE co.status = "${status}"`};`;
+
+  const [orders] = await dbConnection.query(dbQuery);
+
+  return c.json(orders);
+});
+
+// --------------------
+
+app.post("/admin/charger-orders", async (c) => {
+  try {
+    const body = await c.req.json();
+    const action = body.action as string;
+
+    if (action.split(" ")[0] === "UPDATE") {
+      const propertyToUpdate = action.split(" ")[1];
+      const { orderId, property } = body.data;
+
+      const dbQuery = `UPDATE charger_order SET ${propertyToUpdate} = "${property}" WHERE charger_order_id = ${orderId};`;
 
       await dbConnection.query(dbQuery);
     }
