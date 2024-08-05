@@ -49,16 +49,17 @@ function CarOrdersHeader() {
   );
 }
 
-async function updateOrderStatus(
+async function updateProperty(
   orderId: string,
-  status: string,
+  propertyValue: string,
+  updateActionName: string,
   setUpdate: Dispatch<React.SetStateAction<number>>
 ) {
   await axios.post(serverAddress + "/admin/car-orders", {
-    action: "UPDATE STATUS",
+    action: updateActionName,
     data: {
       carOrderId: orderId,
-      status: status,
+      property: propertyValue,
     },
   });
 
@@ -77,13 +78,36 @@ function CarOrdersFilling(
       <td>{o.time_of_purchase.replace("T", " ").slice(0, 19)}</td>
       <td>{o.delivery}</td>
       <td>{o.final_price}</td>
-      <td>{o.payment_method}</td>
+      <td>
+        <select
+          defaultValue={o.payment_method}
+          onChange={(e) =>
+            updateProperty(
+              o.car_order_id,
+              e.target.value,
+              "UPDATE payment_method",
+              setUpdate
+            )
+          }
+        >
+          <option>Cash</option>
+          <option>Visa Debit</option>
+          <option>Visa Credit</option>
+          <option>Mastercard Debit</option>
+          <option>Mastercard Credit</option>
+        </select>
+      </td>
       <td>
         <select
           defaultValue={o.status}
           style={{ backgroundColor: getStatusColor(o.status) }}
           onChange={(e) =>
-            updateOrderStatus(o.car_order_id, e.target.value, setUpdate)
+            updateProperty(
+              o.car_order_id,
+              e.target.value,
+              "UPDATE status",
+              setUpdate
+            )
           }
         >
           <option>Awaiting confirmation</option>

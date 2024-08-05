@@ -624,15 +624,14 @@ app.get("/admin/car-orders", async (c) => {
 app.post("/admin/car-orders", async (c) => {
   try {
     const body = await c.req.json();
-    const action = body.action;
+    const action = body.action as string;
 
-    if (action === "UPDATE STATUS") {
-      const { carOrderId, status } = body.data as {
-        carOrderId: number;
-        status: string;
-      };
+    if (action.split(" ")[0] === "UPDATE") {
+      const propertyToUpdate = action.split(" ")[1];
+      const { carOrderId, property } = body.data;
 
-      const dbQuery = `UPDATE car_order SET status = "${status}" WHERE car_order_id = ${carOrderId};`;
+      const dbQuery = `UPDATE car_order SET ${propertyToUpdate} = "${property}" WHERE car_order_id = ${carOrderId};`;
+
       await dbConnection.query(dbQuery);
     }
   } catch (e) {
