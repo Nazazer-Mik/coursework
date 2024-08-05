@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { dbPoolOptions } from "./db/dbconfig";
 import mysql, { FieldPacket } from "mysql2/promise";
-import { insertNewUser } from "./db/dbqueries";
+import { insertNewUser, insertTransaction } from "./db/dbqueries";
 import { md5 } from "js-md5";
 
 export interface adminAuthCredentials {
@@ -415,6 +415,70 @@ app.get("/custom-vehicles/options", async (c) => {
   const [options] = await dbConnection.query(dbQuery);
 
   return c.json(options);
+});
+
+// --------------------
+
+app.post("/custom-vehicle/buy", async (c) => {
+  const result = await insertTransaction(dbConnection, async () => {
+    const obj = await c.req.json();
+    const userSessionId: string = obj.user_session_id;
+    const carData = obj.car;
+    const modificationsPrice = carData.final_price - carData.price;
+    const newVin = md5(String(Date.now())).slice(0, 17).toUpperCase(); // Need to be replaced with proper available_vin_and_numbers table in future
+    const newNumber =
+      `${md5(newVin).slice(0, 2)}24${md5(newVin).slice(3, 6)}`.toUpperCase(); // Need to be replaced with proper available_vin_and_numbers table in future
+
+    const insertCarQuery = `INSERT INTO car(model_code_fk, color, interior_color, wheels, towing_hitch, vin_code, reg_number, warranty_years, modifications_price, preassembled)
+      VALUES("${carData.model_code}", "${carData.color}", "${carData.interior_color}", "${carData.wheels}", ${(carData.towing_hitch as string).toLowerCase() == "yes" ? 1 : 0},
+      "${newVin}", "${newNumber}", ${carData.warranty_years}, ${modificationsPrice}, 0);`;
+
+    await dbConnection.query(insertCarQuery);
+
+    const carIdQuery = `
+    SELECT LAST_INSERT_ID() AS car_id;
+    `;
+
+    const [carIdRaw] = await dbConnection.query(carIdQuery);
+    const carId = (carIdRaw as { car_id: number }[])[0].car_id;
+
+    const insertCarOrderQuery = `
+    INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status)
+    VALUES (
+      ${carId},
+      (
+        SELECT ct.customer_id FROM customer ct
+        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
+        WHERE cr.sessions_id = "${userSessionId}"
+        LIMIT 1
+      ),
+      NOW(),
+      TRUE,
+      ${carData.final_price},
+      "Visa Debit",
+      "Awaiting confirmation"
+    );`;
+
+    await dbConnection.query(insertCarOrderQuery);
+
+    const updateStockQuery = `
+    UPDATE car_model SET availability = ${Number(carData.availability) - 1} WHERE model_code = "${carData.model_code}";
+    `;
+
+    await dbConnection.query(updateStockQuery);
+  });
+
+  if (result === "success") {
+    return c.json({
+      status: "OK",
+      message: "",
+    });
+  } else {
+    return c.json({
+      status: "Error",
+      message: (result as Error).toString(),
+    });
+  }
 });
 
 // --------------------

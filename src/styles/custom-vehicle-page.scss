@@ -143,10 +143,14 @@
   font-weight: 500;
 }
 
+.customizing-page:nth-child(2) {
+  background-color: utils.$secondary-color;
+}
+
 .towing-hitch-option {
   padding: 5vh;
   width: 100%;
-  background-color: utils.$soft-light-color;
+  background-color: utils.$h1-shadow;
 
   display: flex;
   flex-direction: row;
