@@ -30,6 +30,24 @@ export interface userRegData {
   password: string;
 }
 
+export interface Model {
+  model_code: string;
+  model: string;
+  year: string;
+  engine_power_kw: string;
+  battery_kwh: string;
+  range_mi: string;
+  top_speed_mi: string;
+  driveline: string;
+  zero_sixty: string;
+  towing_capacity: string;
+  features: string;
+  price: string;
+  availability: string;
+  motor: string;
+  torque: string;
+}
+
 // -------------------- DB Init -----------------
 
 const dbConnection = mysql.createPool(dbPoolOptions);
@@ -366,9 +384,37 @@ app.post("/new-vehicles/full-spec", async (c) => {
   c.wheels = "${obj.wheels}" AND c.towing_hitch = ${obj.towing_hitch} LIMIT 1;
   `;
 
-  const [popularCars] = await dbConnection.query(dbQuery);
+  const [fullCar] = await dbConnection.query(dbQuery);
 
-  return c.json(popularCars);
+  return c.json(fullCar);
+});
+
+// --------------------
+
+app.post("/custom-vehicles/full-spec", async (c) => {
+  const obj = await c.req.json();
+
+  const dbQuery = `
+  SELECT * FROM car_model WHERE model_code = "${obj.model_code}";
+  `;
+
+  const [fullModel] = await dbConnection.query(dbQuery);
+
+  return c.json((fullModel as Model[])[0]);
+});
+
+// --------------------
+
+app.get("/custom-vehicles/options", async (c) => {
+  const obj = await c.req.query();
+
+  const dbQuery = `
+  SELECT * FROM customize_options WHERE model = "${obj.model}";
+  `;
+
+  const [options] = await dbConnection.query(dbQuery);
+
+  return c.json(options);
 });
 
 // --------------------

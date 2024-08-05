@@ -1,0 +1,56 @@
+@use "../../utils/utils";
+
+.customizing-page {
+  width: inherit;
+  height: inherit;
+  box-sizing: inherit;
+  padding: 5%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  scroll-snap-align: end;
+
+  .pictures-pane-wrapper {
+    flex-grow: 6;
+
+    .pictures-pane {
+      padding: 0;
+      width: 100%;
+      height: 100%;
+
+      .pictures-container {
+        position: relative;
+        top: 50%;
+        width: 90%;
+        transform: translateY(-50%);
+        margin: 0 auto;
+
+        img {
+          width: 100%;
+          display: block;
+          overflow-clip-margin: border-box;
+        }
+      }
+    }
+  }
+
+  .right-pane {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    h2 {
+      @include utils.inter-font(600);
+      font-size: 1.8em;
+      color: utils.$contrast-color;
+      text-align: center;
+
+      u {
+        text-decoration-color: utils.$primary-color-alternative-bright;
+      }
+    }
+  }
+}
