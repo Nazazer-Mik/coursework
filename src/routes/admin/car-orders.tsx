@@ -81,6 +81,7 @@ function CarOrdersFilling(
       <td>{o.final_price}</td>
       <td>
         <select
+          name={"pm" + o.car_order_id}
           defaultValue={o.payment_method}
           onChange={(e) =>
             updateProperty(
@@ -101,6 +102,7 @@ function CarOrdersFilling(
       </td>
       <td>
         <select
+          name={"status" + o.car_order_id}
           defaultValue={o.status}
           style={{ backgroundColor: getStatusColor(o.status) }}
           onChange={(e) =>

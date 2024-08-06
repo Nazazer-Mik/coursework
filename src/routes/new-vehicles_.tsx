@@ -276,7 +276,7 @@ function NewVehicles() {
           </FilterPane>
           <div className="content-box">{ShowCars(cars, popularCars)}</div>
         </div>
-        <div className="page-line">
+        <div className="new-vehicles-page-line">
           <svg
             className="left-arrow"
             xmlns="http://www.w3.org/2000/svg"

@@ -1,0 +1,172 @@
+@use "../utils/utils";
+
+.chargers-container {
+  width: 100%;
+  height: 90vh;
+  overflow-y: scroll;
+
+  .first-slide {
+    width: 100%;
+    height: inherit;
+    padding: 10vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    box-sizing: border-box;
+    background-color: utils.$soft-light-color;
+    overflow: hidden;
+
+    h2 {
+      @include utils.inter-font(500);
+      font-size: 2em;
+    }
+
+    .content-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: stretch;
+
+      box-sizing: border-box;
+      padding-bottom: 15px;
+
+      .model-selection {
+        flex-basis: 0;
+        flex-grow: 2;
+
+        h3 {
+          @include utils.montserrat-font(600);
+          font-size: 1.3em;
+        }
+
+        .model-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: flex-start;
+
+          box-sizing: border-box;
+          font-size: 0.85em;
+
+          .charger-model {
+            box-sizing: border-box;
+            width: 90%;
+            padding: 25px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+            border-radius: 25px;
+            border: 2px solid #4e4e4e;
+            background-color: utils.$primary-color;
+            cursor: pointer;
+
+            box-shadow: 0 0 15px rgba(30, 30, 30, 0.5);
+            transition: 0.3s all ease;
+
+            .charger-properties {
+              flex-wrap: wrap;
+              justify-content: space-between;
+              justify-content: flex-start;
+              align-items: center;
+            }
+
+            h4 {
+              @include utils.poppins-font(600);
+              font-size: 1.1em;
+              margin-top: 0;
+              margin-bottom: 0;
+            }
+
+            p {
+              @include utils.archivo-font(500);
+              display: block;
+              margin-bottom: 0;
+              margin-right: 20px;
+              color: #444444;
+
+              border-left: 2px solid utils.$secondary-dark-color;
+              padding-left: 10px;
+
+              span {
+                color: utils.$inconspicuous-color;
+              }
+            }
+
+            .charger-price {
+              @include utils.poppins-font(700);
+              color: utils.$contrast-fade-color;
+
+              margin-left: auto;
+              border: none;
+            }
+          }
+
+          .charger-model:hover {
+            box-shadow: 0 0 15px rgba(30, 30, 30, 0.75);
+          }
+
+          .charger-model.highlighted {
+            border: 2px solid utils.$primary-color-alternative-bright;
+            box-shadow: 0 0 15px utils.$primary-color-alternative;
+          }
+        }
+      }
+
+      .charger-general-info {
+        flex-basis: 0;
+        flex-grow: 3;
+        box-sizing: border-box;
+        border: 25px solid utils.$soft-light-color;
+        margin-left: 5vw;
+        position: relative;
+        overflow: hidden;
+
+        p {
+          @include utils.archivo-font;
+          margin-top: 0;
+          width: 50%;
+          float: right;
+          background-color: utils.$soft-light-color;
+          padding: 10px;
+          font-size: 1.4em;
+          z-index: 10;
+          position: relative;
+        }
+
+        img {
+          position: absolute;
+          z-index: 1;
+          height: 68vh;
+          width: auto;
+          transform: translateX(3%);
+        }
+
+        hr {
+          border: none;
+          outline: none;
+          height: 1.8px;
+          margin-top: 20px;
+          margin-bottom: 20px;
+          display: block;
+          width: 90%;
+
+          background-color: utils.$inconspicuous-color;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
+
+.no-select-drag {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}

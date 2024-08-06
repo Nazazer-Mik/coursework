@@ -119,68 +119,71 @@ body {
 
 // Slide 2
 
-.slide-title {
-  @include utils.poppins-font(500);
-  font-size: 2em;
-  color: utils.$contrast-color;
-  background-color: utils.$text-color;
-
-  text-align: center;
-  margin-top: 0;
-  padding: 10px;
-}
-
-.sidebars-container {
+.slide2-sidebars-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
 
   height: 100%;
-}
 
-.sidebar {
-  background-color: utils.$text-color;
-  width: 20vw;
-  height: 100%;
-
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  h3 {
-    @include utils.roboto-slab-font(500);
+  .slide-title {
+    @include utils.poppins-font(500);
+    font-size: 2em;
     color: utils.$contrast-color;
-    font-size: 1.5em;
+    background-color: utils.$text-color;
+
+    text-align: center;
+    margin-top: 0;
+    padding: 10px;
   }
 
-  p,
-  ul {
-    @include utils.inter-font;
-    color: utils.$contrast-fade-color;
-  }
+  .sidebar {
+    background-color: utils.$text-color;
+    width: 20vw;
+    height: 100%;
 
-  p {
-    text-indent: 25px;
-  }
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-  ul {
-    font-size: 1.2em;
-    list-style-type: decimal;
+    h3 {
+      @include utils.roboto-slab-font(500);
+      color: utils.$contrast-color;
+      font-size: 1.5em;
+    }
 
-    li {
+    p,
+    ul {
+      @include utils.inter-font;
+      color: utils.$contrast-fade-color;
+    }
+
+    p {
+      text-indent: 25px;
+    }
+
+    ul {
+      font-size: 1.1em;
+      list-style-type: decimal;
+
+      li {
+        padding-bottom: 10px;
+      }
+    }
+
+    .upper-block {
+      padding: 25px;
+      padding-top: 0px;
       padding-bottom: 10px;
     }
-  }
 
-  .upper-block {
-    padding: 25px;
-  }
-
-  .bottom-block {
-    padding: 25px;
-    background-color: utils.$secondary-color;
+    .bottom-block {
+      padding: 25px;
+      padding-top: 10px;
+      background-color: utils.$secondary-color;
+    }
   }
 }
 

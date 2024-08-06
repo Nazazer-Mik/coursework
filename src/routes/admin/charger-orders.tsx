@@ -56,6 +56,7 @@ function ChargerOrdersFilling(
       <td>{o.final_price}</td>
       <td>
         <select
+          name={o.charger_order_id}
           defaultValue={o.status}
           style={{ backgroundColor: getStatusColor(o.status) }}
           onChange={(e) =>

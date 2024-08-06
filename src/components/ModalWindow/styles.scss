@@ -13,6 +13,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 1;
+  transition: all 1s ease 1s;
 
   .modal-window {
     background-color: utils.$primary-color;

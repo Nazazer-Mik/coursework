@@ -733,6 +733,16 @@ app.post("/admin/charger", async (c) => {
   });
 });
 
+// --------------------
+
+app.get("/charging", async (c) => {
+  const dbQuery = `SELECT * FROM charger_model;`;
+
+  const [chargerModels] = await dbConnection.query(dbQuery);
+
+  return c.json(chargerModels);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

@@ -90,7 +90,7 @@ function Home() {
           <div className="triangle"></div>
         </PageSlide>
         <PageSlide imagePath={thirdSlideImage}>
-          <div className="sidebars-container">
+          <div className="slide2-sidebars-container">
             <div className="sidebar">
               <div className="upper-block">
                 <h3>Targets for achieving climate neutrality</h3>
