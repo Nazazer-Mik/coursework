@@ -12,6 +12,7 @@ export interface ChargerOrder {
   charger_id_fk: string;
   model: string;
   customer_id_fk: string;
+  time_of_purchase: string;
   delivery: string;
   installation: string;
   serial_number: string;
@@ -31,6 +32,7 @@ function ChargerOrdersHeader() {
       <th>Charger ID</th>
       <th>Charger Model</th>
       <th>Cutomer ID</th>
+      <th>Time Of Purchase</th>
       <th>Delivery</th>
       <th>Installation</th>
       <th>Serial Number</th>
@@ -50,6 +52,7 @@ function ChargerOrdersFilling(
       <td>{o.charger_id_fk}</td>
       <td>{o.model}</td>
       <td>{o.customer_id_fk}</td>
+      <td>{o.time_of_purchase.replace("T", " ").slice(0, 19)}</td>
       <td>{o.delivery == "1" ? "Yes" : "No"}</td>
       <td>{o.installation == "1" ? "Yes" : "No"}</td>
       <td>{o.serial_number}</td>

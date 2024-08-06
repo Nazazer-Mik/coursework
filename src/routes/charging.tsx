@@ -17,8 +17,19 @@ export interface ChargerModel {
   price: string;
 }
 
+type RecentOrder = {
+  charger_id_fk: string;
+  days_elapsed: string;
+  minutes_elapsed: string;
+};
+
 async function fetchChargerModels() {
-  return (await axios.get(serverAddress + "/charging")).data;
+  const models = (await axios.get(serverAddress + "/charging")).data;
+  const recentOrder = (
+    await axios.get(serverAddress + "/charging/recent-order")
+  ).data;
+
+  return [models, recentOrder[0]];
 }
 
 export const Route = createFileRoute("/charging")({
@@ -28,7 +39,10 @@ export const Route = createFileRoute("/charging")({
 
 function ChargingPage() {
   const navigate = useNavigate({ from: "/charging" });
-  const chargers = Route.useLoaderData() as ChargerModel[];
+  const [chargers, recentOrder] = Route.useLoaderData() as [
+    ChargerModel[],
+    RecentOrder,
+  ];
   const [showModalWindow, setShowModalWindow] = useState(false);
   const [chargerOptions, setChargerOptions] = useState({
     chargerId: chargers[0].charger_id,
@@ -45,7 +59,16 @@ function ChargingPage() {
           setChargerOptions({ ...chargerOptions, chargerId: c.charger_id })
         }
       >
-        <h4>{c.model}</h4>
+        <h4>
+          {c.model}{" "}
+          {recentOrder.charger_id_fk == c.charger_id && (
+            <span>
+              Last ordered {recentOrder.days_elapsed} days&nbsp;
+              {Math.round(Number(recentOrder.minutes_elapsed) / 60)} hours&nbsp;
+              {Number(recentOrder.minutes_elapsed)} minutes ago!
+            </span>
+          )}
+        </h4>
         <div className="charger-properties">
           <p>
             <span>Charging speed: </span>

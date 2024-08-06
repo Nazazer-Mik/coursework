@@ -31,6 +31,7 @@ CREATE TABLE `charger_order` (
   `charger_order_id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `customer_id_fk` BIGINT NOT NULL,
   `charger_model_code_fk` BIGINT NOT NULL,
+  `time_of_purchase` DATETIME,
   `delivery` BOOL NOT NULL,
   `installation` BOOL NOT NULL,
   `serial_number` VARCHAR(255) NOT NULL,

@@ -653,7 +653,7 @@ app.post("/admin/car-orders", async (c) => {
 app.get("/admin/charger-orders", async (c) => {
   const status = c.req.query().status;
 
-  const dbQuery = `SELECT charger_order_id, customer_id_fk, charger_id_fk, cm.model AS model, delivery, installation, final_price, status, serial_number FROM charger_order co
+  const dbQuery = `SELECT charger_order_id, customer_id_fk, charger_id_fk, cm.model AS model, delivery, installation, final_price, status, serial_number, time_of_purchase FROM charger_order co
   INNER JOIN charger_model cm ON co.charger_id_fk = cm.charger_id
   ${status == undefined ? "" : `WHERE co.status = "${status}"`};`;
 
@@ -758,8 +758,8 @@ app.post("/charging", async (c) => {
         LIMIT 1
     )`;
 
-    const dbInsertQuery = `INSERT INTO charger_order(customer_id_fk, charger_id_fk, delivery, installation, final_price, serial_number, status)
-    VALUES(${userIdQuery}, ${details.chargerId}, ${details.delivery}, ${details.installation}, ${details.finalPrice}, "${md5(String(Date.now())).slice(0, 10)}", "Awaiting confirmation");`;
+    const dbInsertQuery = `INSERT INTO charger_order(customer_id_fk, charger_id_fk, delivery, installation, final_price, serial_number, time_of_purchase, status)
+    VALUES(${userIdQuery}, ${details.chargerId}, ${details.delivery}, ${details.installation}, ${details.finalPrice}, "${md5(String(Date.now())).slice(0, 10)}", NOW(), "Awaiting confirmation");`;
 
     await dbConnection.query(dbInsertQuery);
 
@@ -782,6 +782,21 @@ app.post("/charging", async (c) => {
       message: (result as Error).toString(),
     });
   }
+});
+
+// --------------------
+
+app.get("/charging/recent-order", async (c) => {
+  const dbQuery = `
+  SELECT charger_id_fk,
+  DATEDIFF(CURRENT_DATE(), DATE(time_of_purchase)) AS days_elapsed,
+  TIME_TO_SEC(TIMEDIFF(CURTIME(), TIME(time_of_purchase))) DIV 60 AS minutes_elapsed
+  FROM charger_order ORDER BY days_elapsed ASC LIMIT 1;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
 });
 
 // -------------------- SERVER START --------------------

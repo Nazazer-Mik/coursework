@@ -76,6 +76,13 @@
               font-size: 1.1em;
               margin-top: 0;
               margin-bottom: 0;
+
+              span {
+                float: right;
+                font-size: 0.8em;
+                font-weight: 400;
+                color: utils.$primary-color-alternative;
+              }
             }
 
             p {
