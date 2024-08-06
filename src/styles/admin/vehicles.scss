@@ -1,6 +1,7 @@
 @use "../../utils/utils";
 
-.vehicles-properties {
+.vehicles-properties,
+.charger-properties {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -64,6 +65,7 @@
   }
 }
 
+.charger-error-line,
 .vehicles-error-line {
   @include utils.archivo-font(600);
   color: utils.$error-color;

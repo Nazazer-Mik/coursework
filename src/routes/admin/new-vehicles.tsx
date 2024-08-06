@@ -12,8 +12,8 @@ import FloatingWindow from "../../components/AdminComponents/FloatingWindow/Floa
 import "../../styles/admin/vehicles.scss";
 import {
   cleanFields,
-  createVehicle,
-  deleteVehicle,
+  createObject,
+  deleteObject,
   saveEditData,
 } from "../../utils/admin/vehicles-utils";
 
@@ -35,7 +35,8 @@ interface Car {
 function LoadCars(
   cars: Car[] | null,
   setCars: Dispatch<React.SetStateAction<Car[]>>,
-  editCar: (c: Car) => void
+  editCar: (c: Car) => void,
+  doUpdate: Dispatch<React.SetStateAction<number>>
 ) {
   if (cars == null) {
     return <div className="loading">Loading...</div>;
@@ -60,7 +61,14 @@ function LoadCars(
         <td>
           <DeleteButton
             actionOnPress={() =>
-              deleteVehicle("car_id", c.car_id, "new", cars as Car[], setCars)
+              deleteObject(
+                "car_id",
+                c.car_id,
+                "new-vehicles",
+                cars as Car[],
+                setCars,
+                doUpdate
+              )
             }
           />
         </td>
@@ -81,6 +89,7 @@ function AdminNewVehicles() {
   });
   const [models, setModels] = useState<{ model_code: string }[]>([]);
   const [createWindowHidden, setCreateWindowHidden] = useState<boolean>(true);
+  const [updateNeeded, doUpdate] = useState(Date.now());
   const errorElem = useRef<HTMLDivElement>(null);
 
   const carKeys: (keyof Car)[] = [
@@ -128,7 +137,7 @@ function AdminNewVehicles() {
         ) as HTMLInputElement;
 
         if (k === "towing_hitch") {
-          elem.value = c[k] === "1" ? "Yes" : "No";
+          elem.value = c[k] == "1" ? "Yes" : "No";
         } else {
           elem.value = c[k];
         }
@@ -151,7 +160,7 @@ function AdminNewVehicles() {
     }
 
     fetchData();
-  }, [createWindowHidden, cars]);
+  }, [createWindowHidden, updateNeeded]);
 
   return (
     <NavWrapper elementToHighlight={"admin-nav-new-vehicles"}>
@@ -182,7 +191,8 @@ function AdminNewVehicles() {
             {LoadCars(
               cars,
               setCars as Dispatch<React.SetStateAction<Car[]>>,
-              editCar
+              editCar,
+              doUpdate
             )}
           </table>
           <FloatingWindow
@@ -193,18 +203,18 @@ function AdminNewVehicles() {
                 ? saveEditData(
                     errorElem.current as HTMLParagraphElement,
                     carKeys,
-                    "new",
+                    "new-vehicles",
                     setCreateWindowHidden,
                     editAction.carId
                   )
-                : createVehicle(
+                : createObject(
                     errorElem.current as HTMLParagraphElement,
                     carKeys,
-                    "new",
+                    "new-vehicles",
                     setCreateWindowHidden
                   );
             }}
-            clearAction={() => cleanFields(carKeys, "new")}
+            clearAction={() => cleanFields(carKeys, "new-vehicles")}
           >
             <div className="vehicles-properties new-vehicles">
               {getFields()}

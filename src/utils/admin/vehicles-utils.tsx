@@ -3,17 +3,16 @@ import { serverResponse } from "../../routes/admin/custom-vehicles";
 import { Model } from "../../routes/custom-vehicle_";
 import { Car } from "../../routes/new-vehicles_";
 import { serverAddress } from "../auth-utils";
-import { Dispatch } from "react";
+import { ChangeEvent, Dispatch } from "react";
+import { ChargerModel } from "../../routes/admin/chargers";
 
-type KeysType = (keyof Car)[] | (keyof Model)[];
+type KeysType = (keyof Car)[] | (keyof Model)[] | (keyof ChargerModel)[];
 
 export function cleanFields(keys: KeysType, prefix: string) {
   for (const k of keys) {
     if (k === "model_code_fk") continue;
 
-    const elem = document.getElementById(
-      `${prefix}-vehicles-` + k
-    ) as HTMLInputElement;
+    const elem = document.getElementById(`${prefix}-` + k) as HTMLInputElement;
     elem.value = "";
   }
 }
@@ -26,7 +25,7 @@ export function collectDataFromFields(
   const dataToSend = {} as Car | Model;
 
   for (const k of keys) {
-    const elem = document.getElementById(`${prefix}-vehicles-` + k) as
+    const elem = document.getElementById(`${prefix}-` + k) as
       | HTMLInputElement
       | HTMLSelectElement;
     const value = elem.value;
@@ -42,7 +41,7 @@ export function collectDataFromFields(
   return dataToSend;
 }
 
-export async function createVehicle(
+export async function createObject(
   errorElem: HTMLParagraphElement,
   keys: KeysType,
   prefix: string,
@@ -53,7 +52,7 @@ export async function createVehicle(
   if (dataToSend === null) return;
 
   const res = (
-    await axios.post(serverAddress + `/admin/${prefix}-vehicles`, {
+    await axios.post(serverAddress + `/admin/${prefix}`, {
       method: "CREATE",
       data: dataToSend,
     })
@@ -68,19 +67,22 @@ export async function createVehicle(
   setCreateWindowHidden(true);
 }
 
-export async function deleteVehicle(
+export async function deleteObject(
   pk_name: string,
   pk: string,
   prefix: string,
-  collection: Car[] | Model[],
-  setCollection: Dispatch<React.SetStateAction<Car[] | Model[]>>
+  collection: Car[] | Model[] | ChargerModel[],
+  setCollection: Dispatch<
+    React.SetStateAction<Car[] | Model[] | ChargerModel[]>
+  >,
+  doUpdate: Dispatch<React.SetStateAction<number>>
 ) {
   const confirmation = confirm("Are you sure you want to delete this row?");
 
   if (confirmation === false) return;
 
   const res = (
-    await axios.post(serverAddress + `/admin/${prefix}-vehicles`, {
+    await axios.post(serverAddress + `/admin/${prefix}`, {
       method: "DELETE",
       data: { [pk_name]: pk },
     })
@@ -91,12 +93,13 @@ export async function deleteVehicle(
     alert(mess);
     console.log(mess);
   } else {
-    setCollection(
-      collection.splice(
-        collection.findIndex((m) => m[pk_name] === pk),
-        1
-      )
+    const newCollection = [...collection];
+    newCollection.splice(
+      newCollection.findIndex((m) => m[pk_name] === pk),
+      1
     );
+    setCollection(newCollection);
+    doUpdate(Date.now());
   }
 }
 
@@ -107,12 +110,12 @@ export async function saveEditData(
   setEditWindowHidden: Dispatch<React.SetStateAction<boolean>>,
   carId: string
 ) {
-  const dataToSend = collectDataFromFields(keys, "new", errorElem);
+  const dataToSend = collectDataFromFields(keys, "new-vehicles", errorElem);
 
   if (dataToSend === null) return;
 
   const res = (
-    await axios.post(serverAddress + `/admin/${prefix}-vehicles`, {
+    await axios.post(serverAddress + `/admin/${prefix}`, {
       method: "UPDATE",
       data: { ...dataToSend, car_id: carId },
     })
@@ -127,4 +130,39 @@ export async function saveEditData(
 
   errorElem.innerHTML = "";
   setEditWindowHidden(true);
+}
+
+export async function ChangeModelProperty(
+  prop: string,
+  e: ChangeEvent<HTMLInputElement>,
+  oldVal: string,
+  modelCode: string,
+  prefix: string,
+  doUpdate: Dispatch<React.SetStateAction<number>>
+) {
+  const val = e.target.value;
+
+  const confirmation = confirm(
+    `Are you sure you want to change value from ${oldVal} to ${val}?`
+  );
+
+  if (confirmation === false) {
+    e.target.value = oldVal;
+    return;
+  }
+
+  const res = (
+    await axios.post(`${serverAddress}/admin/${prefix}`, {
+      method: "UPDATE",
+      data: { model_code: modelCode, property: prop, value: val },
+    })
+  ).data as serverResponse;
+
+  if (res.status !== "OK") {
+    const mess = "Internal Server Error! " + res.message;
+    alert(mess);
+    console.log(mess);
+  } else {
+    doUpdate(Date.now());
+  }
 }

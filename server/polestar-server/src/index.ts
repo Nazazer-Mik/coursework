@@ -691,6 +691,48 @@ app.post("/admin/charger-orders", async (c) => {
   });
 });
 
+// --------------------
+
+app.get("/admin/charger-models", async (c) => {
+  const dbQuery = `SELECT * FROM charger_model;`;
+
+  const [chargerModels] = await dbConnection.query(dbQuery);
+
+  return c.json(chargerModels);
+});
+
+// --------------------
+
+app.post("/admin/charger", async (c) => {
+  const body = await c.req.json();
+  const obj = body.data;
+  let dbQuery = "";
+
+  try {
+    if (body.method === "CREATE") {
+      dbQuery = `INSERT INTO charger_model(model, connector_type, charging_speed_w, length, availability, price) 
+      VALUES("${obj.model}", "${obj.connector_type}", ${obj.charging_speed_w}, ${obj.length}, ${obj.availability}, ${obj.price});`;
+    } else if (body.method === "DELETE") {
+      dbQuery = `DELETE FROM charger_model WHERE charger_id = "${obj.charger_id}";`;
+    } else if (body.method === "UPDATE") {
+      dbQuery = `UPDATE charger_model SET ${obj.property} = ${obj.value} WHERE charger_id = "${obj.model_code}";`;
+    }
+
+    await dbConnection.query(dbQuery);
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

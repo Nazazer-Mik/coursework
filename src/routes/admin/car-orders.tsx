@@ -36,7 +36,7 @@ export function getStatusColor(status: string) {
 
 function CarOrdersHeader() {
   return (
-    <tr>
+    <tr key={"header"}>
       <th>ID</th>
       <th>Car ID</th>
       <th>Cutomer ID</th>
@@ -72,12 +72,12 @@ function CarOrdersFilling(
   setUpdate: Dispatch<React.SetStateAction<number>>
 ) {
   return arr?.map((o: CarOrder) => (
-    <tr>
+    <tr key={o.car_order_id}>
       <td>{o.car_order_id}</td>
       <td>{o.car_id_fk}</td>
       <td>{o.customer_id_fk}</td>
       <td>{o.time_of_purchase.replace("T", " ").slice(0, 19)}</td>
-      <td>{o.delivery}</td>
+      <td>{o.delivery == "1" ? "Yes" : "No"}</td>
       <td>{o.final_price}</td>
       <td>
         <select

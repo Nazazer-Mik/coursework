@@ -11,9 +11,10 @@ import "../../styles/admin/table-view.scss";
 import FloatingWindow from "../../components/AdminComponents/FloatingWindow/FloatingWindow";
 import "../../styles/admin/vehicles.scss";
 import {
+  ChangeModelProperty,
   cleanFields,
-  createVehicle,
-  deleteVehicle,
+  createObject,
+  deleteObject,
 } from "../../utils/admin/vehicles-utils";
 
 export interface serverResponse {
@@ -27,9 +28,12 @@ function LoadModels(
     prop: string,
     e: ChangeEvent<HTMLInputElement>,
     oldVal: string,
-    modelCode: string
+    modelCode: string,
+    prefix: string,
+    doUpdate: Dispatch<React.SetStateAction<number>>
   ) => void,
-  setModels: Dispatch<React.SetStateAction<Model[]>>
+  setModels: Dispatch<React.SetStateAction<Model[]>>,
+  doUpdate: Dispatch<React.SetStateAction<number>>
 ) {
   if (models == null) {
     return <div className="loading">Loading...</div>;
@@ -58,7 +62,14 @@ function LoadModels(
           min={0}
           style={{ width: "50px" }}
           onBlur={(e) =>
-            changeProperty("availability", e, m.availability, m.model_code)
+            changeProperty(
+              "availability",
+              e,
+              m.availability,
+              m.model_code,
+              "custom-vehicles",
+              doUpdate
+            )
           }
         />
       </td>
@@ -69,18 +80,28 @@ function LoadModels(
           defaultValue={m.price}
           min={0}
           style={{ width: "70px" }}
-          onBlur={(e) => changeProperty("price", e, m.price, m.model_code)}
+          onBlur={(e) =>
+            changeProperty(
+              "price",
+              e,
+              m.price,
+              m.model_code,
+              "custom-vehicles",
+              doUpdate
+            )
+          }
         />
       </td>
       <td>
         <DeleteButton
           actionOnPress={() =>
-            deleteVehicle(
+            deleteObject(
               "model_code",
               m.model_code,
-              "custom",
+              "custom-vehicles",
               models as Model[],
-              setModels
+              setModels,
+              doUpdate
             )
           }
         />
@@ -96,6 +117,7 @@ export const Route = createFileRoute("/admin/custom-vehicles")({
 function AdminCustomVehicles() {
   const [models, setModels] = useState<Model[] | null>(null);
   const [createWindowHidden, setCreateWindowHidden] = useState<boolean>(true);
+  const [updateNeeded, doUpdate] = useState(Date.now());
   const errorElem = useRef<HTMLDivElement>(null);
 
   const modelKeys: (keyof Model)[] = [
@@ -133,37 +155,6 @@ function AdminCustomVehicles() {
     return res;
   };
 
-  const ChangeModelProperty = async (
-    prop: string,
-    e: ChangeEvent<HTMLInputElement>,
-    oldVal: string,
-    modelCode: string
-  ) => {
-    const val = e.target.value;
-
-    const confirmation = confirm(
-      `Are you sure you want to change value from ${oldVal} to ${val}?`
-    );
-
-    if (confirmation === false) {
-      e.target.value = oldVal;
-      return;
-    }
-
-    const res = (
-      await axios.post(serverAddress + "/admin/custom-vehicles", {
-        method: "UPDATE",
-        data: { model_code: modelCode, property: prop, value: val },
-      })
-    ).data as serverResponse;
-
-    if (res.status !== "OK") {
-      const mess = "Internal Server Error! " + res.message;
-      alert(mess);
-      console.log(mess);
-    }
-  };
-
   useEffect(() => {
     async function fetchData() {
       const data = (await axios.get(serverAddress + "/custom-vehicle")).data;
@@ -171,7 +162,7 @@ function AdminCustomVehicles() {
     }
 
     fetchData();
-  }, [createWindowHidden, models]);
+  }, [createWindowHidden, updateNeeded]);
 
   return (
     <NavWrapper elementToHighlight={"admin-nav-custom-vehicles"}>
@@ -204,21 +195,22 @@ function AdminCustomVehicles() {
             {LoadModels(
               models,
               ChangeModelProperty,
-              setModels as Dispatch<React.SetStateAction<Model[]>>
+              setModels as Dispatch<React.SetStateAction<Model[]>>,
+              doUpdate
             )}
           </table>
           <FloatingWindow
             hide={createWindowHidden}
             cancelAction={() => setCreateWindowHidden(true)}
             saveAction={() =>
-              createVehicle(
+              createObject(
                 errorElem.current as HTMLParagraphElement,
                 modelKeys,
-                "custom",
+                "custom-vehicles",
                 setCreateWindowHidden
               )
             }
-            clearAction={() => cleanFields(modelKeys, "custom")}
+            clearAction={() => cleanFields(modelKeys, "custom-vehicles")}
           >
             <div className="vehicles-properties">{getMostFields()}</div>
             <div className="custom-vehicles-features-property">

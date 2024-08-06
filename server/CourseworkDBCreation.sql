@@ -64,12 +64,13 @@ CREATE TABLE `car_order` (
 );
 
 CREATE TABLE `charger_model` (
-  `charger_id` VARCHAR(255) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `charger_id` BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `model` VARCHAR(255) NOT NULL,
   `connector_type` VARCHAR(255) NOT NULL,
   `charging_speed_w` BIGINT NOT NULL,
   `color` VARCHAR(255) NOT NULL,
   `length` MEDIUMINT NOT NULL,
+  `availability` INT NOT NULL,
   `price` INT NOT NULL
 );
 

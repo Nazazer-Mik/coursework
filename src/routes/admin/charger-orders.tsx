@@ -26,7 +26,7 @@ type ChargerOrdersTables = {
 
 function ChargerOrdersHeader() {
   return (
-    <tr>
+    <tr key={"header"}>
       <th>ID</th>
       <th>Charger ID</th>
       <th>Charger Model</th>
@@ -45,7 +45,7 @@ function ChargerOrdersFilling(
   setUpdate: Dispatch<React.SetStateAction<number>>
 ) {
   return arr?.map((o: ChargerOrder) => (
-    <tr>
+    <tr key={o.charger_order_id}>
       <td>{o.charger_order_id}</td>
       <td>{o.charger_id_fk}</td>
       <td>{o.model}</td>
