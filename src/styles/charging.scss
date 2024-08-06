@@ -118,7 +118,7 @@
         flex-grow: 3;
         box-sizing: border-box;
         border: 25px solid utils.$soft-light-color;
-        margin-left: 5vw;
+        padding-left: 5vw;
         position: relative;
         overflow: hidden;
 
@@ -127,7 +127,8 @@
           margin-top: 0;
           width: 50%;
           float: right;
-          background-color: utils.$soft-light-color;
+          background-color: rgba(250, 249, 246, 0.9);
+          backdrop-filter: blur(3px);
           padding: 10px;
           font-size: 1.4em;
           z-index: 10;
@@ -139,7 +140,7 @@
           z-index: 1;
           height: 68vh;
           width: auto;
-          transform: translateX(3%);
+          left: 0;
         }
 
         hr {
@@ -157,16 +158,47 @@
       }
     }
   }
-}
 
-.no-select-drag {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
+  .buy-section,
+  .optional-services {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5vw;
+    background-color: utils.$soft-light-color;
 
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+    button {
+      cursor: pointer;
+      display: inline-block;
+      outline: none;
+
+      border: 3px solid utils.$contrast-color;
+      background-color: transparent;
+      color: utils.$contrast-color;
+
+      @include utils.montserrat-font;
+      padding: 20px;
+      font-size: 1.4em;
+      text-wrap: nowrap;
+
+      transition: 0.3s all ease;
+    }
+
+    button:hover {
+      background-color: utils.$text-color;
+      border: 3px solid utils.$primary-color-alternative-bright;
+      color: #333333;
+    }
+
+    p {
+      @include utils.archivo-font;
+      width: 70%;
+      font-size: 1.3em;
+    }
+  }
+
+  .optional-services {
+    padding-top: 0;
+  }
 }

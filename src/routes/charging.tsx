@@ -97,6 +97,26 @@ function ChargingPage() {
             </div>
           </div>
         </div>
+        <div className="buy-section no-select-drag">
+          <button type="button">Order Now</button>
+          <p>
+            An EV home charger can be easily mounted on an existing wall and
+            connected to the wiring that’s already there. The other option is to
+            mount it on a post, allowing for more freedom of placement. Expect
+            slightly higher installation costs for the latter, as it will
+            usually require a new underground mains connection.
+          </p>
+        </div>
+        <div className="optional-services">
+          <div>
+            <input type="checkbox" />{" "}
+            <label>Deliver charger to my home address</label>
+          </div>
+          <div>
+            <input type="checkbox" />{" "}
+            <label>Mount charger to my property</label>
+          </div>
+        </div>
         <Footer />
       </div>
     </>
