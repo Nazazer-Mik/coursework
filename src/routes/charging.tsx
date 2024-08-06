@@ -1,10 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/charging.scss";
 import axios from "axios";
 import { serverAddress } from "../utils/auth-utils";
 import { useState } from "react";
+import ModalWindow from "../components/ModalWindow";
 
 export interface ChargerModel {
   charger_id: string;
@@ -26,17 +27,23 @@ export const Route = createFileRoute("/charging")({
 });
 
 function ChargingPage() {
+  const navigate = useNavigate({ from: "/charging" });
   const chargers = Route.useLoaderData() as ChargerModel[];
-  const [chargerSelected, setChargerSelected] = useState(
-    chargers[0].charger_id
-  );
+  const [showModalWindow, setShowModalWindow] = useState(false);
+  const [chargerOptions, setChargerOptions] = useState({
+    chargerId: chargers[0].charger_id,
+    delivery: false,
+    installation: false,
+  });
 
   const fillChargerList = () => {
     return chargers.map((c) => (
       <div
-        className={`charger-model no-select-drag ${chargerSelected == c.charger_id && "highlighted"}`}
+        className={`charger-model no-select-drag ${chargerOptions.chargerId == c.charger_id && "highlighted"}`}
         key={c.charger_id}
-        onClick={() => setChargerSelected(c.charger_id)}
+        onClick={() =>
+          setChargerOptions({ ...chargerOptions, chargerId: c.charger_id })
+        }
       >
         <h4>{c.model}</h4>
         <div className="charger-properties">
@@ -58,8 +65,47 @@ function ChargingPage() {
     ));
   };
 
+  const makeChargerOrder = async () => {
+    const session_id = localStorage.getItem("session_id");
+
+    if (session_id == null) {
+      await navigate({ to: "/auth" });
+      return;
+    }
+
+    const res = (
+      await axios.post(serverAddress + "/charging", {
+        ...chargerOptions,
+        sessionId: session_id,
+        finalPrice:
+          Number(
+            chargers.filter((c) => c.charger_id == chargerOptions.chargerId)[0]
+              .price
+          ) +
+          (chargerOptions.delivery ? 30 : 0) +
+          (chargerOptions.installation ? 70 : 0),
+      })
+    ).data;
+
+    if (res.status == "OK") {
+      setShowModalWindow(true);
+    } else {
+      console.log(res);
+    }
+  };
+
   return (
     <>
+      <ModalWindow
+        title={`Thank you for ordering the charger!`}
+        mainText={
+          "Our Customer Service Team will contact you shortly to confirm the order."
+        }
+        onOkAction={() => {
+          navigate({ to: "/" });
+        }}
+        show={showModalWindow}
+      />
       <Header elementToHiglight={"header-charging"} />
       <div className="chargers-container">
         <div className="first-slide">
@@ -97,8 +143,46 @@ function ChargingPage() {
             </div>
           </div>
         </div>
+        <div className="optional-services">
+          <div className="optional-feature">
+            <input
+              type="checkbox"
+              name="delivery"
+              onChange={(e) =>
+                setChargerOptions({
+                  ...chargerOptions,
+                  delivery: e.target.checked,
+                })
+              }
+              id="charger-delivery"
+            />{" "}
+            <label className="no-select-drag" htmlFor="charger-delivery">
+              Deliver charger to my home address <span>(+ £30)</span>
+            </label>
+          </div>
+          <div className="optional-feature">
+            <input
+              type="checkbox"
+              name="installation"
+              onChange={(e) =>
+                setChargerOptions({
+                  ...chargerOptions,
+                  installation: e.target.checked,
+                })
+              }
+              id="charger-installation"
+            />{" "}
+            <label className="no-select-drag" htmlFor="charger-installation">
+              Mount charger to my property <span>(+ £70)</span>
+            </label>
+          </div>
+        </div>
         <div className="buy-section no-select-drag">
-          <button type="button">Order Now</button>
+          <div>
+            <button type="button" onClick={() => makeChargerOrder()}>
+              Order Now
+            </button>
+          </div>
           <p>
             An EV home charger can be easily mounted on an existing wall and
             connected to the wiring that’s already there. The other option is to
@@ -106,16 +190,6 @@ function ChargingPage() {
             slightly higher installation costs for the latter, as it will
             usually require a new underground mains connection.
           </p>
-        </div>
-        <div className="optional-services">
-          <div>
-            <input type="checkbox" />{" "}
-            <label>Deliver charger to my home address</label>
-          </div>
-          <div>
-            <input type="checkbox" />{" "}
-            <label>Mount charger to my property</label>
-          </div>
         </div>
         <Footer />
       </div>

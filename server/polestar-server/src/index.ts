@@ -743,6 +743,47 @@ app.get("/charging", async (c) => {
   return c.json(chargerModels);
 });
 
+// --------------------
+
+app.post("/charging", async (c) => {
+  // Creating new charger order
+
+  const result = await insertTransaction(dbConnection, async () => {
+    const details = await c.req.json();
+
+    const userIdQuery = `(
+        SELECT ct.customer_id FROM customer ct
+        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
+        WHERE cr.sessions_id = "${details.sessionId}"
+        LIMIT 1
+    )`;
+
+    const dbInsertQuery = `INSERT INTO charger_order(customer_id_fk, charger_id_fk, delivery, installation, final_price, serial_number, status)
+    VALUES(${userIdQuery}, ${details.chargerId}, ${details.delivery}, ${details.installation}, ${details.finalPrice}, "${md5(String(Date.now())).slice(0, 10)}", "Awaiting confirmation");`;
+
+    await dbConnection.query(dbInsertQuery);
+
+    const getAvailabilityQuery = `SELECT availability FROM charger_model WHERE charger_id = ${details.chargerId};`;
+    const [stockRaw] = await dbConnection.query(getAvailabilityQuery);
+    const stock = (stockRaw as { availability: number }[])[0].availability;
+
+    const dbUpdateQuery = `UPDATE charger_model SET availability = ${stock - 1} WHERE charger_id = ${details.chargerId};`;
+    await dbConnection.query(dbUpdateQuery);
+  });
+
+  if (result === "success") {
+    return c.json({
+      status: "OK",
+      message: "",
+    });
+  } else {
+    return c.json({
+      status: "Error",
+      message: (result as Error).toString(),
+    });
+  }
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

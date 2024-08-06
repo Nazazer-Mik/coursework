@@ -163,9 +163,12 @@
   .optional-services {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+    padding-left: 10vh;
+    padding-right: 10vh;
     padding: 5vw;
+    padding-top: 0;
     background-color: utils.$soft-light-color;
 
     button {
@@ -183,6 +186,7 @@
       text-wrap: nowrap;
 
       transition: 0.3s all ease;
+      width: 25vw;
     }
 
     button:hover {
@@ -193,12 +197,32 @@
 
     p {
       @include utils.archivo-font;
-      width: 70%;
+      width: 65%;
       font-size: 1.3em;
     }
   }
 
   .optional-services {
-    padding-top: 0;
+    padding: 10vh;
+    padding-bottom: 0;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .optional-feature {
+      margin-bottom: 10px;
+
+      label {
+        @include utils.poppins-font;
+        font-size: 1.2em;
+        margin-left: 10px;
+
+        span {
+          color: utils.$apply-color;
+          font-size: 0.9em;
+          margin-left: 15px;
+          font-weight: 600;
+        }
+      }
+    }
   }
 }
