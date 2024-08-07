@@ -53,7 +53,6 @@ function LoadModels(
       <td>{m.driveline}</td>
       <td>{m.zero_sixty}</td>
       <td>{m.towing_capacity}</td>
-      <td>{m.features.length > 0 ? "..." : ""}</td>
       <td>
         <input
           type="number"
@@ -187,7 +186,6 @@ function AdminCustomVehicles() {
               <th>Driveline</th>
               <th>0-60</th>
               <th>Tow kg</th>
-              <th>Features</th>
               <th>Stock</th>
               <th>Price</th>
               <th></th>
@@ -212,7 +210,9 @@ function AdminCustomVehicles() {
             }
             clearAction={() => cleanFields(modelKeys, "custom-vehicles")}
           >
-            <div className="vehicles-properties">{getMostFields()}</div>
+            <div className="vehicles-properties custom-vehicles">
+              {getMostFields()}
+            </div>
             <div className="custom-vehicles-features-property">
               <div>
                 <label htmlFor="custom-vehicles-features">Features</label>

@@ -181,7 +181,7 @@ function AdminNewVehicles() {
               <th>Tow bar</th>
               <th>VIN</th>
               <th>REG</th>
-              <th>Warranty</th>
+              <th>WY</th>
               <th>Mod Price</th>
               <th>Prebuilt</th>
               <th>Sold</th>

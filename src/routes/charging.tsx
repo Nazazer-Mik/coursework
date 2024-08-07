@@ -51,41 +51,50 @@ function ChargingPage() {
   });
 
   const fillChargerList = () => {
-    return chargers.map((c) => (
-      <div
-        className={`charger-model no-select-drag ${chargerOptions.chargerId == c.charger_id && "highlighted"}`}
-        key={c.charger_id}
-        onClick={() =>
-          setChargerOptions({ ...chargerOptions, chargerId: c.charger_id })
-        }
-      >
-        <h4>
-          {c.model}{" "}
-          {recentOrder.charger_id_fk == c.charger_id && (
-            <span>
-              Last ordered {recentOrder.days_elapsed} days&nbsp;
-              {Math.round(Number(recentOrder.minutes_elapsed) / 60)} hours&nbsp;
-              {Number(recentOrder.minutes_elapsed)} minutes ago!
-            </span>
-          )}
-        </h4>
-        <div className="charger-properties">
-          <p>
-            <span>Charging speed: </span>
-            {Number(c.charging_speed_w) / 1000}kW
-          </p>
-          <p>
-            <span>Connector type: </span>
-            {c.connector_type}
-          </p>
-          <p>
-            <span>Wire Length: </span>
-            {c.length}
-          </p>
-          <p className="charger-price">£{c.price}</p>
+    return chargers.map((c) => {
+      const hoursElapsed = Math.abs(
+        Math.floor(Number(recentOrder.minutes_elapsed) / 60)
+      );
+      const minutesElapsed = Math.abs(
+        Math.abs(Number(recentOrder.minutes_elapsed)) - hoursElapsed * 60
+      );
+
+      return (
+        <div
+          className={`charger-model no-select-drag ${chargerOptions.chargerId == c.charger_id && "highlighted"}`}
+          key={c.charger_id}
+          onClick={() =>
+            setChargerOptions({ ...chargerOptions, chargerId: c.charger_id })
+          }
+        >
+          <h4>
+            {c.model}{" "}
+            {recentOrder.charger_id_fk == c.charger_id && (
+              <span>
+                Last ordered {recentOrder.days_elapsed} days&nbsp;
+                {hoursElapsed} hours&nbsp;
+                {minutesElapsed} minutes ago!
+              </span>
+            )}
+          </h4>
+          <div className="charger-properties">
+            <p>
+              <span>Charging speed: </span>
+              {Number(c.charging_speed_w) / 1000}kW
+            </p>
+            <p>
+              <span>Connector type: </span>
+              {c.connector_type}
+            </p>
+            <p>
+              <span>Wire Length: </span>
+              {c.length}
+            </p>
+            <p className="charger-price">£{c.price}</p>
+          </div>
         </div>
-      </div>
-    ));
+      );
+    });
   };
 
   const makeChargerOrder = async () => {
