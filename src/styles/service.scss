@@ -3,7 +3,7 @@
 .service-container {
   width: 100%;
   height: 90vh;
-  overflow-y: scroll;
+  overflow: hidden;
   background-color: utils.$soft-light-color;
 
   .main-slide {
@@ -12,5 +12,94 @@
     padding: 5vw;
 
     box-sizing: border-box;
+    position: relative;
+  }
+
+  .reg-number-reader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+    transition: 0.8s all ease-out;
+
+    h2 {
+      @include utils.inter-font;
+      font-size: 1.7em;
+    }
+
+    input {
+      @include utils.teko-font(700);
+      font-size: 1.8em;
+      text-align: center;
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+      outline: none;
+      border: none;
+      padding: 10px;
+
+      border-left: 3px solid utils.$primary-color-alternative-bright;
+      padding-left: 4px;
+      background-color: utils.$secondary-color;
+      transition: 0.1s all ease;
+      box-sizing: content-box;
+
+      margin-top: 25px;
+      margin-bottom: 25px;
+    }
+
+    input:focus {
+      border-width: 7px;
+      padding-left: 0px;
+    }
+
+    p {
+      @include utils.archivo-font;
+      color: utils.$contrast-fade-color;
+    }
+
+    button {
+      cursor: pointer;
+      display: inline-block;
+      outline: none;
+
+      border: 3px solid utils.$contrast-color;
+      background-color: transparent;
+      color: utils.$contrast-color;
+
+      @include utils.montserrat-font;
+      padding: 15px;
+      padding-left: 35px;
+      padding-right: 35px;
+      font-size: 1.4em;
+      text-wrap: nowrap;
+
+      transition: 0.3s all ease;
+      width: auto;
+    }
+
+    button:hover {
+      background-color: utils.$text-color;
+      border: 3px solid utils.$primary-color-alternative-bright;
+      color: #333333;
+    }
+  }
+
+  .reg-number-reader.hide-left {
+    display: none;
+    opacity: 0;
+    transform: translateX(-200%);
+  }
+
+  .request-creator {
+    transition: 0.8s all ease-out;
+  }
+
+  .request-creator.hide-right {
+    display: none;
+    opacity: 0;
+    transform: translateX(200%);
   }
 }

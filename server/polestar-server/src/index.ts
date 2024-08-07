@@ -799,6 +799,19 @@ app.get("/charging/recent-order", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
+app.get("/service/reg-number", async (c) => {
+  const regNumber = ((await c.req.query()) as { regNumber: string }).regNumber;
+
+  console.log(regNumber);
+  // const query = `
+  // SELECT car_id,
+  // `;
+
+  return c.text("OK");
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;
