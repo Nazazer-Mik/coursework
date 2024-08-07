@@ -85,6 +85,11 @@
       border: 3px solid utils.$primary-color-alternative-bright;
       color: #333333;
     }
+
+    .reg-error {
+      @include utils.archivo-font(500);
+      color: utils.$error-color;
+    }
   }
 
   .reg-number-reader.hide-left {

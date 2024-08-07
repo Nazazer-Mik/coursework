@@ -804,12 +804,19 @@ app.get("/charging/recent-order", async (c) => {
 app.get("/service/reg-number", async (c) => {
   const regNumber = ((await c.req.query()) as { regNumber: string }).regNumber;
 
-  console.log(regNumber);
-  // const query = `
-  // SELECT car_id,
-  // `;
+  const query = `
+  SELECT car_id, 
+  ADDDATE(DATE(co.time_of_purchase), INTERVAL c.warranty_years YEAR) AS warranty_until,
+  (ADDDATE(DATE(co.time_of_purchase), INTERVAL c.warranty_years YEAR) > CURDATE()) as warranty_valid,
+  CURDATE() as currdate
+  FROM car c
+  INNER JOIN car_order co ON c.car_id = co.car_id_fk
+  WHERE c.reg_number = "${regNumber}";
+  `;
 
-  return c.text("OK");
+  const [res] = await dbConnection.query(query);
+
+  return c.json(res);
 });
 
 // -------------------- SERVER START --------------------

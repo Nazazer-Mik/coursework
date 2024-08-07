@@ -26,10 +26,13 @@ export const Route = createFileRoute("/servicing")({
 function ServiceWarranty() {
   const [car, setCar] = useState<Car>();
   const regField = useRef<HTMLInputElement>(null);
+  const regErrorElem = useRef<HTMLSpanElement>(null);
 
   const getCar = async () => {
+    const errorField = regErrorElem.current as HTMLSpanElement;
     const regNumber = regField.current?.value;
     if (regNumber?.length != 7) {
+      errorField.innerText = "Wrong format of registration number <XXDDXXX>";
       return;
     }
 
@@ -37,9 +40,16 @@ function ServiceWarranty() {
       await axios.get(serverAddress + "/service/reg-number", {
         params: { regNumber: regNumber?.toUpperCase() },
       })
-    ).data;
+    ).data as Car[];
 
     console.log(carData);
+    if (carData.length === 0) {
+      errorField.innerText =
+        "We couldn't find car with this number in our database";
+    } else {
+      errorField.innerText = "";
+      setCar(carData[0]);
+    }
   };
 
   return (
@@ -57,6 +67,7 @@ function ServiceWarranty() {
               name="service-reg-number"
               ref={regField}
             />
+            <span ref={regErrorElem} className="reg-error"></span>
             <p>
               Please note: We only service cars purchased from our dealership
             </p>
