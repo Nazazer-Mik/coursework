@@ -9,10 +9,14 @@
   .main-slide {
     width: inherit;
     height: inherit;
-    padding: 5vw;
+    padding: 5vh;
 
     box-sizing: border-box;
     position: relative;
+
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    background-size: 110%;
   }
 
   .reg-number-reader {
@@ -100,6 +104,111 @@
 
   .request-creator {
     transition: 0.8s all ease-out;
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+
+    height: 80vh;
+
+    #service-form {
+      background-color: rgba(218, 221, 220, 0.85);
+      backdrop-filter: blur(15px);
+
+      width: 30vw;
+      padding: 25px;
+      box-sizing: border-box;
+
+      h2 {
+        @include utils.inter-font(600);
+        font-size: 1.8em;
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      p {
+        @include utils.inter-font;
+        font-size: 1.2em;
+        margin-bottom: 30px;
+
+        u {
+          text-decoration-color: utils.$primary-color-alternative-bright;
+        }
+
+        span {
+          float: right;
+          font-size: 0.9em;
+          font-weight: 500;
+        }
+      }
+
+      div {
+        margin-bottom: 25px;
+      }
+
+      select,
+      input[type="number"] {
+        @include utils.poppins-font;
+        border: none;
+        outline: none;
+        padding: 10px;
+        margin-left: 50px;
+      }
+
+      select {
+        font-size: 0.9em;
+      }
+
+      input[type="checkbox"] {
+        margin-right: 15px;
+      }
+
+      label {
+        @include utils.archivo-font;
+        font-size: 1.1em;
+      }
+
+      textarea {
+        @include utils.poppins-font;
+        border: none;
+        outline: none;
+        width: 100%;
+        height: 20vh;
+        margin-top: 10px;
+        resize: none;
+
+        box-sizing: border-box;
+        padding: 15px;
+      }
+
+      button {
+        cursor: pointer;
+        display: inline-block;
+        outline: none;
+
+        border: 3px solid utils.$contrast-color;
+        background-color: transparent;
+        color: utils.$contrast-color;
+
+        @include utils.montserrat-font;
+        padding: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 1.1em;
+        text-wrap: nowrap;
+
+        transition: 0.3s all ease;
+        width: auto;
+        margin-top: 3vh;
+      }
+
+      button:hover {
+        background-color: utils.$text-color;
+        border: 3px solid utils.$primary-color-alternative-bright;
+        color: #333333;
+      }
+    }
   }
 
   .request-creator.hide-right {

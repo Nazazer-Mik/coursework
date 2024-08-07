@@ -806,17 +806,52 @@ app.get("/service/reg-number", async (c) => {
 
   const query = `
   SELECT car_id, 
-  ADDDATE(DATE(co.time_of_purchase), INTERVAL c.warranty_years YEAR) AS warranty_until,
-  (ADDDATE(DATE(co.time_of_purchase), INTERVAL c.warranty_years YEAR) > CURDATE()) as warranty_valid,
-  CURDATE() as currdate
+  DATE_FORMAT(ADDDATE(DATE(co.time_of_purchase), INTERVAL c.warranty_years YEAR), "%d.%m.%Y") AS warranty_until,
+  (ADDDATE(DATE(co.time_of_purchase), INTERVAL c.warranty_years YEAR) > CURDATE()) AS warranty_valid,
+  CURDATE() AS currdate,
+  cm.model AS model,
+  co.car_order_id as car_order_id
   FROM car c
   INNER JOIN car_order co ON c.car_id = co.car_id_fk
+  INNER JOIN car_model cm ON c.model_code_fk = cm.model_code
   WHERE c.reg_number = "${regNumber}";
   `;
 
   const [res] = await dbConnection.query(query);
 
   return c.json(res);
+});
+
+// --------------------
+
+app.post("/service", async (c) => {
+  const data = await c.req.json();
+
+  const userIdQuery = `(
+    SELECT ct.customer_id FROM customer ct
+    INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
+    WHERE cr.sessions_id = "${data.sessionId}"
+    LIMIT 1
+)`;
+
+  const query = `
+  INSERT INTO service_request(car_order_id_fk, customer_id_fk, problem_reported, milage, pickup, warranty, status)
+  VALUES(${data.car_order_id}, ${userIdQuery}, "${data.description}", ${data.mileage}, ${data.pickup}, ${data.warranty}, "Awaiting confirmation");
+  `;
+
+  try {
+    await dbConnection.query(query);
+
+    return c.json({
+      status: "OK",
+    });
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
 });
 
 // -------------------- SERVER START --------------------
