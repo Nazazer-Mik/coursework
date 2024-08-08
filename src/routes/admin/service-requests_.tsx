@@ -30,7 +30,7 @@ export async function updateStatus(
   setUpdate(Date.now());
 }
 
-function getStatusColor(status: string) {
+export function getStatusColor(status: string) {
   const statColors = {
     "Waiting for parts": "#eaff7b",
     Completed: "#00ffab",

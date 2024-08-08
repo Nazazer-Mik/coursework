@@ -24,7 +24,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as NewVehiclesCarPropsImport } from './routes/new-vehicles.$carProps'
 import { Route as CustomVehicleModelCodeImport } from './routes/custom-vehicle.$modelCode'
 import { Route as AdminTestDrivesImport } from './routes/admin/test-drives'
-import { Route as AdminServiceRequestsImport } from './routes/admin/service-requests'
+import { Route as AdminServiceRequestsImport } from './routes/admin/service-requests_'
 import { Route as AdminNewVehiclesImport } from './routes/admin/new-vehicles'
 import { Route as AdminCustomVehiclesImport } from './routes/admin/custom-vehicles'
 import { Route as AdminChargersImport } from './routes/admin/chargers'
@@ -136,8 +136,8 @@ const AdminBackupRestoreRoute = AdminBackupRestoreImport.update({
 } as any)
 
 const AdminServiceRequestsIdRoute = AdminServiceRequestsIdImport.update({
-  path: '/$id',
-  getParentRoute: () => AdminServiceRequestsRoute,
+  path: '/admin/service-requests/$id',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -286,10 +286,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/service-requests/$id': {
       id: '/admin/service-requests/$id'
-      path: '/$id'
+      path: '/admin/service-requests/$id'
       fullPath: '/admin/service-requests/$id'
       preLoaderRoute: typeof AdminServiceRequestsIdImport
-      parentRoute: typeof AdminServiceRequestsImport
+      parentRoute: typeof rootRoute
     }
   }
 }
@@ -313,12 +313,11 @@ export const routeTree = rootRoute.addChildren({
   AdminChargersRoute,
   AdminCustomVehiclesRoute,
   AdminNewVehiclesRoute,
-  AdminServiceRequestsRoute: AdminServiceRequestsRoute.addChildren({
-    AdminServiceRequestsIdRoute,
-  }),
+  AdminServiceRequestsRoute,
   AdminTestDrivesRoute,
   CustomVehicleModelCodeRoute,
   NewVehiclesCarPropsRoute,
+  AdminServiceRequestsIdRoute,
 })
 
 /* prettier-ignore-end */
@@ -348,7 +347,8 @@ export const routeTree = rootRoute.addChildren({
         "/admin/service-requests",
         "/admin/test-drives",
         "/custom-vehicle/$modelCode",
-        "/new-vehicles/$carProps"
+        "/new-vehicles/$carProps",
+        "/admin/service-requests/$id"
       ]
     },
     "/": {
@@ -400,10 +400,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "admin/new-vehicles.tsx"
     },
     "/admin/service-requests": {
-      "filePath": "admin/service-requests.tsx",
-      "children": [
-        "/admin/service-requests/$id"
-      ]
+      "filePath": "admin/service-requests_.tsx"
     },
     "/admin/test-drives": {
       "filePath": "admin/test-drives.tsx"
@@ -415,8 +412,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "new-vehicles.$carProps.tsx"
     },
     "/admin/service-requests/$id": {
-      "filePath": "admin/service-requests.$id.tsx",
-      "parent": "/admin/service-requests"
+      "filePath": "admin/service-requests.$id.tsx"
     }
   }
 }

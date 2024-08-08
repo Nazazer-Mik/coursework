@@ -878,6 +878,8 @@ app.get("admin/warranty", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
 app.post("/admin/service/update-status", async (c) => {
   const body = await c.req.json();
 
@@ -888,6 +890,70 @@ app.post("/admin/service/update-status", async (c) => {
   return c.json({
     status: "OK",
   });
+});
+
+// --------------------
+
+app.get("admin/service/status", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT status FROM service_request WHERE service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/service/details", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT milage as mileage, pickup, problem_reported as description FROM service_request WHERE service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/service/user-contacts", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT c.first_name as firstName, c.last_name as lastName, c.home_address as homeAddress, c.number as phoneNumber, cr.email FROM customer c
+  INNER JOIN credentials cr ON c.user_id_fk = cr.user_id
+  INNER JOIN service_request sr ON c.customer_id = sr.customer_id_fk
+  WHERE sr.service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/service/car-details", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT model, model_code as modelCode, year, motor, driveline, c.reg_number as regNumber, c.vin_code as vinCode,
+  DATE(co.time_of_purchase) as dateOfPurchase, c.warranty_years as warrantyYears, cm.battery_kwh as battery, c.color FROM car_model cm
+  INNER JOIN car c ON cm.model_code = c.model_code_fk
+  INNER JOIN car_order co ON co.car_id_fk = c.car_id
+  INNER JOIN service_request sr ON sr.car_order_id_fk = co.car_order_id
+  WHERE sr.service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
 });
 
 // -------------------- SERVER START --------------------
