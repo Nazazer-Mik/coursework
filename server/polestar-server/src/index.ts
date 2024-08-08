@@ -858,7 +858,9 @@ app.post("/service", async (c) => {
 
 app.get("admin/service", async (c) => {
   const dbQuery = `
-  SELECT * FROM service_request WHERE warranty = '0';
+  SELECT * FROM service_request sr 
+  INNER JOIN customer c ON sr.customer_id_fk = c.customer_id
+  WHERE sr.warranty = '0';
   `;
 
   const [res] = await dbConnection.query(dbQuery);
@@ -870,7 +872,9 @@ app.get("admin/service", async (c) => {
 
 app.get("admin/warranty", async (c) => {
   const dbQuery = `
-  SELECT * FROM service_request WHERE warranty = '1';
+  SELECT * FROM service_request sr 
+  INNER JOIN customer c ON sr.customer_id_fk = c.customer_id
+  WHERE sr.warranty = '1';
   `;
 
   const [res] = await dbConnection.query(dbQuery);

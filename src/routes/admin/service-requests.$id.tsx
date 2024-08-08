@@ -153,31 +153,35 @@ function AdminServiceRequestsId() {
         </div>
         <div className="main-content">
           <div className="case-info">
-            <h3>Request details: </h3>
-            <div className="statistics">
-              <div>
-                <span>Mileage: </span>
-                {serviceData.mileage} miles
-              </div>
-              <div>
-                <span>Pickup: </span>
-                {serviceData.pickup == "1" ? "Yes" : "No"}
-              </div>
-              <div>
-                <span>Average Mileage/Year: </span>
-                {serviceData.avgMileage} miles
-              </div>
-              <div>
-                <span>Car in use: </span>
-                {serviceData.timeInUse}
-              </div>
-              <div>
-                <span>User has charger: </span>
-                {serviceData.hasCharger}
-              </div>
-              <div>
-                <span>Other incidents: </span>
-                {serviceData.otherRequests.map((r) => "#" + r.requestId + "; ")}
+            <div>
+              <h3>Request details: </h3>
+              <div className="statistics">
+                <div>
+                  <span>Mileage: </span>
+                  {serviceData.mileage} miles
+                </div>
+                <div>
+                  <span>Pickup: </span>
+                  {serviceData.pickup == "1" ? "Yes" : "No"}
+                </div>
+                <div>
+                  <span>Average Mileage/Year: </span>
+                  {serviceData.avgMileage} miles
+                </div>
+                <div>
+                  <span>Car in use: </span>
+                  {serviceData.timeInUse}
+                </div>
+                <div>
+                  <span>User has charger: </span>
+                  {serviceData.hasCharger}
+                </div>
+                <div>
+                  <span>Other incidents: </span>
+                  {serviceData.otherRequests.map(
+                    (r) => "#" + r.requestId + "; "
+                  )}
+                </div>
               </div>
             </div>
             <div className="description">

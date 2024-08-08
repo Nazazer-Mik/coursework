@@ -4,6 +4,7 @@
   width: 100%;
   margin: 0;
   margin-bottom: 10vh;
+  font-size: 1.1em;
 
   border-spacing: 0;
   border: 10px solid utils.$admin-spare-color;
@@ -50,6 +51,7 @@
     border: 1px solid utils.$contrast-fade-color;
     outline: none;
     padding: 8px;
+    font-size: 0.8em;
 
     @include utils.inter-font(600);
     cursor: pointer;

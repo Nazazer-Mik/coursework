@@ -165,7 +165,7 @@ body {
     }
 
     ul {
-      font-size: 1.1em;
+      font-size: 1.2em;
       list-style-type: decimal;
 
       li {
@@ -175,13 +175,10 @@ body {
 
     .upper-block {
       padding: 25px;
-      padding-top: 0px;
-      padding-bottom: 10px;
     }
 
     .bottom-block {
       padding: 25px;
-      padding-top: 10px;
       background-color: utils.$secondary-color;
     }
   }

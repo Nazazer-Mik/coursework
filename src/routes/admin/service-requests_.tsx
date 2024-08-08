@@ -9,6 +9,8 @@ interface Request {
   service_request_id: string;
   car_order_id_fk: string;
   customer_id_fk: string;
+  first_name: string;
+  last_name: string;
   milage: string;
   pickup: string;
   status: string;
@@ -48,6 +50,7 @@ function ServiceHeaders() {
       <th>ID</th>
       <th>Car Order ID</th>
       <th>Customer ID</th>
+      <th>Customer Name</th>
       <th>Mileage</th>
       <th>Pick Up</th>
       <th>Status</th>
@@ -72,6 +75,7 @@ function TableFilling(
 
       <td>{r.car_order_id_fk}</td>
       <td>{r.customer_id_fk}</td>
+      <td>{r.first_name + " " + r.last_name}</td>
       <td>{r.milage}</td>
       <td>{r.pickup == "1" ? "Yes" : "No"}</td>
       <td>
