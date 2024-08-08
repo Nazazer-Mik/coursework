@@ -836,7 +836,7 @@ app.post("/service", async (c) => {
 
   const query = `
   INSERT INTO service_request(car_order_id_fk, customer_id_fk, problem_reported, milage, pickup, warranty, status)
-  VALUES(${data.car_order_id}, ${userIdQuery}, "${data.description}", ${data.mileage}, ${data.pickup}, ${data.warranty}, "Awaiting confirmation");
+  VALUES(${data.car_order_id}, ${userIdQuery}, "${data.description}", ${data.mileage}, ${data.pickup}, ${data.warranty}, "New");
   `;
 
   try {
@@ -852,6 +852,30 @@ app.post("/service", async (c) => {
       message: (e as Error).toString(),
     });
   }
+});
+
+// --------------------
+
+app.get("admin/service", async (c) => {
+  const dbQuery = `
+  SELECT * FROM service_request WHERE warranty = '0';
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/warranty", async (c) => {
+  const dbQuery = `
+  SELECT * FROM service_request WHERE warranty = '1';
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
 });
 
 // -------------------- SERVER START --------------------

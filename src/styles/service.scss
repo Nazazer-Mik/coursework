@@ -115,6 +115,7 @@
     #service-form {
       background-color: rgba(218, 221, 220, 0.85);
       backdrop-filter: blur(15px);
+      box-shadow: 0 0 15px utils.$inconspicuous-color;
 
       width: 30vw;
       padding: 25px;
