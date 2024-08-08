@@ -37,7 +37,7 @@ interface ServiceData {
   avgMileage: string;
   hasCharger: string;
   timeInUse: string;
-  otherRequests: string;
+  otherRequests: { requestId: string }[];
   userData: UserData;
   carData: CarData;
 }
@@ -60,6 +60,16 @@ async function fetchAllData(id: string) {
   const details = await getData(id, "/admin/service/details");
   const userData = await getData(id, "/admin/service/user-contacts");
   const carData = await getData(id, "/admin/service/car-details");
+  const avgMileage = await getData(id, "/admin/service/avg-mileage");
+  const charger = await getData(id, "/admin/service/has-charger");
+  const otherRequests = (
+    await axios.get(serverAddress + "/admin/service/other-requests", {
+      params: { id: id },
+    })
+  ).data;
+
+  const daysInUse = (await getData(id, "/admin/service/days-in-use")).daysInUse;
+  const yearsInUse = Math.floor(daysInUse / 365);
 
   return {
     id: id,
@@ -67,6 +77,10 @@ async function fetchAllData(id: string) {
     status: status,
     userData: userData,
     carData: carData,
+    otherRequests: otherRequests,
+    avgMileage: avgMileage.averageMileage,
+    timeInUse: `${yearsInUse} year(s) ${daysInUse - 365 * yearsInUse} day(s)`,
+    hasCharger: charger.hasCharger == "1" ? "Yes" : "No",
   };
 }
 
@@ -87,7 +101,7 @@ function AdminServiceRequestsId() {
     avgMileage: "",
     hasCharger: "",
     timeInUse: "",
-    otherRequests: "",
+    otherRequests: [],
     ...Route.useLoaderData(),
   });
   const [update, setUpdate] = useState(Date.now());
@@ -158,12 +172,12 @@ function AdminServiceRequestsId() {
                 {serviceData.timeInUse}
               </div>
               <div>
-                <span>User has charger:</span>
+                <span>User has charger: </span>
                 {serviceData.hasCharger}
               </div>
               <div>
                 <span>Other incidents: </span>
-                {serviceData.otherRequests}
+                {serviceData.otherRequests.map((r) => "#" + r.requestId + "; ")}
               </div>
             </div>
             <div className="description">

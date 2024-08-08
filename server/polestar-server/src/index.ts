@@ -956,6 +956,76 @@ app.get("admin/service/car-details", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
+app.get("admin/service/other-requests", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT sr.service_request_id as requestId
+  FROM service_request sr
+  JOIN customer c
+  ON sr.customer_id_fk = c.customer_id
+  WHERE c.customer_id = (SELECT customer_id_fk FROM service_request WHERE service_request_id = ${id}) AND sr.service_request_id != ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/service/avg-mileage", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT ROUND(365 * (sr.milage/ABS((DATEDIFF(DATE(co.time_of_purchase), CURDATE()))))) AS averageMileage
+  FROM car_order co
+  INNER JOIN service_request sr ON co.car_order_id=SR.car_order_id_fk
+  WHERE sr.service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/service/days-in-use", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT ABS((DATEDIFF(DATE(co.time_of_purchase), CURDATE()))) AS daysInUse
+  FROM car_order co
+  INNER JOIN service_request sr ON co.car_order_id=SR.car_order_id_fk
+  WHERE sr.service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/service/has-charger", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT (COUNT(*) > 1) as hasCharger
+  FROM charger_order co
+  INNER JOIN customer c ON c.customer_id = co.customer_id_fk
+  INNER JOIN service_request sr ON c.customer_id = sr.customer_id_fk
+  WHERE sr.service_request_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;
