@@ -878,6 +878,18 @@ app.get("admin/warranty", async (c) => {
   return c.json(res);
 });
 
+app.post("/admin/service/update-status", async (c) => {
+  const body = await c.req.json();
+
+  const userIdQuery = `UPDATE service_request SET status = "${body.data.value}" WHERE service_request_id = ${body.data.serviceRequestId};`;
+
+  await dbConnection.query(userIdQuery);
+
+  return c.json({
+    status: "OK",
+  });
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

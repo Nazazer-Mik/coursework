@@ -9,6 +9,12 @@
   border: 10px solid utils.$admin-spare-color;
   transition: 0.5s all ease;
 
+  a {
+    text-decoration-color: utils.$primary-color-alternative;
+    text-decoration-thickness: 3px;
+    color: utils.$contrast-color;
+  }
+
   th,
   td {
     @include utils.inter-font;
