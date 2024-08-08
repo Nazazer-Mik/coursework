@@ -31,7 +31,7 @@ function ChargerOrdersHeader() {
       <th>ID</th>
       <th>Charger ID</th>
       <th>Charger Model</th>
-      <th>Cutomer ID</th>
+      <th>Customer ID</th>
       <th>Time Of Purchase</th>
       <th>Delivery</th>
       <th>Installation</th>

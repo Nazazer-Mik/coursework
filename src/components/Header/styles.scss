@@ -65,6 +65,7 @@ header {
 
   nav {
     color: utils.$text-color;
+    position: relative;
 
     display: flex;
     flex-direction: row;
@@ -97,6 +98,77 @@ header {
       margin: 0;
       margin-left: 20px;
       margin-right: 20px;
+    }
+
+    .account-window {
+      position: absolute;
+      right: 0;
+      top: 9vh;
+      width: 25vh;
+      height: 10vh;
+      z-index: 5000;
+
+      background-color: utils.$contrast-fade-color;
+      border-radius: 15px;
+      transform: translateX(10%);
+      border: 3px solid utils.$primary-color-alternative;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      overflow: visible;
+      transition: 0.3s opacity ease-out;
+
+      h4 {
+        @include utils.montserrat-font;
+      }
+
+      button {
+        cursor: pointer;
+        display: inline-block;
+        outline: none;
+
+        border: 3px solid utils.$soft-light-color;
+        background-color: transparent;
+        color: utils.$soft-light-color;
+
+        @include utils.montserrat-font;
+        padding: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 1.2em;
+        margin-right: 2vw;
+        margin-left: 2vw;
+
+        border-radius: 25px;
+        transition: 0.3s all ease;
+      }
+
+      button:hover {
+        background-color: utils.$text-color;
+        border: 3px solid utils.$primary-color-alternative-bright;
+        color: #333333;
+      }
+    }
+
+    .account-window::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 18px;
+      width: 0px;
+      height: 0px;
+      display: block;
+      border: 25px solid transparent;
+      border-bottom: 30px solid utils.$primary-color-alternative;
+      transform: translateY(-100%);
+      z-index: 5000;
+    }
+
+    .account-window.hidden {
+      opacity: 0;
+      top: -300%;
     }
   }
 

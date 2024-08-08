@@ -2,7 +2,7 @@ import React from "react";
 import "./styles.scss";
 import { Link } from "@tanstack/react-router";
 
-function checkLoggedIn(sessionAttributeName: string) {
+export function checkLoggedIn(sessionAttributeName: string) {
   const id = localStorage.getItem(sessionAttributeName);
   return id != undefined;
 }
@@ -28,7 +28,9 @@ export default function Footer() {
         </div>
         <div>
           <h3>Authorization</h3>
-          <Link to={"/register"}>Registration</Link>
+          <Link to={checkLoggedIn("session_id") ? "/" : "/register"}>
+            Registration
+          </Link>
           <Link to={checkLoggedIn("session_id") ? "/" : "/auth"}>
             Login page
           </Link>

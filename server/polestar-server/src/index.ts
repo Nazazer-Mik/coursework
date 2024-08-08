@@ -1030,6 +1030,22 @@ app.get("admin/service/has-charger", async (c) => {
   return c.json(res);
 });
 
+app.get("user", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT first_name AS firstName, last_name AS lastName FROM customer c
+  INNER JOIN credentials cr ON c.user_id_fk = cr.user_id
+  WHERE cr.sessions_id = "${id}";
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;

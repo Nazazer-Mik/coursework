@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { Link } from "@tanstack/react-router";
+import axios from "axios";
+import { serverAddress } from "../../utils/auth-utils";
 
 type HeaderProps = {
   elementToHiglight?: string | null;
@@ -16,12 +18,36 @@ export default function Header({
   elementToHiglight = null,
   bgUrl = null,
 }: HeaderProps) {
+  const [showWindow, setShowWindow] = useState(false);
+  const [name, setName] = useState("");
   useEffect(() => {
+    const fetchName = async () => {
+      const id = localStorage.getItem("session_id");
+
+      if (id == null) return;
+
+      const res = (
+        await axios.get(serverAddress + "/user", {
+          params: { id: id },
+        })
+      ).data[0];
+
+      setName(res.firstName + " " + res.lastName);
+    };
+
     if (elementToHiglight !== null) {
       const elem = document.getElementById(elementToHiglight);
       elem?.classList.add("highlight");
     }
+
+    fetchName();
   }, []);
+
+  const showAccountWindow = () => {
+    if (checkLogined()) {
+      setShowWindow(!showWindow);
+    }
+  };
 
   return (
     <>
@@ -67,7 +93,7 @@ export default function Header({
           <Link to={"/servicing"} id="header-warranty-repair">
             Warranty & Repair
           </Link>
-          <Link to={"/auth"}>
+          <Link to={checkLogined() ? "" : "/auth"} onClick={showAccountWindow}>
             <svg
               width="40"
               height="40"
@@ -84,6 +110,18 @@ export default function Header({
               <path d="M20.0002 25C13.5259 25 8.00952 28.8284 5.9082 34.192C6.4201 34.7004 6.95934 35.1812 7.52353 35.6321C9.08827 30.7077 13.997 27 20.0002 27C26.0035 27 30.9122 30.7077 32.477 35.6321C33.0412 35.1812 33.5804 34.7004 34.0923 34.1921C31.991 28.8284 26.4746 25 20.0002 25Z" />
             </svg>
           </Link>
+          <div className={`account-window ${showWindow ? "" : "hidden"}`}>
+            <h4>{name}</h4>
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("session_id");
+                setShowWindow(false);
+              }}
+            >
+              Logout
+            </button>
+          </div>
         </nav>
         <div className="header-triangle"></div>
       </header>

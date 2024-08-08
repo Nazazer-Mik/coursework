@@ -39,7 +39,7 @@ function CarOrdersHeader() {
     <tr key={"header"}>
       <th>ID</th>
       <th>Car ID</th>
-      <th>Cutomer ID</th>
+      <th>Customer ID</th>
       <th>Purchase Time</th>
       <th>Delivery</th>
       <th>Final Price</th>
