@@ -1030,6 +1030,8 @@ app.get("admin/service/has-charger", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
 app.get("user", async (c) => {
   const id = (await c.req.query()).id;
 
@@ -1045,6 +1047,51 @@ app.get("user", async (c) => {
 });
 
 // --------------------
+
+app.post("test-drive", async (c) => {
+  const data = await c.req.json();
+
+  const userIdQuery = `(
+    SELECT ct.customer_id FROM customer ct
+    INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
+    WHERE cr.sessions_id = "${data.sessionId}"
+    LIMIT 1
+  )`;
+
+  const query = `
+  INSERT INTO test_drive_booking(model_code_fk, customer_id_fk, booking_time, requested_on, status, status_descr)
+  VALUES("${data.model}", ${userIdQuery}, "${data.date} ${data.timeSlot.from}:00", NOW(), "New", "New request for Test Drive.");
+  `;
+
+  try {
+    await dbConnection.query(query);
+
+    return c.json({
+      status: "OK",
+    });
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+});
+
+// --------------------
+
+app.get("test-drive", async (c) => {
+  const body = await c.req.query();
+
+  const dbQuery = `
+  SELECT TIME(booking_time) AS time FROM test_drive_booking
+  WHERE DATE(booking_time) = "${body.date}" AND model_code_fk = "${body.model}";
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
 
 // -------------------- SERVER START --------------------
 

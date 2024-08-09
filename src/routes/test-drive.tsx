@@ -1,11 +1,12 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/test-drive.scss";
 import axios from "axios";
 import { serverAddress } from "../utils/auth-utils";
 import { Model } from "./custom-vehicle_";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import ModalWindow from "../components/ModalWindow";
 
 async function checkLogin() {
   const sessionId = localStorage.getItem("session_id");
@@ -28,17 +29,66 @@ export const Route = createFileRoute("/test-drive")({
 });
 
 const timeSlots = [
-  { from: "9:00", to: "12:00" },
+  { from: "09:00", to: "12:00" },
   { from: "12:00", to: "15:00" },
   { from: "15:00", to: "18:00" },
 ];
 
 function TestDrive() {
   const [models] = Route.useLoaderData() as [Model[]];
+  const navigate = useNavigate({ from: "/test-drive" });
+  const [showModalWindow, setShowModalWindow] = useState(false);
   const [choices, setChoices] = useState({ model: "", date: "", timeSlot: -1 });
+  const [bookedSessions, setBookedSessions] = useState<Array<string>>([]);
+  const dateField = useRef<HTMLInputElement>(null);
+
+  const sendRequest = async () => {
+    const sessionId = localStorage.getItem("session_id");
+    const res = (
+      await axios.post(serverAddress + "/test-drive", {
+        sessionId: sessionId,
+        model: choices.model,
+        date: choices.date,
+        timeSlot: timeSlots[choices.timeSlot],
+      })
+    ).data;
+
+    if (res.status == "OK") {
+      setShowModalWindow(true);
+    } else {
+      console.log(res.message);
+    }
+  };
+
+  const fetchBookings = async (newValue: string) => {
+    setChoices({ ...choices, date: newValue, timeSlot: -1 });
+
+    const res = (
+      await axios.get(serverAddress + "/test-drive", {
+        params: {
+          model: choices.model,
+          date: newValue,
+        },
+      })
+    ).data as { time: string }[];
+
+    const converted = [] as string[];
+    res.forEach((t) => converted.push(t.time.slice(0, 5)));
+    setBookedSessions(converted);
+  };
 
   return (
     <>
+      <ModalWindow
+        title={`Thank you for booking a Test Drive!`}
+        mainText={
+          "Our Customer Service Team will contact you shortly to confirm your request."
+        }
+        onOkAction={() => {
+          navigate({ to: "/" });
+        }}
+        show={showModalWindow}
+      />
       <Header elementToHiglight={"header-test-drive"} />
       <div className="test-drive-container">
         <div className="main-slide">
@@ -66,9 +116,15 @@ function TestDrive() {
                       <div
                         className={`model-card no-select-drag ${choices.model === m.model_code ? "model-active" : ""}`}
                         key={m.model_code}
-                        onClick={() =>
-                          setChoices({ ...choices, model: m.model_code })
-                        }
+                        onClick={() => {
+                          setChoices({
+                            ...choices,
+                            model: m.model_code,
+                            date: "",
+                            timeSlot: -1,
+                          });
+                          (dateField.current as HTMLInputElement).value = "";
+                        }}
                       >
                         {m.model_code
                           .replace("polestar", "polestar ")
@@ -111,10 +167,15 @@ function TestDrive() {
                     type="date"
                     id="test-drive-date"
                     className={`${choices.date != "" ? "date-active" : ""}`}
-                    min={new Date().toISOString().slice(0, 10)}
-                    onChange={(e) =>
-                      setChoices({ ...choices, date: e.target.value })
-                    }
+                    ref={dateField}
+                    min={(() => {
+                      const curr = new Date();
+                      curr.setDate(curr.getDate() + 1);
+                      return curr.toISOString().slice(0, 10);
+                    })()}
+                    onChange={(e) => {
+                      fetchBookings(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -136,9 +197,12 @@ function TestDrive() {
                 <div className="content">
                   {timeSlots.map((s, i) => (
                     <div
-                      className={`time-slot ${choices.timeSlot == i ? "time-slot-active" : ""}`}
+                      className={`time-slot ${choices.timeSlot == i ? "time-slot-active" : ""} ${bookedSessions.includes(s.from) ? "occupied-slot" : ""} no-select-drag`}
                       key={i}
-                      onClick={() => setChoices({ ...choices, timeSlot: i })}
+                      onClick={() =>
+                        !bookedSessions.includes(s.from) &&
+                        setChoices({ ...choices, timeSlot: i })
+                      }
                     >
                       <h4>Time Slot #{i + 1}</h4>
                       <p>
@@ -150,9 +214,10 @@ function TestDrive() {
                   <button
                     type="button"
                     className={`complete-td-request ${choices.timeSlot == -1 ? "invisible" : ""}`}
-                    onClick={() => console.log("HUIH")}
+                    onClick={sendRequest}
+                    key={-2}
                   >
-                    Submit Request
+                    Create Booking
                   </button>
                 </div>
               </div>
