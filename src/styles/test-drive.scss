@@ -62,10 +62,13 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
+
+            transition: 0.5s all ease;
           }
 
           .model-card {
             @include utils.archivo-font;
+            font-size: 1.1em;
             background-color: utils.$soft-light-color;
             border-radius: 15px;
             padding: 10px;
@@ -75,7 +78,7 @@
 
             margin-bottom: 10px;
             text-align: start;
-            width: 90%;
+            width: 95%;
             box-sizing: border-box;
             cursor: pointer;
             transition: 0.3s box-shadow ease;
@@ -101,10 +104,119 @@
         }
 
         .date-selection {
+          transition: 0.3s all ease;
+          overflow: hidden;
+
+          .content {
+            padding: 25px;
+            box-sizing: border-box;
+
+            label {
+              @include utils.archivo-font;
+              font-size: 1.3em;
+              margin-right: 25px;
+            }
+
+            input {
+              @include utils.archivo-font;
+              font-size: 1em;
+
+              outline: none;
+              border-radius: 0;
+              border-style: solid;
+              border-color: utils.$contrast-fade-color;
+              padding: 5px;
+              padding-left: 10px;
+              padding-right: 10px;
+            }
+
+            .date-active {
+              border-color: utils.$primary-color-alternative-bright !important;
+            }
+          }
         }
 
         .time-selection {
+          transition: 0.3s all ease;
+          overflow: hidden;
+
+          .content {
+            padding: 25px;
+            box-sizing: border-box;
+
+            .time-slot {
+              border-radius: 15px;
+              padding: 10px;
+              padding-left: 20px;
+              padding-right: 20px;
+              box-shadow: 0 0 7px utils.$secondary-dark-color;
+
+              margin-bottom: 15px;
+              box-sizing: border-box;
+              cursor: pointer;
+              transition: 0.3s box-shadow ease;
+              border: 2px solid transparent;
+
+              h4 {
+                @include utils.inter-font(500);
+                font-size: 1.3em;
+                margin-top: 10px;
+                margin-bottom: 15px;
+              }
+
+              p {
+                @include utils.archivo-font;
+                font-size: 1.1em;
+              }
+            }
+
+            .time-slot:hover {
+              box-shadow: 0 0 20px utils.$secondary-dark-color;
+            }
+
+            .time-slot-active {
+              border-color: utils.$primary-color-alternative-bright !important;
+              box-shadow: 0 0 7px utils.$primary-color-alternative !important;
+            }
+
+            .time-slot-active:hover {
+              box-shadow: 0 0 7px utils.$primary-color-alternative !important;
+            }
+          }
         }
+      }
+
+      .complete-td-request {
+        display: block;
+        width: fit-content;
+
+        cursor: pointer;
+        outline: none;
+
+        border: 3px solid utils.$contrast-color;
+        background-color: transparent;
+        color: utils.$contrast-color;
+
+        @include utils.montserrat-font;
+        padding: 9px;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 1.4em;
+        margin: 0 auto;
+        margin-top: 50px;
+
+        transition: 0.3s all ease;
+      }
+
+      .complete-td-request:hover {
+        background-color: utils.$text-color;
+        border: 3px solid utils.$primary-color-alternative-bright;
+        color: #333333;
+      }
+
+      .complete-td-request.invisible {
+        opacity: 0;
+        display: none;
       }
 
       .main-content > * {
@@ -164,6 +276,8 @@
 
     .content {
       background-color: utils.$secondary-color !important;
+      height: 0px !important;
+      padding: 0px !important;
     }
   }
 }

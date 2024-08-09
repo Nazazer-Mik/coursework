@@ -27,9 +27,15 @@ export const Route = createFileRoute("/test-drive")({
   component: TestDrive,
 });
 
+const timeSlots = [
+  { from: "9:00", to: "12:00" },
+  { from: "12:00", to: "15:00" },
+  { from: "15:00", to: "18:00" },
+];
+
 function TestDrive() {
   const [models] = Route.useLoaderData() as [Model[]];
-  const [model, setModel] = useState<string>("");
+  const [choices, setChoices] = useState({ model: "", date: "", timeSlot: -1 });
 
   return (
     <>
@@ -58,9 +64,11 @@ function TestDrive() {
                   <div className="models">
                     {models.map((m) => (
                       <div
-                        className={`model-card no-select-drag ${model === m.model_code ? "model-active" : ""}`}
+                        className={`model-card no-select-drag ${choices.model === m.model_code ? "model-active" : ""}`}
                         key={m.model_code}
-                        onClick={() => setModel(m.model_code)}
+                        onClick={() =>
+                          setChoices({ ...choices, model: m.model_code })
+                        }
                       >
                         {m.model_code
                           .replace("polestar", "polestar ")
@@ -75,13 +83,13 @@ function TestDrive() {
                   <div
                     className="picture"
                     style={{
-                      backgroundImage: `url("/src/assets/models/${model == "" ? "no-car" : model}.avif")`,
+                      backgroundImage: `url("/src/assets/models/${choices.model == "" ? "no-car" : choices.model}.avif")`,
                     }}
                   ></div>
                 </div>
               </div>
               <div
-                className={`date-selection ${model == "" ? "inactive" : ""}`}
+                className={`date-selection ${choices.model == "" ? "inactive" : ""}`}
               >
                 <h3 className="no-select-drag">
                   <svg
@@ -95,9 +103,24 @@ function TestDrive() {
                   </svg>
                   Date of test drive
                 </h3>
-                <div className="content"></div>
+                <div className="content">
+                  <label htmlFor="test-drive-date">
+                    Select date convenient for you:{" "}
+                  </label>
+                  <input
+                    type="date"
+                    id="test-drive-date"
+                    className={`${choices.date != "" ? "date-active" : ""}`}
+                    min={new Date().toISOString().slice(0, 10)}
+                    onChange={(e) =>
+                      setChoices({ ...choices, date: e.target.value })
+                    }
+                  />
+                </div>
               </div>
-              <div className="time-selection inactive">
+              <div
+                className={`time-selection ${choices.date == "" ? "inactive" : ""}`}
+              >
                 <h3 className="no-select-drag">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +133,28 @@ function TestDrive() {
                   </svg>
                   Time slot of selected date
                 </h3>
-                <div className="content"></div>
+                <div className="content">
+                  {timeSlots.map((s, i) => (
+                    <div
+                      className={`time-slot ${choices.timeSlot == i ? "time-slot-active" : ""}`}
+                      key={i}
+                      onClick={() => setChoices({ ...choices, timeSlot: i })}
+                    >
+                      <h4>Time Slot #{i + 1}</h4>
+                      <p>
+                        Session between {s.from} and {s.to}
+                      </p>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    className={`complete-td-request ${choices.timeSlot == -1 ? "invisible" : ""}`}
+                    onClick={() => console.log("HUIH")}
+                  >
+                    Submit Request
+                  </button>
+                </div>
               </div>
             </div>
           </div>
