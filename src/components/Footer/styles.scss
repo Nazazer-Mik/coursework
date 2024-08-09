@@ -40,12 +40,12 @@ footer {
       text-decoration: underline;
     }
 
-    .inactive {
+    .inactive-link {
       color: utils.$inconspicuous-color;
       cursor: default;
     }
 
-    .inactive:hover {
+    .inactive-link:hover {
       text-decoration: none;
     }
   }

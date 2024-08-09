@@ -117,6 +117,7 @@ export default function Header({
               onClick={() => {
                 localStorage.removeItem("session_id");
                 setShowWindow(false);
+                window.location.reload();
               }}
             >
               Logout

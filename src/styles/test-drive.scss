@@ -4,13 +4,166 @@
   width: 100%;
   height: 90vh;
   overflow-y: scroll;
-  background-color: utils.$soft-light-color;
+  background: url("/src/assets/test-drive-bg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   .main-slide {
     width: inherit;
-    height: inherit;
-    padding: 5vw;
 
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: grayscale(25%);
+
+    .central-block {
+      margin-top: 10vh;
+      margin-bottom: 10vh;
+
+      h2 {
+        @include utils.inter-font(600);
+        font-size: 1.9em;
+        text-align: center;
+        text-decoration: underline;
+        text-decoration-color: utils.$primary-color-alternative;
+      }
+
+      .main-content {
+        width: 50vw;
+        margin: 0 auto;
+
+        .model-selection {
+          .content {
+            width: 100%;
+            height: auto;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+          }
+
+          .models {
+            display: block;
+            width: 40%;
+            padding: 25px;
+            box-sizing: border-box;
+          }
+
+          .picture {
+            display: block;
+            width: 60%;
+            height: inherit;
+            padding: 25px;
+            box-sizing: border-box;
+
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
+
+          .model-card {
+            @include utils.archivo-font;
+            background-color: utils.$soft-light-color;
+            border-radius: 15px;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            box-shadow: 0 0 7px utils.$secondary-dark-color;
+
+            margin-bottom: 10px;
+            text-align: start;
+            width: 90%;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: 0.3s box-shadow ease;
+            border: 2px solid transparent;
+          }
+
+          .model-card:hover {
+            box-shadow: 0 0 20px utils.$secondary-dark-color;
+          }
+
+          .model-card:last-child {
+            margin-bottom: 0;
+          }
+
+          .model-active {
+            border-color: utils.$primary-color-alternative-bright !important;
+            box-shadow: 0 0 7px utils.$primary-color-alternative !important;
+          }
+
+          .model-active:hover {
+            box-shadow: 0 0 7px utils.$primary-color-alternative !important;
+          }
+        }
+
+        .date-selection {
+        }
+
+        .time-selection {
+        }
+      }
+
+      .main-content > * {
+        width: 100%;
+        background-color: utils.$secondary-dark-color;
+        margin: 0;
+        padding: 0;
+
+        border-left: 3px solid utils.$contrast-fade-color;
+        box-sizing: border-box;
+        transition: 0.3s all ease;
+
+        svg {
+          width: 30px;
+          height: auto;
+          margin-right: 15px;
+          margin-left: 15px;
+          transition: 0.3s all ease;
+        }
+
+        h3 {
+          @include utils.montserrat-font(500);
+          font-size: 1.3em;
+          box-sizing: border-box;
+          margin: 0;
+          padding-top: 25px;
+          padding-bottom: 25px;
+
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          transition: 0.3s all ease;
+        }
+
+        .content {
+          background-color: utils.$soft-light-color;
+          padding: 10px;
+          padding-left: 0;
+          padding-right: 0;
+          transition: 0.3s all ease;
+        }
+      }
+    }
+  }
+
+  .inactive {
+    border-left: 3px solid utils.$inconspicuous-color !important;
+
+    h3 {
+      color: utils.$inconspicuous-color;
+    }
+
+    svg {
+      fill: utils.$inconspicuous-color !important;
+    }
+
+    .content {
+      background-color: utils.$secondary-color !important;
+    }
   }
 }

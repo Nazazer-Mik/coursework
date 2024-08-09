@@ -22,7 +22,7 @@ export default function Footer() {
           <h3>Enjoy our services</h3>
           <Link to={"/test-drive"}>Book a test drive</Link>
           <Link to={"/servicing"}>Request service</Link>
-          <Link to={""} onClick={() => {}} className="inactive">
+          <Link to={""} onClick={() => {}} className="inactive-link">
             Contact our support team
           </Link>
         </div>
