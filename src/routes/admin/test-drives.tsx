@@ -14,7 +14,6 @@ interface TestDrive {
   booking_time: string;
   requested_on: string;
   status: string;
-  status_descr: string;
 }
 
 export async function updateStatus(
@@ -75,7 +74,6 @@ function TestDrivesFilling(
             <option>Confirmed</option>
             <option>Rejected</option>
             <option>Cancelled</option>
-            <option>Completed</option>
           </select>
         </td>
       </tr>

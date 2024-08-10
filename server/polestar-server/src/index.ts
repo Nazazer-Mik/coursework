@@ -1059,8 +1059,8 @@ app.post("test-drive", async (c) => {
   )`;
 
   const query = `
-  INSERT INTO test_drive_booking(model_code_fk, customer_id_fk, booking_time, requested_on, status, status_descr)
-  VALUES("${data.model}", ${userIdQuery}, "${data.date} ${data.timeSlot.from}:00", NOW(), "New", "New request for Test Drive.");
+  INSERT INTO test_drive_booking(model_code_fk, customer_id_fk, booking_time, requested_on, status)
+  VALUES("${data.model}", ${userIdQuery}, "${data.date} ${data.timeSlot.from}:00", NOW(), "Awaiting confirmation");
   `;
 
   try {
@@ -1097,7 +1097,7 @@ app.get("test-drive", async (c) => {
 
 app.get("admin/test-drive", async (c) => {
   const dbQuery = `
-  SELECT test_drive_booking_id, model_code_fk, customer_id_fk, booking_time as booking_time, requested_on, status, status_descr, CONCAT(c.first_name, " ", c.last_name) as customer_name
+  SELECT test_drive_booking_id, model_code_fk, customer_id_fk, booking_time as booking_time, requested_on, status, CONCAT(c.first_name, " ", c.last_name) as customer_name
   FROM test_drive_booking td
   INNER JOIN customer c ON c.customer_id = td.customer_id_fk
   WHERE booking_time > LOCALTIME();

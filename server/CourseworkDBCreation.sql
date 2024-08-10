@@ -81,8 +81,7 @@ CREATE TABLE `test_drive_booking` (
   `model_code_fk` VARCHAR(255) NOT NULL,
   `customer_id_fk` BIGINT NOT NULL,
   `requested_on` DATETIME NOT NULL,
-  `status` VARCHAR(255) NOT NULL,
-  `status_descr` TEXT NOT NULL
+  `status` VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE `customer` (
