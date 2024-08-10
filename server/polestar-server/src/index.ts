@@ -1093,6 +1093,48 @@ app.get("test-drive", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
+app.get("admin/test-drive", async (c) => {
+  const dbQuery = `
+  SELECT test_drive_booking_id, model_code_fk, customer_id_fk, booking_time as booking_time, requested_on, status, status_descr, CONCAT(c.first_name, " ", c.last_name) as customer_name
+  FROM test_drive_booking td
+  INNER JOIN customer c ON c.customer_id = td.customer_id_fk
+  WHERE booking_time > LOCALTIME();
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.post("/admin/test-drive", async (c) => {
+  const body = await c.req.json();
+  const obj = body.data;
+  let dbQuery = "";
+
+  try {
+    if (body.action === "UPDATE STATUS") {
+      dbQuery = `UPDATE test_drive_booking SET status = "${obj.status}" WHERE test_drive_booking_id = ${obj.bookingId};`;
+    }
+
+    await dbConnection.query(dbQuery);
+  } catch (e) {
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;
