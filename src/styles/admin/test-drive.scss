@@ -1,0 +1,51 @@
+@use "../../utils/utils";
+
+.hoverable {
+  text-align: center;
+  cursor: help;
+
+  background-color: utils.$h1-shadow;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 3px outset utils.$h1-shadow;
+  font-weight: 500;
+
+  transition: 0.3s all ease;
+}
+
+.hoverable:hover {
+  border-style: inset;
+}
+
+.customer-info {
+  position: absolute;
+
+  background-color: utils.$inconspicuous-color;
+  border: 3px solid utils.$admin-spare-color;
+  color: utils.$secondary-color;
+  padding: 15px;
+
+  width: 25%;
+  display: none;
+
+  .info-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    p {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+      text-align: left;
+      text-shadow: 0 0 3px utils.$contrast-fade-color;
+
+      span {
+        font-weight: 600;
+        font-size: 1.05em;
+        float: right;
+      }
+    }
+  }
+}

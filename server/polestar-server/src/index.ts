@@ -1100,7 +1100,7 @@ app.get("admin/test-drive", async (c) => {
   SELECT test_drive_booking_id, model_code_fk, customer_id_fk, booking_time as booking_time, requested_on, status, CONCAT(c.first_name, " ", c.last_name) as customer_name
   FROM test_drive_booking td
   INNER JOIN customer c ON c.customer_id = td.customer_id_fk
-  WHERE booking_time > LOCALTIME();
+  WHERE booking_time > LOCALTIME() ORDER BY requested_on DESC;
   `;
 
   const [res] = await dbConnection.query(dbQuery);
@@ -1133,6 +1133,70 @@ app.post("/admin/test-drive", async (c) => {
     status: "OK",
     message: "",
   });
+});
+
+// --------------------
+
+app.get("admin/user/contacts", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT CONCAT(c.first_name, " ", c.last_name) as fullName, c.number as phoneNumber, cr.email FROM customer c
+  INNER JOIN credentials cr ON c.user_id_fk = cr.user_id
+  WHERE c.customer_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/user/cars-purchased", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT COUNT(*) AS carsPurchased FROM car_order co
+  INNER JOIN customer c ON c.customer_id = co.customer_id_fk
+  WHERE c.customer_id = ${id};
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/user/service-used", async (c) => {
+  const id = (await c.req.query()).id;
+
+  const dbQuery = `
+  SELECT COUNT(*) AS serviceUsed FROM service_request sr
+  INNER JOIN customer c ON c.customer_id = sr.customer_id_fk
+  WHERE c.customer_id = ${id} AND sr.warranty = 0;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/user/test-drived", async (c) => {
+  const body = await c.req.query();
+
+  const dbQuery = `
+  SELECT (COUNT(*) - 1) AS testDrived FROM test_drive_booking td
+  INNER JOIN customer c ON c.customer_id = td.customer_id_fk
+  WHERE c.customer_id = ${body.id} AND td.model_code_fk = "${body.modelCode}";
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
 });
 
 // -------------------- SERVER START --------------------
