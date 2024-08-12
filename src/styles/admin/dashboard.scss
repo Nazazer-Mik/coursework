@@ -1,0 +1,43 @@
+@use "../../utils/utils";
+
+.dashboard-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: utils.$soft-light-color;
+
+  h2 {
+    @include utils.poppins-font(600);
+    color: utils.$contrast-fade-color;
+    font-size: 2.5em;
+    display: block;
+
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .charts-container {
+    position: inherit;
+    top: 15%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: stretch;
+
+    .main-charts {
+    }
+
+    .minor-charts {
+    }
+  }
+}

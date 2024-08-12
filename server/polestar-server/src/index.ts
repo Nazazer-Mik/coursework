@@ -1199,6 +1199,23 @@ app.get("admin/user/test-drived", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
+app.get("admin/dashboard/models-sales", async (c) => {
+  const dbQuery = `
+  SELECT c.model_code_fk AS model, COUNT(*) AS quantity FROM car_order co
+  INNER JOIN car c ON c.car_id = co.car_id_fk
+  WHERE co.time_of_purchase >= DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR)
+  GROUP BY c.model_code_fk
+  ORDER BY quantity
+  LIMIT 6;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;
