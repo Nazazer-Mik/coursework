@@ -1216,6 +1216,80 @@ app.get("admin/dashboard/models-sales", async (c) => {
   return c.json(res);
 });
 
+// --------------------
+
+app.get("admin/dashboard/models-faults", async (c) => {
+  const dbQuery = `
+  WITH all_cars AS (
+  SELECT COUNT(*) AS ordered, c.model_code_fk AS model FROM service_request sr
+  RIGHT JOIN car_order co ON sr.car_order_id_fk = co.car_order_id
+  INNER JOIN car c ON co.car_id_fk = c.car_id
+  GROUP BY c.model_code_fk
+  ),
+  serviced_cars AS (
+  SELECT COUNT(*) AS serviced, c.model_code_fk AS model FROM service_request sr
+  INNER JOIN car_order co ON sr.car_order_id_fk = co.car_order_id
+  INNER JOIN car c ON co.car_id_fk = c.car_id
+  GROUP BY c.model_code_fk
+  LIMIT 5
+  )
+  SELECT ROUND((sc.serviced / ac.ordered) * 100) AS broken, ac.model as model
+  FROM all_cars ac
+  INNER JOIN serviced_cars sc ON ac.model = sc.model;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/dashboard/models-avg-age", async (c) => {
+  const dbQuery = `
+  SELECT 
+    DISTINCT ROUND(AVG(FLOOR(DATEDIFF(CURDATE(), c.date_of_birth) / 365))) AS avg_age,
+    cr.model_code_fk AS model
+  FROM customer c
+  INNER JOIN car_order co ON c.customer_id = co.customer_id_fk
+  INNER JOIN car cr ON co.car_id_fk = cr.car_id
+  GROUP BY model
+  ORDER BY avg_age DESC
+  LIMIT 3;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/dashboard/popular-colors", async (c) => {
+  const dbQuery = `
+  SELECT COUNT(*) AS total, c.color FROM car_order co
+  INNER JOIN car c ON co.car_id_fk = c.car_id
+  GROUP BY c.color
+  LIMIT 3;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/dashboard/gross-income", async (c) => {
+  const dbQuery = `
+  SELECT SUM(final_price) AS grossIncome FROM car_order;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
 // -------------------- SERVER START --------------------
 
 const port = 3000;
