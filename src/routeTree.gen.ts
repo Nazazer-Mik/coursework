@@ -26,6 +26,7 @@ import { Route as CustomVehicleModelCodeImport } from './routes/custom-vehicle.$
 import { Route as AdminTestDrivesImport } from './routes/admin/test-drives'
 import { Route as AdminServiceRequestsImport } from './routes/admin/service-requests_'
 import { Route as AdminNewVehiclesImport } from './routes/admin/new-vehicles'
+import { Route as AdminLogsImport } from './routes/admin/logs'
 import { Route as AdminCustomVehiclesImport } from './routes/admin/custom-vehicles'
 import { Route as AdminChargersImport } from './routes/admin/chargers'
 import { Route as AdminChargerOrdersImport } from './routes/admin/charger-orders'
@@ -107,6 +108,11 @@ const AdminServiceRequestsRoute = AdminServiceRequestsImport.update({
 
 const AdminNewVehiclesRoute = AdminNewVehiclesImport.update({
   path: '/admin/new-vehicles',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminLogsRoute = AdminLogsImport.update({
+  path: '/admin/logs',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -249,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCustomVehiclesImport
       parentRoute: typeof rootRoute
     }
+    '/admin/logs': {
+      id: '/admin/logs'
+      path: '/admin/logs'
+      fullPath: '/admin/logs'
+      preLoaderRoute: typeof AdminLogsImport
+      parentRoute: typeof rootRoute
+    }
     '/admin/new-vehicles': {
       id: '/admin/new-vehicles'
       path: '/admin/new-vehicles'
@@ -312,6 +325,7 @@ export const routeTree = rootRoute.addChildren({
   AdminChargerOrdersRoute,
   AdminChargersRoute,
   AdminCustomVehiclesRoute,
+  AdminLogsRoute,
   AdminNewVehiclesRoute,
   AdminServiceRequestsRoute,
   AdminTestDrivesRoute,
@@ -343,6 +357,7 @@ export const routeTree = rootRoute.addChildren({
         "/admin/charger-orders",
         "/admin/chargers",
         "/admin/custom-vehicles",
+        "/admin/logs",
         "/admin/new-vehicles",
         "/admin/service-requests",
         "/admin/test-drives",
@@ -395,6 +410,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/admin/custom-vehicles": {
       "filePath": "admin/custom-vehicles.tsx"
+    },
+    "/admin/logs": {
+      "filePath": "admin/logs.tsx"
     },
     "/admin/new-vehicles": {
       "filePath": "admin/new-vehicles.tsx"

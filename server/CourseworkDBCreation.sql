@@ -118,11 +118,11 @@ CREATE TABLE `customize_options` (
 
 CREATE TABLE logs (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- When the log entry was created
-    level ENUM('INFO', 'WARN', 'ERROR') NOT NULL, -- Severity level of the log
-    message TEXT NOT NULL, -- Detailed log message
+    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    level ENUM('INFO', 'WARN', 'ERROR') NOT NULL,
+    message TEXT NOT NULL,
     user_id BIGINT
-)
+);
 
 ALTER TABLE `car` ADD CONSTRAINT `car_model_code_fk_foreign` FOREIGN KEY (`model_code_fk`) REFERENCES `car_model` (`model_code`);
 

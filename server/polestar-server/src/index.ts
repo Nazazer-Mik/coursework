@@ -77,9 +77,16 @@ app.use(
 
 // -------------------- REQUESTS --------------------
 
-app.get("/", (c) => {
-  return c.text("Welcome to Polestar server!");
-});
+async function sendLog(level: string, msg: string, user: string = "null") {
+  let log;
+  if (user !== "null") {
+    log = `INSERT INTO logs(user_id, level, message) VALUES(${user}, "${level}", "${msg}");`;
+  } else {
+    log = `INSERT INTO logs(level, message) VALUES("${level}", "${msg}");`;
+  }
+
+  await dbConnection.query(log);
+}
 
 app.post("/auth", async (c) => {
   const body = await c.req.json();
@@ -90,19 +97,32 @@ app.post("/auth", async (c) => {
 
   const user = account[0];
 
-  if (user === undefined)
+  if (user === undefined) {
+    await sendLog("WARN", `Someone tried to login as ${body.email}.`);
+
     return c.json({
       status: "Wrong details",
       message: "No user with such email address",
     });
+  }
 
-  if (user.password !== body.password)
+  if (user.password !== body.password) {
+    await sendLog(
+      "WARN",
+      "User entered wrong password during login.",
+      String(user.user_id)
+    );
+
     return c.json({
       status: "Wrong details",
       message: "Password is incorrect",
     });
+  }
 
   console.log(`User logged in: ${user.email}`);
+
+  await sendLog("INFO", "User successfully logged in.", String(user.user_id));
+
   return c.json({
     status: "OK",
     session_id: user.sessions_id,
@@ -120,19 +140,31 @@ app.post("/admin-auth", async (c) => {
 
   const user = account[0];
 
-  if (user === undefined)
+  if (user === undefined) {
+    await sendLog(
+      "WARN",
+      `Someone is trying to login as admin: ${body.username}.`
+    );
     return c.json({
       status: "Wrong details",
       message: "Wrong username. Please check and try again",
     });
+  }
 
-  if (user.password !== body.password)
+  if (user.password !== body.password) {
+    await sendLog(
+      "WARN",
+      `Admin with username: ${user.username}, entered the wrong password during login.`
+    );
     return c.json({
       status: "Wrong details",
       message: "Password is incorrect",
     });
+  }
 
   console.log(`Admin logged in with username: ${user.username}`);
+  await sendLog("INFO", `Admin logined under username: ${user.username}.`);
+
   return c.json({
     status: "OK",
     session_id: user.admin_sessions_id,
@@ -148,17 +180,28 @@ app.post("/register", async (c) => {
     `SELECT * FROM credentials WHERE email = "${body.email}";`
   )) as [userAuthCredentials[], FieldPacket[]];
 
-  if (account.length > 0)
+  if (account.length > 0) {
+    await sendLog(
+      "WARN",
+      `Someone tried to register with already existing email address: ${body.email}.`
+    );
+
     return c.json({
       status: "Creating error",
       message: "User with such email address already exists",
     });
+  }
 
   const session_id = md5(body.email);
 
   const transactionResult = await insertNewUser(dbConnection, body, session_id);
 
   if (transactionResult !== "success") {
+    await sendLog(
+      "ERROR",
+      `Internal Server Error happened during user creation: ${transactionResult}.`
+    );
+
     return c.json({
       status: "DB Error",
       message: "Internal server error occured",
@@ -166,6 +209,7 @@ app.post("/register", async (c) => {
   }
 
   console.log("New user created: " + body.email);
+  await sendLog("INFO", `New user registered: ${body.email}.`);
 
   return c.json({
     status: "OK",
@@ -346,8 +390,17 @@ app.post("/new-vehicle/buy", async (c) => {
     );`;
 
     await dbConnection.query(insertCarOrderQuery);
+    await sendLog(
+      "INFO",
+      `Customer has successfully bought a preassembled car: ${carData.model_code_fk}.`
+    );
   } catch (e) {
     console.log(e);
+    await sendLog(
+      "ERROR",
+      `Customer hasn't bought a preassembled car due to error: ${e}.`
+    );
+
     return c.json({
       status: "Error",
       message: (e as Error).toString(),
@@ -478,6 +531,11 @@ app.post("/custom-vehicle/buy", async (c) => {
     `;
 
     await dbConnection.query(updateStockQuery);
+
+    await sendLog(
+      "INFO",
+      `Customer has successfully bought a custom car: ${carId}.`
+    );
   });
 
   if (result === "success") {
@@ -486,6 +544,10 @@ app.post("/custom-vehicle/buy", async (c) => {
       message: "",
     });
   } else {
+    await sendLog(
+      "ERROR",
+      `Customer hasn't bought a custom car due to error: ${result}.`
+    );
     return c.json({
       status: "Error",
       message: (result as Error).toString(),
@@ -541,7 +603,16 @@ app.post("/admin/custom-vehicles", async (c) => {
     }
 
     await dbConnection.query(dbQuery);
+
+    await sendLog(
+      "INFO",
+      `Admin completed ${body.method} operation on custom vehicles data.`
+    );
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Admin encountered error when modifying custom vehicles data: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -594,7 +665,16 @@ app.post("/admin/new-vehicles", async (c) => {
     }
 
     await dbConnection.query(dbQuery);
+
+    await sendLog(
+      "INFO",
+      `Admin completed ${body.method} operation on preassembled vehicles data.`
+    );
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Admin encountered error when modifying preassembled vehicles data: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -634,8 +714,14 @@ app.post("/admin/car-orders", async (c) => {
       const dbQuery = `UPDATE car_order SET ${propertyToUpdate} = "${property}" WHERE car_order_id = ${orderId};`;
 
       await dbConnection.query(dbQuery);
+
+      await sendLog("INFO", `Admin updated status for car order: ${orderId}.`);
     }
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Admin encountered error when modifying car orders data: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -677,8 +763,17 @@ app.post("/admin/charger-orders", async (c) => {
       const dbQuery = `UPDATE charger_order SET ${propertyToUpdate} = "${property}" WHERE charger_order_id = ${orderId};`;
 
       await dbConnection.query(dbQuery);
+
+      await sendLog(
+        "INFO",
+        `Admin updated status for charger order: ${orderId}.`
+      );
     }
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Admin encountered error when modifying charger orders data: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -720,7 +815,16 @@ app.post("/admin/charger", async (c) => {
     }
 
     await dbConnection.query(dbQuery);
+
+    await sendLog(
+      "INFO",
+      `Admin copmleted action on chargers: ${body.method}.`
+    );
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Admin encountered error when modifying chargers (action: ${body.method}): ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -770,6 +874,11 @@ app.post("/charging", async (c) => {
 
     const dbUpdateQuery = `UPDATE charger_model SET availability = ${stock - 1} WHERE charger_id = ${details.chargerId};`;
     await dbConnection.query(dbUpdateQuery);
+
+    await sendLog(
+      "INFO",
+      `New order placed for charger. Charger ID: ${details.chargerId}.`
+    );
   });
 
   if (result === "success") {
@@ -778,6 +887,10 @@ app.post("/charging", async (c) => {
       message: "",
     });
   } else {
+    await sendLog(
+      "ERROR",
+      `Error encountered when placing new charger order: ${result}.`
+    );
     return c.json({
       status: "Error",
       message: (result as Error).toString(),
@@ -843,10 +956,19 @@ app.post("/service", async (c) => {
   try {
     await dbConnection.query(query);
 
+    await sendLog(
+      "INFO",
+      `New service request placed for car order: ${data.car_order_id}.`
+    );
+
     return c.json({
       status: "OK",
     });
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Error encountered when creating new service request: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -891,6 +1013,11 @@ app.post("/admin/service/update-status", async (c) => {
   const userIdQuery = `UPDATE service_request SET status = "${body.data.value}" WHERE service_request_id = ${body.data.serviceRequestId};`;
 
   await dbConnection.query(userIdQuery);
+
+  await sendLog(
+    "INFO",
+    `Status updated for service request #${body.data.serviceRequestId} on: ${body.data.value} by admin.`
+  );
 
   return c.json({
     status: "OK",
@@ -1067,10 +1194,19 @@ app.post("test-drive", async (c) => {
   try {
     await dbConnection.query(query);
 
+    await sendLog(
+      "INFO",
+      `New test drive request placed for model: ${data.model} at ${data.date}.`
+    );
+
     return c.json({
       status: "OK",
     });
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Error encountered when creating a test drive request: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -1122,7 +1258,15 @@ app.post("/admin/test-drive", async (c) => {
     }
 
     await dbConnection.query(dbQuery);
+    await sendLog(
+      "INFO",
+      `Status of test drive booking #${obj.bookingId} updated on ${obj.status} by admin.`
+    );
   } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Error encountered when changing test drive booking status: ${e}.`
+    );
     console.log(e);
     return c.json({
       status: "Error",
@@ -1284,6 +1428,18 @@ app.get("admin/dashboard/popular-colors", async (c) => {
 app.get("admin/dashboard/gross-income", async (c) => {
   const dbQuery = `
   SELECT SUM(final_price) AS grossIncome FROM car_order;
+  `;
+
+  const [res] = await dbConnection.query(dbQuery);
+
+  return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/logs", async (c) => {
+  const dbQuery = `
+  SELECT * FROM logs;
   `;
 
   const [res] = await dbConnection.query(dbQuery);
