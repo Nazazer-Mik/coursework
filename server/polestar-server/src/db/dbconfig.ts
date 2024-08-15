@@ -11,3 +11,8 @@ export const dbPoolOptions: PoolOptions = {
   queueLimit: 0,
   timezone: "Z",
 };
+
+export const backupUser = {
+  user: "back",
+  password: "wetmonkey22875!",
+};

@@ -116,6 +116,14 @@ CREATE TABLE `customize_options` (
   `price` BIGINT NOT NULL
 );
 
+CREATE TABLE logs (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- When the log entry was created
+    level ENUM('INFO', 'WARN', 'ERROR') NOT NULL, -- Severity level of the log
+    message TEXT NOT NULL, -- Detailed log message
+    user_id BIGINT
+)
+
 ALTER TABLE `car` ADD CONSTRAINT `car_model_code_fk_foreign` FOREIGN KEY (`model_code_fk`) REFERENCES `car_model` (`model_code`);
 
 ALTER TABLE `car_order` ADD CONSTRAINT `car_order_customer_id_fk_foreign` FOREIGN KEY (`customer_id_fk`) REFERENCES `customer` (`customer_id`);

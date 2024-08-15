@@ -1,0 +1,45 @@
+@use "../../utils/utils";
+
+.backup-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .backup-title {
+    @include utils.poppins-font(600);
+    font-size: 2em;
+
+    display: block;
+    color: utils.$contrast-fade-color;
+  }
+
+  .backup-button {
+    @include utils.roboto-slab-font(600);
+    font-size: 1.2em;
+    cursor: pointer;
+
+    padding: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+
+    background-color: utils.$secondary-color;
+    color: utils.$contrast-fade-color;
+    transition: 0.3s all ease;
+    box-shadow: 0 0 5px utils.$h1-shadow;
+  }
+
+  .backup-button:hover {
+    background-color: utils.$soft-light-color;
+    box-shadow: 0 0 10px utils.$h1-shadow;
+  }
+}

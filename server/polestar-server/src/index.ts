@@ -5,6 +5,7 @@ import { dbPoolOptions } from "./db/dbconfig";
 import mysql, { FieldPacket } from "mysql2/promise";
 import { insertNewUser, insertTransaction } from "./db/dbqueries";
 import { md5 } from "js-md5";
+import backupDatabase from "./db/backup";
 
 export interface adminAuthCredentials {
   admin_id: number;
@@ -1288,6 +1289,18 @@ app.get("admin/dashboard/gross-income", async (c) => {
   const [res] = await dbConnection.query(dbQuery);
 
   return c.json(res);
+});
+
+// --------------------
+
+app.get("admin/backup", async (c) => {
+  try {
+    backupDatabase();
+  } catch (e) {
+    console.log(e);
+  }
+
+  return c.text("OK");
 });
 
 // -------------------- SERVER START --------------------
