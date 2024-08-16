@@ -2,17 +2,31 @@ import fs from "fs";
 import { exec } from "child_process";
 import { backupUser, dbPoolOptions } from "./dbconfig";
 import mysqldump from "mysqldump";
+import { Pool } from "mysql2/promise";
 
-export default async function backupDatabase() {
-  await mysqldump({
-    connection: {
-      host: dbPoolOptions.host,
-      user: backupUser.user as string,
-      password: backupUser.password as string,
-      database: dbPoolOptions.database as string,
-    },
-    dumpToFile: "./dump.sql",
-  });
+export default async function readDatabase(db: Pool) {
+  const tables = [
+    "car",
+    "car_order",
+    "car_model",
+    "charger_model",
+    "charger_order",
+    "credentials",
+    "customer",
+    "admin_credentials",
+    "customize_options",
+    "logs",
+    "service_request",
+    "test_drive_booking",
+  ];
+
+  const tablesWithData = {};
+  for (const i in tables) {
+    const data = await db.query(`SELECT * FROM ${tables[i]};`);
+    tablesWithData[tables[i]] = data[0];
+  }
+
+  return tablesWithData;
 }
 
 /*

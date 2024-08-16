@@ -5,7 +5,7 @@ import { dbPoolOptions } from "./db/dbconfig";
 import mysql, { FieldPacket } from "mysql2/promise";
 import { insertNewUser, insertTransaction } from "./db/dbqueries";
 import { md5 } from "js-md5";
-import backupDatabase from "./db/backup";
+import readDatabase from "./db/backup";
 
 export interface adminAuthCredentials {
   admin_id: number;
@@ -1450,13 +1450,14 @@ app.get("admin/logs", async (c) => {
 // --------------------
 
 app.get("admin/backup", async (c) => {
+  let result;
   try {
-    backupDatabase();
+    result = await readDatabase(dbConnection);
   } catch (e) {
     console.log(e);
   }
 
-  return c.text("OK");
+  return c.json(result);
 });
 
 // -------------------- SERVER START --------------------
