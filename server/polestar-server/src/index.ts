@@ -375,6 +375,8 @@ app.post("/new-vehicle/buy", async (c) => {
     const userSessionId = body.user_session_id;
     const carData = body.car;
 
+    const userId = await getUserId(userSessionId);
+
     const insertCarOrderQuery = `
     INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status)
     VALUES (
@@ -389,12 +391,7 @@ app.post("/new-vehicle/buy", async (c) => {
           AND co.car_id_fk IS NULL
         LIMIT 1
       ),
-      (
-        SELECT ct.customer_id FROM customer ct
-        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
-        WHERE cr.sessions_id = "${userSessionId}"
-        LIMIT 1
-      ),
+      ${userId},
       NOW(),
       TRUE,
       ${carData.price},
@@ -405,7 +402,8 @@ app.post("/new-vehicle/buy", async (c) => {
     await dbConnection.query(insertCarOrderQuery);
     await sendLog(
       "INFO",
-      `Customer has successfully bought a preassembled car: ${carData.model_code_fk}.`
+      `Customer has successfully bought a preassembled car: ${carData.model_code_fk}.`,
+      userId
     );
   } catch (e) {
     console.log(e);
@@ -520,16 +518,13 @@ app.post("/custom-vehicle/buy", async (c) => {
     const [carIdRaw] = await dbConnection.query(carIdQuery);
     const carId = (carIdRaw as { car_id: number }[])[0].car_id;
 
+    const userId = await getUserId(userSessionId);
+
     const insertCarOrderQuery = `
     INSERT INTO car_order(car_id_fk, customer_id_fk, time_of_purchase, delivery, final_price, payment_method, status)
     VALUES (
       ${carId},
-      (
-        SELECT ct.customer_id FROM customer ct
-        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
-        WHERE cr.sessions_id = "${userSessionId}"
-        LIMIT 1
-      ),
+      ${userId},
       NOW(),
       TRUE,
       ${carData.final_price},
@@ -547,7 +542,8 @@ app.post("/custom-vehicle/buy", async (c) => {
 
     await sendLog(
       "INFO",
-      `Customer has successfully bought a custom car: ${carId}.`
+      `Customer has successfully bought a custom car: ${carId}.`,
+      userId
     );
   });
 
@@ -869,15 +865,10 @@ app.post("/charging", async (c) => {
   const result = await insertTransaction(dbConnection, async () => {
     const details = await c.req.json();
 
-    const userIdQuery = `(
-        SELECT ct.customer_id FROM customer ct
-        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
-        WHERE cr.sessions_id = "${details.sessionId}"
-        LIMIT 1
-    )`;
+    const userId = await getUserId(details.sessionId);
 
     const dbInsertQuery = `INSERT INTO charger_order(customer_id_fk, charger_id_fk, delivery, installation, final_price, serial_number, time_of_purchase, status)
-    VALUES(${userIdQuery}, ${details.chargerId}, ${details.delivery}, ${details.installation}, ${details.finalPrice}, "${md5(String(Date.now())).slice(0, 10)}", NOW(), "Awaiting confirmation");`;
+    VALUES(${userId}, ${details.chargerId}, ${details.delivery}, ${details.installation}, ${details.finalPrice}, "${md5(String(Date.now())).slice(0, 10)}", NOW(), "Awaiting confirmation");`;
 
     await dbConnection.query(dbInsertQuery);
 
@@ -890,7 +881,8 @@ app.post("/charging", async (c) => {
 
     await sendLog(
       "INFO",
-      `New order placed for charger. Charger ID: ${details.chargerId}.`
+      `New order placed for charger. Charger ID: ${details.chargerId}.`,
+      userId
     );
   });
 
@@ -1189,16 +1181,11 @@ app.get("user", async (c) => {
 app.post("test-drive", async (c) => {
   const data = await c.req.json();
 
-  const userIdQuery = `(
-    SELECT ct.customer_id FROM customer ct
-    INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
-    WHERE cr.sessions_id = "${data.sessionId}"
-    LIMIT 1
-  )`;
+  const userId = await getUserId(data.sessionId);
 
   const query = `
   INSERT INTO test_drive_booking(model_code_fk, customer_id_fk, booking_time, requested_on, status)
-  VALUES("${data.model}", ${userIdQuery}, "${data.date} ${data.timeSlot.from}:00", NOW(), "Awaiting confirmation");
+  VALUES("${data.model}", ${userId}, "${data.date} ${data.timeSlot.from}:00", NOW(), "Awaiting confirmation");
   `;
 
   try {
@@ -1206,7 +1193,8 @@ app.post("test-drive", async (c) => {
 
     await sendLog(
       "INFO",
-      `New test drive request placed for model: ${data.model} at ${data.date}.`
+      `New test drive request placed for model: ${data.model} at ${data.date}.`,
+      userId
     );
 
     return c.json({
@@ -1215,7 +1203,8 @@ app.post("test-drive", async (c) => {
   } catch (e) {
     await sendLog(
       "ERROR",
-      `Error encountered when creating a test drive request: ${e}.`
+      `Error encountered when creating a test drive request: ${e}.`,
+      userId
     );
     console.log(e);
     return c.json({
