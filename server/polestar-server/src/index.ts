@@ -75,7 +75,7 @@ app.use(
   })
 );
 
-// -------------------- REQUESTS --------------------
+// -------------------- UTILS --------------------
 
 async function sendLog(level: string, msg: string, user: string = "null") {
   let log;
@@ -87,6 +87,19 @@ async function sendLog(level: string, msg: string, user: string = "null") {
 
   await dbConnection.query(log);
 }
+
+export async function getUserId(sessionId: string) {
+  const userIdQuery = `
+    SELECT ct.customer_id AS id FROM customer ct
+        INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
+        WHERE cr.sessions_id = "${sessionId}"
+        LIMIT 1`;
+
+  const [userId] = await dbConnection.query(userIdQuery);
+  return (userId as { id: string }[])[0].id;
+}
+
+// -------------------- REQUESTS --------------------
 
 app.post("/auth", async (c) => {
   const body = await c.req.json();
@@ -941,16 +954,11 @@ app.get("/service/reg-number", async (c) => {
 app.post("/service", async (c) => {
   const data = await c.req.json();
 
-  const userIdQuery = `(
-    SELECT ct.customer_id FROM customer ct
-    INNER JOIN credentials cr ON ct.user_id_fk = cr.user_id
-    WHERE cr.sessions_id = "${data.sessionId}"
-    LIMIT 1
-)`;
+  const userId = await getUserId(data.sessionId);
 
   const query = `
   INSERT INTO service_request(car_order_id_fk, customer_id_fk, problem_reported, milage, pickup, warranty, status)
-  VALUES(${data.car_order_id}, ${userIdQuery}, "${data.description}", ${data.mileage}, ${data.pickup}, ${data.warranty}, "New");
+  VALUES(${data.car_order_id}, ${userId}, "${data.description}", ${data.mileage}, ${data.pickup}, ${data.warranty}, "New");
   `;
 
   try {
@@ -958,7 +966,8 @@ app.post("/service", async (c) => {
 
     await sendLog(
       "INFO",
-      `New service request placed for car order: ${data.car_order_id}.`
+      `New service request placed for car order: ${data.car_order_id}.`,
+      userId
     );
 
     return c.json({
@@ -967,7 +976,8 @@ app.post("/service", async (c) => {
   } catch (e) {
     await sendLog(
       "ERROR",
-      `Error encountered when creating new service request: ${e}.`
+      `Error encountered when creating new service request: ${e}.`,
+      userId
     );
     console.log(e);
     return c.json({

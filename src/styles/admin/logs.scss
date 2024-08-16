@@ -1,1 +1,13 @@
 @use "../../utils/utils";
+
+.info-log {
+  color: utils.$contrast-fade-color;
+}
+
+.warn-log {
+  color: utils.$primary-color-alternative;
+}
+
+.error-log {
+  color: utils.$error-color;
+}

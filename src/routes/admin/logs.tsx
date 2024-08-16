@@ -27,7 +27,12 @@ function LogsList() {
         <td>{l.id}</td>
         <td>{l.timestamp.replace("T", ", ").slice(0, 20)}</td>
         <td>{l.user_id}</td>
-        <td>{l.level}</td>
+        <td
+          className={`${l.level.toLowerCase()}-log`}
+          style={{ fontWeight: 600 }}
+        >
+          {l.level}
+        </td>
         <td>{l.message}</td>
       </tr>
     ));

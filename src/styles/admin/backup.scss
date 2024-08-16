@@ -18,9 +18,48 @@
 
     display: block;
     color: utils.$contrast-fade-color;
+    text-decoration: underline 3px utils.$primary-color-alternative;
+    background-color: utils.$inconspicuous-color;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
   }
 
-  .backup-button {
+  .button-container {
+    border: 5px inset utils.$contrast-fade-color;
+    padding: 20px;
+
+    background-color: utils.$contrast-fade-color;
+
+    div {
+      border-top: 3px solid utils.$primary-color-alternative;
+    }
+
+    input {
+      display: none;
+    }
+
+    .upload-label {
+      @include utils.inter-font(500);
+      background-color: utils.$soft-light-color;
+      margin-left: 50px;
+      margin-right: 15px;
+      padding: 15px;
+      font-size: 1.1em;
+      border: 3px utils.$soft-light-color inset;
+      cursor: pointer;
+
+      svg {
+        vertical-align: middle;
+        padding-right: 15px;
+        width: 28px;
+        height: auto;
+      }
+    }
+  }
+
+  .backup-button,
+  .restore-button {
     @include utils.roboto-slab-font(600);
     font-size: 1.2em;
     cursor: pointer;
@@ -28,17 +67,18 @@
     padding: 15px;
     padding-left: 20px;
     padding-right: 20px;
+    margin: 15px;
     outline: none;
     border: none;
     border-radius: 10px;
 
-    background-color: utils.$secondary-color;
+    background-color: utils.$soft-light-color;
     color: utils.$contrast-fade-color;
     transition: 0.3s all ease;
-    box-shadow: 0 0 5px utils.$h1-shadow;
   }
 
-  .backup-button:hover {
+  .backup-button:hover,
+  .restore-button:hover {
     background-color: utils.$soft-light-color;
     box-shadow: 0 0 10px utils.$h1-shadow;
   }
