@@ -5,7 +5,7 @@ import { dbPoolOptions } from "./db/dbconfig";
 import mysql, { FieldPacket } from "mysql2/promise";
 import { insertNewUser, insertTransaction } from "./db/dbqueries";
 import { md5 } from "js-md5";
-import readDatabase from "./db/backup";
+import { readDatabase, restoreDatabase } from "./db/backup";
 
 export interface adminAuthCredentials {
   admin_id: number;
@@ -1457,6 +1457,35 @@ app.get("admin/backup", async (c) => {
   }
 
   return c.json(result);
+});
+
+// --------------------
+
+app.post("admin/restore", async (c) => {
+  const obj = await c.req.json();
+  const dbData = JSON.parse(obj.dbData);
+  const fileName = obj.fileName;
+
+  try {
+    restoreDatabase(dbConnection, dbData);
+
+    await sendLog("INFO", `Admin restored DB from file: '${fileName}'.`);
+  } catch (e) {
+    await sendLog(
+      "ERROR",
+      `Admin encountered error when restoring database: ${e}.`
+    );
+    console.log(e);
+    return c.json({
+      status: "Error",
+      message: (e as Error).toString(),
+    });
+  }
+
+  return c.json({
+    status: "OK",
+    message: "",
+  });
 });
 
 // -------------------- SERVER START --------------------
